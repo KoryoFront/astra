@@ -3,8 +3,8 @@ const P = 'assets/img/products/';
 const H = 'assets/img/hero/';
 
 const X_ASSETS = { bg: H + 'hero-bg.jpg', front: P + 'x-front.webp', back: P + 'x-back.webp', frame: '#5b5d63', cam: P + 'x-macro.jpg', camOrigin: '30% 40%', shots: [P + 'x-night.jpg', P + 'x-lifestyle.jpg', P + 'x-display.jpg'] };
-const S_ASSETS = { bg: H + 's-bg.jpg', front: P + 's-front.webp', back: P + 's-back.webp', frame: '#9d92cf', cam: P + 's-lavender.jpg', camOrigin: '32% 22%', shots: [P + 's-lifestyle.jpg', P + 'x-night.jpg', P + 's-glacier.jpg'] };
-const A_ASSETS = { bg: H + 'a-bg.jpg', front: P + 'a-front.webp', back: P + 'a-back.webp', frame: '#7c9686', cam: P + 'a-sage.jpg', camOrigin: '30% 20%', shots: [P + 'a-lifestyle.jpg', P + 'a-sand.jpg', P + 'a-graphite.jpg'] };
+const S_ASSETS = { bg: H + 's-bg.jpg', front: P + 's-front.webp', back: P + 's-back.webp', frame: '#9d92cf', cam: P + 's-macro.jpg', camOrigin: '62% 40%', shots: [P + 's-lifestyle.jpg', P + 'x-night.jpg', P + 's-glacier.jpg'] };
+const A_ASSETS = { bg: H + 'a-bg.jpg', front: P + 'a-front.webp', back: P + 'a-back.webp', frame: '#7c9686', cam: P + 'a-macro.jpg', camOrigin: '64% 40%', shots: [P + 'a-lifestyle.jpg', P + 'a-sand.jpg', P + 'a-graphite.jpg'] };
 
 export const STORIES = {
   'x1-pro': { ...X_ASSETS, word: 'TITANIUM',

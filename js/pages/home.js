@@ -106,7 +106,7 @@ export default {
 <!-- Scenes: the phone holds still while worlds change behind it -->
 <section class="scenes" id="scenes" aria-label="Shot on ASTRA">
   <div class="scenes-sticky">
-    ${SCENES.map((s, i) => `<div class="scene" data-i="${i}"><img src="${s.img}" alt="" loading="${i ? 'lazy' : 'eager'}"></div>`).join('')}
+    ${SCENES.map((s, i) => `<div class="scene" data-i="${i}"><img class="scene-blur" src="${s.img}" alt="" aria-hidden="true" loading="lazy"><img class="scene-img" src="${s.img}" alt="" loading="${i ? 'lazy' : 'eager'}"></div>`).join('')}
     <div class="scenes-head"><div class="container"><p class="eyebrow">Shot on ASTRA X1 Pro</p></div></div>
     <div class="scenes-phone"><img src="${P}x-front.webp" alt="ASTRA X1 Pro" id="scenesPhone"></div>
     <div class="scenes-copy">${SCENES.map((s, i) => `<div class="scene-cap${i ? '' : ' on'}"><span class="num">0${i + 1} / 0${SCENES.length}</span><h3>${s.t}</h3><p>${s.s}</p></div>`).join('')}</div>
@@ -182,7 +182,7 @@ export default {
         <div class="big-num"><span data-count="7">0</span></div><h3 class="h3" style="margin-top:8px">years of updates</h3><p class="muted" style="margin-top:8px">New AstraOS features and security patches until 2033.</p>
       </div>
       <a href="#/phone/x1-pro" class="b-span-4 card shade-t" data-reveal style="min-height:420px">
-        <img class="bimg" src="${P}x-side.jpg" alt="X1 Pro titanium side profile" loading="lazy" style="object-position:50% 40%">
+        <img class="bimg" src="${P}x-side.jpg" alt="X1 Pro titanium side profile" loading="lazy" style="object-fit:contain;object-position:78% 50%;background:#000">
         <div class="bcap bottom"><p class="eyebrow">Design</p><h3 class="h2" style="margin-top:8px">8.2 mm of titanium.</h3></div>
       </a>
     </div>
@@ -306,7 +306,7 @@ export default {
         const local = range(p, (i - 0.5) * seg, (i + 0.15) * seg); // wipe in
         if (i) s.style.clipPath = `inset(${((1 - ease(local)) * 100).toFixed(2)}% 0 0 0)`;
         const drift = range(p, (i - 0.5) * seg, (i + 1) * seg);
-        s.firstElementChild.style.transform = `translate3d(0, ${lerp(6, -6, drift).toFixed(2)}%, 0) scale(${lerp(1.15, 1.02, drift).toFixed(3)})`;
+        s.querySelector('.scene-img').style.transform = `translate3d(0, ${lerp(6, -6, drift).toFixed(2)}%, 0) scale(${lerp(1.15, 1.02, drift).toFixed(3)})`;
       });
       const active = Math.min(n - 1, Math.floor((p + seg * 0.35) / seg));
       caps.forEach((c, i) => c.classList.toggle('on', i === active));

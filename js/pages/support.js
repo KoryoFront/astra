@@ -20,7 +20,7 @@ export const supportPage = {
   title: 'Support',
   render() {
     return `<section style="position:relative;min-height:62vh;display:flex;align-items:flex-end;overflow:hidden">
-      <img src="${L}support.jpg" alt="ASTRA support specialist helping a customer" data-parallax="-0.1" style="position:absolute;inset:-10% 0;width:100%;height:120%;object-fit:cover">
+      <img src="${L}support.jpg" alt="ASTRA support specialist helping a customer" data-parallax="-0.1" style="position:absolute;inset:-10% 0;width:100%;height:120%;object-fit:cover;object-position:35% 50%" class="fit-portrait">
       <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 5%,rgba(5,5,7,.55) 60%,rgba(5,5,7,.3))"></div>
       <div class="container" style="position:relative;padding-bottom:56px">
         ${crumbs([['Home', '#/'], ['Support', '#/support']])}
@@ -41,7 +41,7 @@ export const supportPage = {
       <section class="section-sm">
         <h2 class="h2" style="margin-bottom:12px">Product support</h2>
         <p class="muted" style="margin-bottom:28px">Guides, specs and software updates for your device.</p>
-        <div class="grid-cards" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">${PHONES.map(p => `<a href="#/phone/${p.id}#specs" class="card" style="padding:16px;border-radius:var(--radius);text-align:center" data-reveal><img src="${p.colors[0].img}" alt="" style="height:140px;width:100%;object-fit:cover;border-radius:12px" loading="lazy"><b style="display:block;margin-top:12px;font-weight:500">${p.name}</b><span class="dim" style="font-size:13px">AstraOS 6.0.2 · Up to date</span></a>`).join('')}</div>
+        <div class="grid-cards" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">${PHONES.map(p => `<a href="#/phone/${p.id}#specs" class="card" style="padding:16px;border-radius:var(--radius);text-align:center" data-reveal><img src="${p.colors[0].img}" alt="" style="height:180px;width:100%;object-fit:contain;background:#000;border-radius:12px" loading="lazy"><b style="display:block;margin-top:12px;font-weight:500">${p.name}</b><span class="dim" style="font-size:13px">AstraOS 6.0.2 · Up to date</span></a>`).join('')}</div>
       </section>
       <section class="section-sm narrow" style="margin:0 auto"><div class="row" style="justify-content:space-between;margin-bottom:12px"><h2 class="h2">Popular questions</h2><a class="link" href="#/faq">All FAQs ${icon('arrow')}</a></div><div id="faqs">${faqList(FAQS.slice(0, 5))}</div></section>
     </div>`;

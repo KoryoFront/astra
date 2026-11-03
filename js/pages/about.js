@@ -8,7 +8,7 @@ export default {
   title: 'About ASTRA',
   render() {
     return `<section style="position:relative;height:88vh;min-height:560px;overflow:hidden;margin-top:calc(var(--nav-h) * -1)">
-      <img src="${L}lineup.jpg" alt="The ASTRA X1 Pro, S5 and A3 side by side" data-parallax="-0.12" style="position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover">
+      <img src="${L}lineup.jpg" alt="The ASTRA X1 Pro, S5 and A3 side by side" data-parallax="-0.12" class="fit-always" style="position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover">
       <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 4%,rgba(5,5,7,.2) 50%,rgba(5,5,7,.5))"></div>
       <div class="container" style="position:absolute;left:0;right:0;bottom:10%">
         ${crumbs([['Home', '#/'], ['About ASTRA', '#/about']])}
@@ -32,7 +32,7 @@ export default {
       </section>
       <section class="section-sm" id="sustainability">
         <div class="card" style="border-radius:var(--radius-lg);overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))" data-reveal>
-          <div style="min-height:420px;position:relative"><img src="${L}sustainability.jpg" alt="Recycled materials and plant-fibre packaging" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+          <div style="aspect-ratio:16/9;align-self:center;position:relative;max-width:100%"><img src="${L}sustainability.jpg" alt="Recycled materials and plant-fibre packaging" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
           <div class="card-pad" style="padding:clamp(28px,5vw,56px)">
             <p class="eyebrow">A more sustainable ASTRA</p>
             <h2 class="h2" style="margin-top:12px">Responsible technology.</h2>

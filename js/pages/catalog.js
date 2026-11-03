@@ -132,8 +132,8 @@ export const accessoriesPage = {
         <p class="lead" style="margin-top:14px;max-width:620px" data-reveal>Audio, charging and protection — designed alongside every ASTRA phone for a perfect fit.</p>
       </header>
       <div class="bento" style="margin-bottom:48px">
-        <a href="#/accessory/buds-pro" class="b-span-4 card shade-b" data-reveal style="min-height:420px">
-          <img class="bimg" src="assets/img/accessories/buds-pro.jpg" alt="ASTRA Buds Pro 2">
+        <a href="#/accessory/buds-pro" class="b-span-4 card acc-split" data-reveal>
+          <img src="assets/img/accessories/buds-pro.jpg" alt="ASTRA Buds Pro 2">
           <div class="bcap"><span class="chip chip-new">New</span><h2 class="h2" style="margin-top:14px">Buds Pro 2</h2><p class="muted" style="margin-top:8px;max-width:360px">Silence, perfected. Adaptive ANC and lossless spatial audio.</p></div>
         </a>
         <a href="#/accessory/mag-pad" class="b-span-2 card shade-b" data-reveal style="min-height:420px">

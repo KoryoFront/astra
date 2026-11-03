@@ -12,7 +12,7 @@ function confirmTwice(btn, msg, fn) {
 
 const nextOf = q => (q.next && q.next.startsWith('/') ? '#' + q.next : '#/account');
 
-function authShell(inner, img = 'assets/img/products/x-lifestyle.jpg') {
+function authShell(inner, img = 'assets/img/hero/hero-bg.jpg') {
   return `<div class="auth-wrap"><div class="auth-media"><img src="${img}" alt=""></div><div class="auth-form">${inner}</div></div>`;
 }
 
@@ -64,7 +64,7 @@ export const registerPage = {
       <p class="err" id="formErr" style="color:var(--err);font-size:14px"></p>
       <button class="btn btn-primary btn-lg btn-block">Create account</button>
       <p class="muted center" style="font-size:14px">Already have an account? <a class="link" href="#/login">Sign in</a></p>
-    </form>`, 'assets/img/products/s-lifestyle.jpg');
+    </form>`, 'assets/img/hero/s-bg.jpg');
   },
   mount(root, { query }) {
     const f = $('#reg', root);
