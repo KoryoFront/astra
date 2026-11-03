@@ -19,8 +19,8 @@ function wireFaq(root) {
 export const supportPage = {
   title: 'Support',
   render() {
-    return `<section style="position:relative;min-height:62vh;display:flex;align-items:flex-end;overflow:hidden">
-      <img src="${L}support.jpg" alt="ASTRA support specialist helping a customer" data-parallax="-0.1" style="position:absolute;inset:-10% 0;width:100%;height:120%;object-fit:cover;object-position:35% 50%" class="fit-portrait">
+    return `<section style="position:relative;min-height:min(56.25vw, 80vh);display:flex;align-items:flex-end;overflow:hidden">
+      <img src="${L}support.jpg" alt="ASTRA support specialist helping a customer" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:35% 50%" class="fit-portrait">
       <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 5%,rgba(5,5,7,.55) 60%,rgba(5,5,7,.3))"></div>
       <div class="container" style="position:relative;padding-bottom:56px">
         ${crumbs([['Home', '#/'], ['Support', '#/support']])}

@@ -66,7 +66,7 @@ export function storyHtml(p) {
 
   <section class="ps-shots section-sm" aria-label="Photo samples"><div class="container">
     <p class="eyebrow" data-reveal>Shot on ${esc(short)}</p>
-    <div class="ps-shots-grid">${s.shots.map((src, i) => `<figure style="margin:0" data-reveal="tilt"><div class="ps-shot">${/lifestyle|night|display/.test(src) ? `<img src="${src}" alt="" loading="lazy" data-parallax="${[0.05, -0.04, 0.06][i]}">` : `<img class="fit" src="${src}" alt="" loading="lazy">`}</div></figure>`).join('')}</div>
+    <div class="ps-shots-grid">${s.shots.map((src, i) => `<figure style="margin:0" data-reveal="tilt"><div class="ps-shot">${/lifestyle|night|display/.test(src) ? `<img src="${src}" alt="" loading="lazy">` : `<img class="fit" src="${src}" alt="" loading="lazy">`}</div></figure>`).join('')}</div>
   </div></section>
 
   <section class="ps-display" id="display" aria-label="Display">

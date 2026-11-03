@@ -178,12 +178,20 @@ export default {
         </div>
         <p class="dim" style="font-size:13px">90 W HyperCharge · 50 W AstraMag wireless</p>
       </div>
-      <div class="b-span-2 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:420px">
-        <div class="big-num"><span data-count="7">0</span></div><h3 class="h3" style="margin-top:8px">years of updates</h3><p class="muted" style="margin-top:8px">New AstraOS features and security patches until 2033.</p>
+      <div class="b-span-4 card upd-card" data-reveal>
+        <div class="upd-head">
+          <div><p class="eyebrow">AstraOS</p><h3 class="h2" style="margin-top:10px">Seven years of upgrades.</h3><p class="muted" style="margin-top:10px;max-width:440px">New AstraOS versions, Astra AI features and monthly security patches for every X Series phone until 2033.</p></div>
+          <div class="upd-big"><span data-count="7">0</span><small>years</small></div>
+        </div>
+        <div class="upd-track">
+          <div class="upd-line"><i data-fill="100"></i></div>
+          <ol class="upd-steps">${Array.from({ length: 8 }, (_, i) => `<li class="${i ? '' : 'now'}" style="--d:${(i * 0.25).toFixed(2)}s"><b><em>AstraOS </em>${6 + i}</b><span>${i ? 2026 + i : 'Today'}</span></li>`).join('')}</ol>
+        </div>
+        <div class="upd-feats"><span>${icon('shield')} Monthly security patches</span><span>${icon('sparkle')} New Astra AI features</span><span>${icon('refresh')} Free version upgrades</span></div>
       </div>
-      <a href="#/phone/x1-pro" class="b-span-4 card shade-t" data-reveal style="min-height:420px">
-        <img class="bimg" src="${P}x-side.jpg" alt="X1 Pro titanium side profile" loading="lazy" style="object-fit:contain;object-position:78% 50%;background:#000">
-        <div class="bcap bottom"><p class="eyebrow">Design</p><h3 class="h2" style="margin-top:8px">8.2 mm of titanium.</h3></div>
+      <a href="#/phone/x1-pro" class="b-span-2 card side-card" data-reveal>
+        <img src="${P}x-side.jpg" alt="X1 Pro titanium side profile" loading="lazy">
+        <div class="bcap"><p class="eyebrow">Design</p><h3 class="h3" style="margin-top:6px">8.2 mm of titanium.</h3></div>
       </a>
     </div>
   </div>
