@@ -7,10 +7,11 @@ const L = 'assets/img/lifestyle/';
 export default {
   title: 'About ASTRA',
   render() {
-    return `<section style="position:relative;height:88vh;min-height:560px;overflow:hidden;margin-top:calc(var(--nav-h) * -1)">
-      <img src="${L}lineup.jpg" alt="The ASTRA X1 Pro, S5 and A3 side by side" data-parallax="-0.12" class="fit-always" style="position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover">
-      <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 4%,rgba(5,5,7,.2) 50%,rgba(5,5,7,.5))"></div>
-      <div class="container" style="position:absolute;left:0;right:0;bottom:10%">
+    return `<section class="about-hero">
+      <img class="about-bg" src="assets/img/hero/hero-bg.jpg" alt="" data-parallax="-0.08">
+      <div class="about-shade"></div>
+      <img class="about-phones" src="${L}lineup-cut.webp" alt="The ASTRA X1 Pro, S5 and A3 side by side">
+      <div class="container about-copy">
         ${crumbs([['Home', '#/'], ['About ASTRA', '#/about']])}
         <h1 class="display-1" data-split>Designed to<br>elevate.</h1>
       </div>
@@ -27,7 +28,7 @@ export default {
       <section class="section">
         <div class="bento">
           <div class="b-span-4 card shade-t" data-reveal style="min-height:520px"><img class="bimg" src="${L}studio.jpg" alt="ASTRA design studio" loading="lazy"><div class="bcap bottom"><p class="eyebrow">Design</p><h2 class="h2" style="margin-top:8px">Obsessed with the details.</h2><p class="muted" style="margin-top:8px;max-width:520px">Each ASTRA goes through more than 400 prototypes. We machine titanium to tolerances of 10 microns and tune every haptic by hand.</p></div></div>
-          <div class="b-span-2 card card-pad" data-reveal style="display:flex;flex-direction:column;justify-content:space-between;min-height:520px">${icon('chip').replace('<svg', '<svg style="width:40px;height:40px"')}<div><h3 class="h3">Our own silicon</h3><p class="muted" style="margin-top:10px">The Nova chip family is designed in-house, so hardware, AstraOS and Astra AI work as one.</p></div></div>
+          <div class="b-span-2 card card-pad" data-reveal style="display:flex;flex-direction:column;justify-content:space-between;min-height:520px;gap:24px"><div class="silicon-img"><img src="assets/img/products/x-chip.jpg" alt="ASTRA Nova G3 chip" loading="lazy"></div><div><h3 class="h3">Our own silicon</h3><p class="muted" style="margin-top:10px">The Nova chip family is designed in-house, so hardware, AstraOS and Astra AI work as one.</p></div></div>
         </div>
       </section>
       <section class="section-sm" id="sustainability">
