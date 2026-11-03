@@ -105,6 +105,24 @@ async function render() {
   first = false;
 }
 
+// Embedded hosts can keep serving an old copy of the page. Each release lives in its own
+// folder (r-<hash>); compare it with the published version.json and reload when they differ.
+const RELEASE = (new URL(import.meta.url).pathname.match(/r-[\w-]+/) || [''])[0];
+async function checkForUpdate() {
+  if (!nav.isEmbed || !RELEASE) return;
+  try {
+    const res = await fetch('version.json?ts=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return;
+    const { release } = await res.json();
+    if (release && release !== RELEASE) {
+      let tried = null; try { tried = sessionStorage.getItem('astra.reloadedFor'); } catch { }
+      if (tried === release) return;
+      try { sessionStorage.setItem('astra.reloadedFor', release); } catch { }
+      location.reload();
+    }
+  } catch { /* offline or not published: keep running */ }
+}
+
 async function boot() {
   ui.renderHeader();
   ui.renderFooter();
@@ -113,5 +131,9 @@ async function boot() {
   store.subscribe(() => { ui.updateCartBadge(); if (document.getElementById('cartDrawer').classList.contains('open')) ui.renderDrawer(); });
   nav.onChange(render);
   render();
+  const stamp = document.getElementById('releaseStamp'); if (stamp && RELEASE) stamp.textContent = 'Release ' + RELEASE.slice(2);
+  checkForUpdate();
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkForUpdate(); });
+  setInterval(checkForUpdate, 120000);
 }
 boot();

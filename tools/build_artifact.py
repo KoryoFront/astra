@@ -13,6 +13,7 @@ for d in ('css', 'js'):
 page = open(os.path.join(root, 'artifact.html')).read()
 page = page.replace('href="css/styles.css"', f'href="{ver}/css/styles.css"').replace('src="js/app.js"', f'src="{ver}/js/app.js"')
 open(os.path.join(out, 'artifact.html'), 'w').write(page)
+json.dump({'release': ver}, open(os.path.join(out, 'version.json'), 'w'))
 files = {}
 for base in (ver,):
     for r, _, fs in os.walk(os.path.join(out, base)):
@@ -21,5 +22,6 @@ for base in (ver,):
 for r, _, fs in os.walk(os.path.join(root, 'assets')):
     for f in fs:
         p = os.path.relpath(os.path.join(r, f), root); files[p] = os.path.join(root, p)
+files['version.json'] = os.path.join(out, 'version.json')
 json.dump(files, open(os.path.join(out, 'files.json'), 'w'), indent=0)
 print(ver, len(files), 'files')
