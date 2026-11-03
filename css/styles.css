@@ -1121,3 +1121,6 @@ body.hdr-hide .pnav { top: 10px; }
   .ps-color { height: min(calc(100svh - var(--nav-h) - 330px), 440px); bottom: 128px; width: auto; }
   .ps-color-names { bottom: 28px; }
 }
+/* Colours: fill and centre within the space between heading and buttons, at any screen shape */
+.ps-color { top: calc(var(--nav-h) + 230px); bottom: 104px; height: auto; max-height: 720px; margin-block: auto; width: auto; }
+@media (max-width: 720px) { .ps-color { top: calc(var(--nav-h) + 190px); bottom: 128px; height: auto; max-height: 520px; } }
