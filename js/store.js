@@ -121,7 +121,7 @@ export function updateProfile(patch) { const u = currentUser(); if (!u) return; 
 export async function ensureDemo() {
   const email = 'demo@astra.com';
   if (state.users[email]) return;
-  state.users[email] = { name: 'Alex Morgan', email, pw: await hash('astra2026'), created: Date.parse('2024-03-12'), addresses: [{ line1: '210 Regent Street', city: 'London', zip: 'W1B 5AH', country: 'United Kingdom' }] };
+  state.users[email] = { name: 'Alex Morgan', email, pw: await hash('astra2026'), created: Date.parse('2026-02-14'), addresses: [{ line1: '210 Regent Street', city: 'London', zip: 'W1B 5AH', country: 'United Kingdom' }] };
   const mk = (num, daysAgo, items, ship = 'standard') => {
     const placed = Date.now() - daysAgo * 864e5;
     const lines = items.map(resolveItem);
@@ -134,8 +134,8 @@ export async function ensureDemo() {
   };
   state.orders.push(
     mk('AST-2610-48213', 1, [{ kind: 'phone', id: 'x1-pro', color: 'graphite', storage: 512, qty: 1 }, { kind: 'accessory', id: 'case-x1pro', color: 'black', qty: 1 }], 'express'),
-    mk('AST-2607-11920', 120, [{ kind: 'accessory', id: 'buds-pro', color: 'graphite', qty: 1 }]),
-    mk('AST-2512-90377', 330, [{ kind: 'phone', id: 's5', color: 'glacier', storage: 256, qty: 1 }, { kind: 'accessory', id: 'charger-90', color: 'graphite', qty: 1 }]),
+    mk('AST-2609-11920', 60, [{ kind: 'accessory', id: 'buds-pro', color: 'graphite', qty: 1 }]),
+    mk('AST-2606-90377', 150, [{ kind: 'phone', id: 's5', color: 'glacier', storage: 256, qty: 1 }, { kind: 'accessory', id: 'charger-90', color: 'graphite', qty: 1 }]),
   );
   save();
 }

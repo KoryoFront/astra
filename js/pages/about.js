@@ -19,11 +19,12 @@ export default {
     <div class="container">
       <section class="section narrow" style="margin:0 auto">
         <p class="eyebrow" data-reveal>Our story</p>
-        <p class="h2" style="margin-top:18px;font-weight:300;line-height:1.25" data-reveal>ASTRA was founded in 2019 by a small team of engineers and industrial designers who believed a smartphone should feel as considered as a fine watch — and stay useful for just as long.</p>
-        <p class="lead" style="margin-top:24px" data-reveal>Today, ASTRA phones are used by more than 40 million people in 62 countries. We design every product in our studios in London and Tokyo, write our own silicon, and support every flagship with seven years of updates.</p>
+        <p class="h2" style="margin-top:18px;font-weight:300;line-height:1.25" data-reveal>ASTRA was founded in 2026 by Cullin, Mingu, Marley and Daniel, four friends who believed a smartphone should feel as considered as a fine watch and stay useful for just as long.</p>
+        <p class="lead" style="margin-top:24px" data-reveal>In our first year we launched three series, from the A3 to the titanium X1 Pro. We design every product in our studios in London and Tokyo, write our own silicon, and support every flagship with seven years of updates.</p>
+        <div class="founders" data-reveal>${[['Cullin', 'C'], ['Mingu', 'M'], ['Marley', 'M'], ['Daniel', 'D']].map(([n, i]) => `<div class="founder"><span class="founder-av">${i}</span><div><b>${n}</b><span>Co-founder</span></div></div>`).join('')}</div>
       </section>
       <section class="grid-cards" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))" data-stagger=".08">
-        ${[['40', 'M+', 'people use ASTRA'], ['62', '', 'countries'], ['7', ' yrs', 'of software updates'], ['100', '%', 'renewable energy in our offices']].map(([n, s, l]) => `<div class="card card-pad" data-reveal><div class="big-num"><span data-count="${n}">0</span>${s}</div><p class="muted" style="margin-top:8px">${l}</p></div>`).join('')}
+        ${[['2026', '', 'founded'], ['4', '', 'co-founders'], ['62', '', 'countries we ship to'], ['7', ' yrs', 'of software updates']].map(([n, s, l]) => `<div class="card card-pad" data-reveal><div class="big-num"><span data-count="${n}" ${n.length === 4 ? 'data-plain' : ''}>0</span>${s}</div><p class="muted" style="margin-top:8px">${l}</p></div>`).join('')}
       </section>
       <section class="section">
         <div class="bento">
@@ -38,7 +39,7 @@ export default {
             <p class="eyebrow">A more sustainable ASTRA</p>
             <h2 class="h2" style="margin-top:12px">Responsible technology.</h2>
             <div class="stack" style="--stack:18px;margin-top:24px">
-              ${[['recycle', '100% recycled aluminium', 'in every S and A Series frame, and 75% recycled titanium in X1 Pro.'], ['leaf', 'Plastic-free packaging', 'made from FSC-certified plant fibre since 2023.'], ['refresh', 'Built to last', 'with 7 years of updates, user-replaceable batteries in A Series and our trade-in programme.'], ['globe', 'Carbon neutral by 2030', 'across our entire supply chain.']].map(([i, b, s]) => `<div class="row" style="flex-wrap:nowrap;align-items:flex-start;gap:14px">${icon(i).replace('<svg', '<svg style="width:24px;height:24px;flex-shrink:0;margin-top:2px"')}<p><b style="font-weight:500">${b}</b> <span class="muted">${s}</span></p></div>`).join('')}
+              ${[['recycle', '100% recycled aluminium', 'in every S and A Series frame, and 75% recycled titanium in X1 Pro.'], ['leaf', 'Plastic-free packaging', 'made from FSC-certified plant fibre from day one.'], ['refresh', 'Built to last', 'with 7 years of updates, user-replaceable batteries in A Series and our trade-in programme.'], ['globe', 'Carbon neutral by 2030', 'across our entire supply chain.']].map(([i, b, s]) => `<div class="row" style="flex-wrap:nowrap;align-items:flex-start;gap:14px">${icon(i).replace('<svg', '<svg style="width:24px;height:24px;flex-shrink:0;margin-top:2px"')}<p><b style="font-weight:500">${b}</b> <span class="muted">${s}</span></p></div>`).join('')}
             </div>
           </div>
         </div>
@@ -52,7 +53,7 @@ export default {
       <section class="section-sm grid-cards" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:60px">
         <div class="card card-pad" id="careers" data-reveal><p class="eyebrow">Careers</p><h3 class="h3" style="margin-top:10px">Build what's next.</h3><p class="muted" style="margin-top:8px">48 open roles across design, silicon, AI and retail.</p><button class="link" style="margin-top:16px" data-msg="Our careers portal opens soon. Check back for new roles.">See open roles ${icon('arrow')}</button></div>
         <div class="card card-pad" id="press" data-reveal><p class="eyebrow">Newsroom</p><h3 class="h3" style="margin-top:10px">ASTRA unveils X1 Pro.</h3><p class="muted" style="margin-top:8px">24 Sep 2026 — Titanium design, Nova G3 and a 200 MP camera system.</p><a class="link" style="margin-top:16px" href="#/phone/x1-pro">Read more ${icon('arrow')}</a></div>
-        <div class="card card-pad" data-reveal><p class="eyebrow">Investors</p><h3 class="h3" style="margin-top:10px">FY2026 results.</h3><p class="muted" style="margin-top:8px">Revenue up 31% year on year. Full report available to shareholders.</p><button class="link" style="margin-top:16px" data-msg="The FY2026 annual report will be published on 15 December.">Learn more ${icon('arrow')}</button></div>
+        <div class="card card-pad" data-reveal><p class="eyebrow">Investors</p><h3 class="h3" style="margin-top:10px">Our first year.</h3><p class="muted" style="margin-top:8px">Three series launched and shipping to 62 countries in 2026.</p><button class="link" style="margin-top:16px" data-msg="Our first annual report will be published on 15 December.">Learn more ${icon('arrow')}</button></div>
       </section>
     </div>`;
   },

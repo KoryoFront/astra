@@ -1254,3 +1254,9 @@ body.hdr-hide .pnav { top: 10px; }
 .mega-links { justify-content: center; border-left: 1px solid rgba(255,255,255,.08); padding-left: 18px; }
 .nav-links .mega-links a { border-radius: 10px; padding: 9px 12px; }
 .nav-links .mega-links a::after { display: none; }
+.founders { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 32px; }
+.founder { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 16px; background: #0c0d11; border: 1px solid var(--line); }
+.founder-av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; font-family: var(--font-display); font-weight: 500; font-size: 18px; color: #0b0b0e; background: linear-gradient(180deg, #fff, #b7bbc6); }
+.founder b { display: block; font-weight: 500; }
+.founder span:not(.founder-av) { font-size: 13px; color: var(--text-3); }
+@media (max-width: 720px) { .founders { grid-template-columns: 1fr 1fr; } }
