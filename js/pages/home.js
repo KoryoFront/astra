@@ -74,9 +74,8 @@ export default {
     ${Object.values(SERIES).map(s => {
       const ps = PHONES.filter(p => p.series === s.id), p = ps[0];
       return `<a class="st-card" href="#/phones?series=${s.id}" data-reveal>
-        <img src="${p.colors[0].img}" alt="${s.name}" loading="lazy">
-        <span class="eyebrow">${ps.map(x => x.name.replace('ASTRA ', '')).join(' · ')}</span>
-        <div class="st-foot"><div><h3>${s.name.replace('ASTRA ', '')}</h3><p class="muted" style="margin-top:4px">${s.tagline} · From ${store.money(Math.min(...ps.map(fromPrice)))}</p></div><span class="go">${icon('arrow')}</span></div>
+        <div class="st-media"><img src="${p.colors[0].img}" alt="${s.name}" loading="lazy"></div>
+        <div class="st-foot"><div><span class="eyebrow">${ps.map(x => x.name.replace('ASTRA ', '')).join(' · ')}</span><h3 style="margin-top:6px">${s.name.replace('ASTRA ', '')}</h3><p class="muted" style="margin-top:4px">${s.tagline} · From ${store.money(Math.min(...ps.map(fromPrice)))}</p></div><span class="go">${icon('arrow')}</span></div>
       </a>`;
     }).join('')}
   </div>
@@ -148,23 +147,44 @@ export default {
           </div>
         </div>
       </div>
-      <div class="b-span-3 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:space-between">
-        <div>${icon('ai')}<h3 class="h3" style="margin-top:20px">Astra AI. Private by design.</h3><p class="muted" style="margin-top:10px">Live Translate calls in 40 languages, summarise anything, erase distractions from photos — all on-device.</p></div>
-        <div class="row" style="margin-top:28px;flex-wrap:wrap;gap:8px">${['Live Translate', 'Magic Eraser Pro', 'Smart Summaries', 'Circle Search', 'Call Notes'].map(t => `<span class="chip">${t}</span>`).join('')}</div>
+      <div class="b-span-4 card ai-card" data-reveal>
+        <div class="ai-head"><p class="eyebrow">Astra AI</p><h3 class="h2" style="margin-top:10px">Private by design.</h3><p class="muted" style="margin-top:10px">Everything runs on the Nova G3 neural engine, so your calls, photos and notes never leave the phone.</p></div>
+        <div class="ai-demos">
+          <div class="ai-demo">
+            <span class="ai-label">Live Translate</span>
+            <div class="bubble in">Where's the nearest station?</div>
+            <div class="bubble out" lang="ja">最寄りの駅はどこですか？</div>
+            <span class="ai-meta">40 languages, during calls</span>
+          </div>
+          <div class="ai-demo">
+            <span class="ai-label">Smart Summaries</span>
+            <div class="ai-lines"><i></i><i></i><i></i><i></i></div>
+            <ul class="ai-sum"><li>Flight moved to 9:40</li><li>Now leaving gate B12</li><li>Lounge access included</li></ul>
+          </div>
+          <div class="ai-demo">
+            <span class="ai-label">Call Notes</span>
+            <div class="ai-wave">${Array.from({ length: 22 }, (_, i) => `<i style="--h:${[30, 55, 80, 45, 95, 60, 35, 70, 100, 50, 25, 65, 85, 40, 75, 55, 90, 35, 60, 45, 70, 30][i]}%;--d:${(i * 0.05).toFixed(2)}s"></i>`).join('')}</div>
+            <span class="ai-meta">3 action items saved</span>
+          </div>
+        </div>
       </div>
-      <div class="b-span-3 card" data-reveal style="padding:32px">
-        ${icon('battery')}<h3 class="h3" style="margin-top:20px">Two days. One charge.</h3>
-        <p class="muted" style="margin-top:10px">A 5,500 mAh silicon-carbon battery, and 90 W HyperCharge that fills it in just 29 minutes.</p>
-        <div style="margin-top:28px"><div class="row" style="justify-content:space-between;font-size:14px"><span class="muted">0–100%</span><b>29 min</b></div><div class="progress-bar" style="margin-top:8px"><i data-fill="100"></i></div>
-        <div class="row" style="justify-content:space-between;font-size:14px;margin-top:16px"><span class="muted">Video playback</span><b>31 hrs</b></div><div class="progress-bar" style="margin-top:8px"><i data-fill="86"></i></div></div>
+      <div class="b-span-2 card bat-card" data-reveal>
+        <p class="eyebrow">Battery</p>
+        <div class="bat-big"><span data-count="2">0</span><small>days</small></div>
+        <p class="muted">5,500 mAh silicon-carbon cell. Video playback up to 31 hours.</p>
+        <div class="bat-charge">
+          <div class="bat-shell"><i data-fill="100"></i></div>
+          <div class="bat-ticks"><span>0%</span><span>50% · 12 min</span><span>100% · 29 min</span></div>
+        </div>
+        <p class="dim" style="font-size:13px">90 W HyperCharge · 50 W AstraMag wireless</p>
+      </div>
+      <div class="b-span-2 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:420px">
+        <div class="big-num"><span data-count="7">0</span></div><h3 class="h3" style="margin-top:8px">years of updates</h3><p class="muted" style="margin-top:8px">New AstraOS features and security patches until 2033.</p>
       </div>
       <a href="#/phone/x1-pro" class="b-span-4 card shade-t" data-reveal style="min-height:420px">
         <img class="bimg" src="${P}x-side.jpg" alt="X1 Pro titanium side profile" loading="lazy" style="object-position:50% 40%">
         <div class="bcap bottom"><p class="eyebrow">Design</p><h3 class="h2" style="margin-top:8px">8.2 mm of titanium.</h3></div>
       </a>
-      <div class="b-span-2 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:420px">
-        <div class="big-num"><span data-count="7">0</span></div><h3 class="h3" style="margin-top:8px">years of updates</h3><p class="muted" style="margin-top:8px">New AstraOS features and security patches until 2033.</p>
-      </div>
     </div>
   </div>
 </section>

@@ -25,14 +25,16 @@ export function storyHtml(p) {
     <div class="ps-sticky">
       <div class="ps-bg"><img src="${s.bg}" alt="" id="psBg"></div>
       <div class="ps-shade"></div>
-      <div class="ps-name" id="psName" aria-hidden="true">${(short.includes(' ') ? [short.split(' ')[0], short.split(' ').slice(1).join(' ')] : [short.slice(0, 1), short.slice(1)]).map(t => `<span>${esc(t)}</span>`).join('')}</div>
-      <div class="ps-hero-phone" id="psHeroPhone">${phone3d({ front: s.front, back: s.back, frame: s.frame, id: 'psP1', alt: p.name })}</div>
-      <div class="ps-hero-copy" id="psHeroCopy"><div class="container">
-        <p class="eyebrow">${SERIES[p.series].name}${p.badge ? ` · ${p.badge}` : ''}</p>
-        <h1 class="ps-title">${esc(p.name)}</h1>
-        <p class="lead" style="margin-top:8px">${esc(p.tagline)}</p>
-        <div class="row" style="margin-top:22px;gap:12px"><button class="btn btn-primary btn-lg" data-goto="buy">Buy from ${store.money(fromPrice(p))} ${icon('arrow', 'arrow')}</button><a class="btn btn-ghost btn-lg" href="#/compare?ids=${p.id}">Compare</a></div>
-      </div></div>
+      <div class="ps-hero-grid container">
+        <div class="ps-hero-copy" id="psHeroCopy">
+          <p class="eyebrow">${SERIES[p.series].name}${p.badge ? ` · ${p.badge}` : ''}</p>
+          <h1 class="ps-name" id="psName"><span class="ps-brand">ASTRA</span> ${esc(short)}</h1>
+          <p class="ps-tag">${esc(p.tagline)}</p>
+          <div class="ps-hl">${p.highlights.map(([, b, t]) => `<div><b>${esc(b)}</b><span>${esc(t)}</span></div>`).join('')}</div>
+          <div class="row" style="gap:12px"><button class="btn btn-primary btn-lg" data-goto="buy">Buy from ${store.money(fromPrice(p))} ${icon('arrow', 'arrow')}</button><a class="btn btn-ghost btn-lg" href="#/compare?ids=${p.id}">Compare</a></div>
+        </div>
+        <div class="ps-hero-phone" id="psHeroPhone">${phone3d({ front: s.front, back: s.back, frame: s.frame, id: 'psP1', alt: p.name })}</div>
+      </div>
     </div>
   </section>
 
@@ -121,17 +123,13 @@ export function mountStory(root, p, { onPickColor } = {}) {
 
   // Hero: phone turns in 3D and rises faster than the backdrop; the name splits apart behind it
   const hero = $('#overview', root), bg = $('#psBg', root), name = $('#psName', root), p1 = $('#psP1', root), copy = $('#psHeroCopy', root);
-  const nameParts = [...name.children];
   let mx = 0, my = 0;
   const paintHero = () => {
     const pr = sectionProgress(hero), e = ease(pr);
     bg.style.transform = `translate3d(${(-mx * 10).toFixed(1)}px, ${(pr * 6).toFixed(2)}vh, 0) scale(${(1.06 + e * 0.16).toFixed(4)})`;
     if (!reduce) p1.style.transform = `translateY(${(-e * (mobile() ? 8 : 14)).toFixed(2)}vh) rotateY(${(lerp(-22, 200, e) + mx * 14).toFixed(2)}deg) rotateX(${(lerp(8, -4, e) - my * 8).toFixed(2)}deg) scale(${lerp(1, 0.86, e).toFixed(3)})`;
-    if (nameParts.length > 1) { nameParts[0].style.transform = `translateX(${(-e * 30).toFixed(2)}vw)`; nameParts[1].style.transform = `translateX(${(e * 30).toFixed(2)}vw)`; }
-    else nameParts[0].style.transform = `scale(${(1 + e * 0.4).toFixed(3)})`;
-    name.style.opacity = (1 - range(pr, 0.4, 0.9)).toFixed(3);
-    copy.style.opacity = (1 - range(pr, 0.05, 0.4)).toFixed(3);
-    copy.style.transform = `translateY(${(-e * 12).toFixed(2)}vh)`;
+    copy.style.opacity = (1 - range(pr, 0.1, 0.5)).toFixed(3);
+    copy.style.transform = `translateY(${(-e * 16).toFixed(2)}vh)`;
   };
   offs.push(onScroll(paintHero));
   if (finePointer && !reduce) {
