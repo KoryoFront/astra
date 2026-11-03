@@ -1239,3 +1239,18 @@ body.hdr-hide .pnav { top: 10px; }
   section:has(> img.fit-portrait) { padding-top: calc(56.25vw + 20px); min-height: 0 !important; }
   section:has(> img.fit-portrait) > div[style*="linear-gradient"] { background: linear-gradient(180deg, rgba(5,5,7,0) 0, rgba(5,5,7,0) 40vw, var(--bg) 56.25vw) !important; }
 }
+
+/* Phones dropdown: spans the header bar, transparent phone cut-outs, no pill shapes */
+.nav { position: relative; }
+.has-mega { position: static; }
+.mega { left: 0; right: 0; width: auto; top: calc(100% + 10px); transform: translateY(8px); grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, .9fr); gap: 8px; padding: 18px; border-radius: 24px; background: rgba(12, 13, 17, .94); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 30px 60px -20px rgba(0,0,0,.8); }
+.has-mega:hover .mega, .has-mega:focus-within .mega { transform: none; }
+.mega::before { top: -20px; height: 20px; }
+.nav-links .mega-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 18px 12px 16px; border-radius: 18px; background: transparent; border: 1px solid transparent; color: var(--text); font-size: 15px; }
+.nav-links .mega-card:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
+.nav-links .mega-card::after { display: none; }
+.mega-card img { height: 168px; width: auto; max-width: 100%; object-fit: contain; margin: 0 0 12px; filter: drop-shadow(0 18px 22px rgba(0,0,0,.6)); }
+.mega-card em { font-style: normal; font-size: 13px; color: var(--text-2); margin-top: 4px; }
+.mega-links { justify-content: center; border-left: 1px solid rgba(255,255,255,.08); padding-left: 18px; }
+.nav-links .mega-links a { border-radius: 10px; padding: 9px 12px; }
+.nav-links .mega-links a::after { display: none; }

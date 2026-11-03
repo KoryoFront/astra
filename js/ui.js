@@ -84,7 +84,7 @@ const NAV = [['Phones', '#/phones'], ['Accessories', '#/accessories'], ['Trade I
 export function renderHeader() {
   const megaCards = Object.values(SERIES).map(s => {
     const p = PHONES.find(p => p.series === s.id);
-    return `<a class="mega-card" href="#/phones?series=${s.id}"><img src="${p.colors[0].img}" alt=""><b>${s.name.replace('ASTRA ', '')}</b><span>${s.tagline}</span></a>`;
+    return `<a class="mega-card" href="#/phones?series=${s.id}"><img src="assets/img/products/${s.id}-back.webp" alt="" loading="lazy"><b>${s.name.replace('ASTRA ', '')}</b><span>${s.tagline}</span><em>From ${store.money(Math.min(...PHONES.filter(x => x.series === s.id).map(fromPrice)))}</em></a>`;
   }).join('');
   $('#siteHeader').innerHTML = `<div class="container nav">
     <a href="#/" class="logo-link" aria-label="ASTRA home">${LOGO}</a>
