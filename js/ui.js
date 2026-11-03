@@ -107,18 +107,9 @@ export function renderHeader() {
   $('#menuClose').onclick = () => toggleMenu(false);
   $('#mobileMenu').addEventListener('click', e => { if (e.target.closest('a')) toggleMenu(false); });
 
-  // Sticky header: glass after scroll, hide on scroll down, reveal on scroll up
-  let lastY = 0;
+  // Sticky header: always visible; turns into a glass pill once the page scrolls
   const h = $('#siteHeader');
-  addEventListener('scroll', () => {
-    const y = scrollY;
-    h.classList.toggle('scrolled', y > 40);
-    const noHide = document.body.dataset.route === 'compare';
-    h.classList.toggle('hide', !noHide && y > 420 && y > lastY + 4 && !document.body.classList.contains('no-scroll'));
-    if (y < lastY - 4 || y < 420) h.classList.remove('hide');
-    document.body.classList.toggle('hdr-hide', h.classList.contains('hide'));
-    lastY = y;
-  }, { passive: true });
+  addEventListener('scroll', () => { h.classList.toggle('scrolled', scrollY > 40); }, { passive: true });
   updateCartBadge(false);
 }
 

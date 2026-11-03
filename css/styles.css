@@ -1093,3 +1093,31 @@ body.hdr-hide .pnav { top: 10px; }
   .st-card { aspect-ratio: 4 / 5; }
 }
 @media (max-width: 720px) { .lh-specs { max-width: none; } }
+
+/* =========================================================
+   v5 — show whole product shots; colour stage clears its heading
+   ========================================================= */
+/* Product photos are shot on black: contain them on black so phones are never cropped */
+.p-card .media { background: #000; }
+.p-card .media img { object-fit: contain; }
+.gallery-main { background: #000; }
+.gallery-main img { object-fit: contain; }
+.thumbs-row button { background: #000; }
+.thumbs-row img { object-fit: contain; }
+.order-thumbs img { object-fit: contain; background: #000; }
+.st-card { background: #000; }
+.st-media img { object-fit: contain; object-position: 50% 50%; }
+.st-media::after { background: linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 22%); }
+.mega-card img { object-fit: contain; }
+
+/* Colours: phones sit below the heading and above the colour buttons */
+.ps-colors-stage { place-items: end center; }
+.ps-color { width: auto; height: min(calc(100svh - var(--nav-h) - 340px), 560px); aspect-ratio: 4 / 5; margin-top: 0; bottom: 104px; position: absolute; }
+.ps-color img { object-fit: contain; }
+.ps-color-names { bottom: 36px; }
+@media (max-width: 720px) {
+  .ps-colors-sticky { padding-top: calc(var(--nav-h) + 72px); }
+  .ps-colors-sticky .display-2 { font-size: 36px; }
+  .ps-color { height: min(calc(100svh - var(--nav-h) - 330px), 440px); bottom: 128px; width: auto; }
+  .ps-color-names { bottom: 28px; }
+}
