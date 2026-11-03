@@ -158,7 +158,7 @@ export const orderDetailPage = {
       <div class="card card-pad">${o.lines.map(l => lineItem(l, { editable: false })).join('')}<div style="margin-top:18px">${totalsHtml(o.totals)}</div></div>
       <div class="form-grid">
         <div class="card card-pad"><span class="eyebrow">Delivery address</span><p class="muted" style="margin-top:8px">${esc(o.name)}<br>${esc(o.address.line1)}<br>${esc(o.address.city)} ${esc(o.address.zip)}<br>${esc(o.address.country)}</p></div>
-        <div class="card card-pad"><span class="eyebrow">Payment</span><p class="muted" style="margin-top:8px">${o.card.brand.toUpperCase()} •••• ${o.card.last4}<br><span class="chip chip-warn" style="margin-top:8px">Simulated</span></p></div>
+        <div class="card card-pad"><span class="eyebrow">Payment</span><p class="muted" style="margin-top:8px">${o.card.brand.toUpperCase()} •••• ${o.card.last4}</p></div>
       </div>
       <div class="row">${s.idx >= 0 && s.idx < 2 ? `<button class="btn btn-ghost" id="cancel">Cancel order</button>` : ''}<a class="btn btn-ghost" href="#/contact?order=${o.num}">Get help</a><button class="btn btn-ghost" id="reorder">${icon('refresh')} Buy again</button></div>
     </div>`);
@@ -167,7 +167,7 @@ export const orderDetailPage = {
     if (!$('#logout', root)) return;
     wireLogout(root);
     const o = store.myOrders().find(o => o.num === params.num); if (!o) return;
-    $('#cancel', root)?.addEventListener('click', () => { if (confirm('Cancel this order? (Simulated)')) { store.cancelOrder(o.num); toast('Order cancelled.'); go('#/account/orders/' + o.num); dispatchEvent(new HashChangeEvent('hashchange')); } });
+    $('#cancel', root)?.addEventListener('click', () => { if (confirm('Cancel this order?')) { store.cancelOrder(o.num); toast('Order cancelled.'); go('#/account/orders/' + o.num); dispatchEvent(new HashChangeEvent('hashchange')); } });
     $('#reorder', root).onclick = () => { o.items.forEach(i => { const { qty, ...rest } = i; store.addToCart(rest, qty); }); toast('Items added to your bag.'); go('#/cart'); };
   },
 };

@@ -89,7 +89,7 @@ export const warrantyPage = {
       <div class="grid-cards" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
         <div class="card card-pad stack" data-reveal><span class="chip">Included</span><h2 class="h3">Standard warranty</h2><div class="big-num" style="font-size:56px">2 yrs</div>
           <ul class="stack muted" style="--stack:8px;padding-left:18px;margin:0"><li>Manufacturing defects</li><li>Battery below 80% health</li><li>Free mail-in repair</li><li>Phone & chat support</li></ul></div>
-        <div class="card card-pad stack" data-reveal style="border-color:rgba(185,198,255,.35);background:radial-gradient(circle at 80% 0%,rgba(185,198,255,.14),transparent 60%),var(--surface)"><span class="chip chip-new">Recommended</span><h2 class="h3">Astra Care+</h2><div class="big-num" style="font-size:56px">3 yrs</div>
+        <div class="card card-pad stack" data-reveal style="border-color:rgba(255,255,255,.3)"><span class="chip chip-new">Recommended</span><h2 class="h3">Astra Care+</h2><div class="big-num" style="font-size:56px">3 yrs</div>
           <ul class="stack muted" style="--stack:8px;padding-left:18px;margin:0"><li>Everything in standard warranty</li><li>2 accidental damage repairs per year</li><li>Screen repair: $29 · Other damage: $99</li><li>Express replacement next business day</li><li>Priority 24/7 specialist support</li></ul>
           <p>X Series $199 · S Series $129 · A Series $79</p><a href="#/phones" class="btn btn-primary">Add with a new phone</a></div>
       </div>

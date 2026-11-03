@@ -154,7 +154,7 @@ export function renderFooter() {
       <div><h4>ASTRA</h4><ul><li><a href="#/about">About ASTRA</a></li><li><a href="#/about#sustainability">Sustainability</a></li><li><a href="#/about#careers">Careers</a></li><li><a href="#/about#press">Newsroom</a></li></ul></div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 ASTRA Technologies (fictional). Demo prototype — no real transactions.</span>
+      <span>© 2026 ASTRA Technologies. All rights reserved.</span>
       <span class="row" style="gap:20px"><a href="#/legal/privacy">Privacy</a><a href="#/legal/terms">Terms of sale</a><a href="#/legal/cookies">Cookies</a><span>United States (USD)</span></span>
     </div>
   </div>`;

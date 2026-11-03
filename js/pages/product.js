@@ -3,6 +3,7 @@ import { PHONES, ACCESSORIES, SERIES, findPhone, findAccessory } from '../data.j
 import { crumbs, stars, esc, $, $$, toast, openCart, openLightbox, accessoryCard, phoneCard, wireCards, isTransparent, go } from '../ui.js';
 import * as store from '../store.js';
 import { notFound } from './legal.js';
+import { onScroll, sectionProgress, range, lerp, ease, reduce } from '../fx.js';
 
 const CARE_PRICE = { x: 199, s: 129, a: 79 };
 
@@ -80,12 +81,15 @@ export const phonePage = {
       </section>
     </div>
 
-    <section style="position:relative;height:min(90vh,820px);overflow:hidden;margin:40px 0" aria-label="${esc(p.name)} lifestyle">
-      <img src="${lifestyle}" alt="" loading="lazy" data-parallax="-0.15" style="position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover">
-      <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--bg),transparent 45%,rgba(5,5,7,.4))"></div>
-      <div class="container" style="position:absolute;left:0;right:0;bottom:8%">
-        <p class="eyebrow" data-reveal>${SERIES[p.series].name}</p>
-        <h2 class="display-2" style="margin-top:12px;max-width:820px" data-split>${esc(p.tagline)}</h2>
+    <section class="pscene" id="pscene" aria-label="${esc(p.name)} in context">
+      <div class="pscene-sticky">
+        <div class="pscene-bg"><img src="${p.series === 'x' ? 'assets/img/hero/hero-bg.jpg' : lifestyle}" alt="" loading="lazy" id="psBg" style="${p.series === 'x' ? '' : 'filter:blur(10px) brightness(.55) saturate(1.1)'}"></div>
+        <div class="pscene-phone"><img src="${p.gallery.find(g => g.includes('-front')) || p.colors[0].img}" alt="${esc(p.name)} front" id="psPhone"></div>
+        <div class="pscene-copy"><div class="container">
+          <p class="eyebrow" data-reveal>${SERIES[p.series].name}</p>
+          <h2 class="display-2" style="margin-top:12px;max-width:620px" data-split>${esc(p.tagline)}</h2>
+          <p class="lead" style="margin-top:16px;max-width:460px" data-reveal>${esc(p.blurb)}</p>
+        </div></div>
       </div>
     </section>
 
@@ -183,7 +187,17 @@ export const phonePage = {
     const io = new IntersectionObserver(([e]) => sb.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top < 0), { threshold: 0 });
     io.observe($('#buyBtns', root));
     updatePrice();
-    return () => io.disconnect();
+
+    // Layered scene: the phone rises and turns faster than its background drifts
+    const ps = $('#pscene', root), psBg = $('#psBg', root), psPhone = $('#psPhone', root);
+    const off = onScroll(() => {
+      const r = ps.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (r.height + innerHeight)));
+      if (reduce) return;
+      psBg.style.transform = `translate3d(0, ${lerp(-4, 4, p).toFixed(2)}%, 0) scale(${lerp(1.18, 1.04, p).toFixed(3)})`;
+      psPhone.style.transform = `translate3d(0, ${lerp(38, -14, ease(p)).toFixed(2)}vh, 0) rotate(${lerp(10, -4, ease(p)).toFixed(2)}deg)`;
+    });
+    return () => { io.disconnect(); off(); };
   },
 };
 

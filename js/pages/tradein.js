@@ -25,7 +25,7 @@ export default {
           <label class="check"><input type="checkbox" id="power" checked> It powers on and the screen works</label>
           <label class="check"><input type="checkbox" id="upgrade" checked> I'm upgrading to an X Series phone (+${store.money(TRADE_IN.bonus)} bonus)</label>
         </form>
-        <div class="card card-pad stack" style="--stack:18px;position:sticky;top:calc(var(--nav-h) + 20px);background:radial-gradient(circle at 80% 0%,rgba(185,198,255,.12),transparent 60%),var(--surface)" data-reveal>
+        <div class="card card-pad stack" style="--stack:18px;position:sticky;top:calc(var(--nav-h) + 20px)" data-reveal>
           <span class="eyebrow">Estimated trade-in value</span>
           <div class="estimate" id="est">$0</div>
           <p class="muted" id="estNote"></p>

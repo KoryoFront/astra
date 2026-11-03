@@ -1,56 +1,92 @@
 import { icon } from '../icons.js';
-import { PHONES, ACCESSORIES, SERIES } from '../data.js';
+import { PHONES, ACCESSORIES, SERIES, fromPrice } from '../data.js';
 import { phoneCard, accessoryCard, wireCards } from '../ui.js';
-import { onScroll, sectionProgress, range, lerp, ease, reduce } from '../fx.js';
+import { onScroll, sectionProgress, range, lerp, ease, reduce, finePointer } from '../fx.js';
+import * as store from '../store.js';
 
 const P = 'assets/img/products/';
+const H = 'assets/img/hero/';
+const L = 'assets/img/lifestyle/';
+
+const STATEMENT = 'Aerospace titanium. A *200 MP* camera that sees in the dark. A *Nova G3* chip that thinks on-device — privately. Two days of battery. *This is ASTRA.*';
+
+const SCENES = [
+  { img: H + 'hero-bg.jpg', t: 'Built for the edge.', s: 'IP68 + IP69 sealed, Shield Glass Ultra and a Grade 5 titanium frame. Take it anywhere.' },
+  { img: P + 'x-night.jpg', t: 'Night, unlocked.', s: 'A 1/1.3″ sensor and Night Vision Pro pull detail out of the dark — handheld, in seconds.' },
+  { img: P + 'x-lifestyle.jpg', t: 'Portraits, perfected.', s: 'A 5× periscope with natural bokeh and Astra AI skin-tone mapping for every complexion.' },
+  { img: P + 'x-display.jpg', t: 'Colour that glows.', s: '3,000 nits, 1–144 Hz LTPO and 10-bit colour. Brilliant in sunlight, gentle at night.' },
+];
 
 export default {
   title: '',
   render() {
     const featured = ['x1-pro', 's5-plus', 'a3'].map(id => PHONES.find(p => p.id === id));
+    // Words wrapped in *asterisks* (may span several words) get the highlight gradient
+    let inHl = false;
+    const wordsHtml = STATEMENT.split(' ').map(w => {
+      const starts = w.startsWith('*'), ends = /\*[.,]?$/.test(w);
+      if (starts) inHl = true;
+      const html = `<span class="w${inHl ? ' hi' : ''}">${w.replace(/\*/g, '')}</span>`;
+      if (ends) inHl = false;
+      return html;
+    }).join(' ');
+
     return `
-<section class="hero" aria-label="ASTRA X1 Pro">
-  <div class="hero-media" data-parallax="-0.12"><img src="${P}x-hero.jpg" alt="Two ASTRA X1 Pro smartphones on volcanic rock at dusk" fetchpriority="high"></div>
-  <div class="hero-content">
-    <span class="chip chip-new" style="align-self:flex-start;margin-bottom:22px;animation:fadeUp .8s .1s both">${icon('sparkle')} New · Available now</span>
-    <h1 class="hero-title" data-split><span class="wordmark">ASTRA</span>&nbsp; X1 Pro</h1>
-    <p class="hero-sub" data-split data-delay=".25">Power. Intelligence. Elegance.</p>
-    <div class="hero-feats">
-      ${[['chip', 'Next-Gen<br>Astra AI'], ['camera', '200 MP<br>Pro Camera'], ['battery', 'All-Day<br>Battery'], ['display', 'AMOLED<br>144 Hz Display']].map(([i, t], n) => `<div class="hero-feat" style="animation-delay:${0.6 + n * 0.1}s">${icon(i)}${t}</div>`).join('')}
+<section class="lhero" id="lhero" aria-label="ASTRA X1 Pro">
+  <div class="lhero-sticky">
+    <div class="lh lh-bg lh-bg-in"><img src="${H}hero-bg.jpg" srcset="${H}hero-bg-sm.jpg 1280w, ${H}hero-bg.jpg 2560w" sizes="100vw" alt="" fetchpriority="high" id="lhBg"></div>
+    <div class="lh lh-sky" id="lhSky"></div>
+    <div class="lh lh-phones"><div class="lh-phones-in"><img src="${H}hero-phones.webp" alt="ASTRA X1 Pro in Graphite Titanium, back and front" id="lhPhones"></div></div>
+    <div class="lh lh-fg"><img src="${H}hero-fg.webp" alt="" id="lhFg"></div>
+    <div class="lh lh-fade"></div>
+    <div class="lh-content" id="lhContent">
+      <a href="#/phone/x1-pro" class="pill-label" style="align-self:flex-start;margin-bottom:26px;animation:fadeUp .9s .2s both"><b>New</b> X1 Pro — available now ${icon('chevR').replace('<svg', '<svg style="width:14px;height:14px"')}</a>
+      <h1 class="lh-title" data-split><span class="thin">ASTRA</span> X1 Pro</h1>
+      <p class="lh-sub" data-split data-delay=".25">Power. Intelligence. Elegance.</p>
+      <div class="lh-specs">
+        ${[['Nova G3', '3 nm Astra AI'], ['200 MP', 'Pro camera'], ['5,500', 'mAh battery'], ['144 Hz', 'AMOLED']].map(([b, s], i) => `<div style="animation-delay:${0.7 + i * 0.08}s"><b>${b}</b><span>${s}</span></div>`).join('')}
+      </div>
+      <div class="row" style="gap:12px;animation:fadeUp .9s 1s both">
+        <a href="#/phone/x1-pro" class="btn btn-primary btn-lg" data-magnetic>Buy from ${store.money(1199)} ${icon('arrow', 'arrow')}</a>
+        <a href="#/compare?ids=x1-pro,x1,s5-plus" class="btn btn-ghost btn-lg">Compare models</a>
+      </div>
     </div>
-    <div class="row" style="gap:16px;animation:fadeUp .9s 1s both">
-      <a href="#/phone/x1-pro" class="btn btn-primary btn-lg" data-magnetic>Explore X1 Pro ${icon('arrow', 'arrow')}</a>
-      <a href="#/compare?ids=x1-pro,x1,s5-plus" class="btn btn-ghost btn-lg">Compare Models</a>
-    </div>
+    <div class="lh-scroll" aria-hidden="true">Scroll<i></i></div>
+    <div class="lh lh-dim" id="lhDim"></div>
   </div>
-  <div class="scroll-cue" aria-hidden="true"></div>
 </section>
 
-<section class="container" style="padding-top:28px">
-  <div class="series-grid" data-stagger=".12">
+<section class="statement" id="statement" aria-label="Introduction">
+  <div class="statement-sticky"><div class="container"><p id="stmt">${wordsHtml}</p></div></div>
+</section>
+
+<section class="container" aria-label="Series" style="padding-bottom:clamp(60px,9vw,120px)">
+  <div class="row" style="justify-content:space-between;align-items:flex-end;margin-bottom:28px">
+    <div><p class="eyebrow">The family</p><h2 class="display-2" style="margin-top:10px" data-split>Three series.<br><span class="muted">One standard.</span></h2></div>
+    <a href="#/phones" class="link" data-reveal>Shop all phones ${icon('arrow')}</a>
+  </div>
+  <div class="series-tall" data-stagger=".1">
     ${Object.values(SERIES).map(s => {
-      const p = PHONES.find(p => p.series === s.id);
-      return `<a class="series-card card" href="#/phones?series=${s.id}" data-reveal data-tilt="5">
-        <div><h3>${s.name}</h3><p>${s.tagline}</p>${icon('arrow', 'arrow-ico')}</div>
+      const ps = PHONES.filter(p => p.series === s.id), p = ps[0];
+      return `<a class="st-card" href="#/phones?series=${s.id}" data-reveal>
         <img src="${p.colors[0].img}" alt="${s.name}" loading="lazy">
+        <span class="eyebrow">${ps.map(x => x.name.replace('ASTRA ', '')).join(' · ')}</span>
+        <div class="st-foot"><div><h3>${s.name.replace('ASTRA ', '')}</h3><p class="muted" style="margin-top:4px">${s.tagline} · From ${store.money(Math.min(...ps.map(fromPrice)))}</p></div><span class="go">${icon('arrow')}</span></div>
       </a>`;
     }).join('')}
   </div>
-  <div class="perks" style="margin-top:28px" data-stagger=".1">
-    ${[['truck', 'Fast, Reliable Delivery', 'Free nationwide'], ['shield', 'Astra Care', 'Warranty & support'], ['refresh', 'Trade In & Upgrade', 'Get more for your device'], ['leaf', 'A More Sustainable Astra', 'Responsible technology']].map(([i, b, s], n) => `<a class="perk" href="${['#/faq', '#/warranty', '#/trade-in', '#/about#sustainability'][n]}" data-reveal>${icon(i)}<div><b>${b}</b><span>${s}</span></div></a>`).join('')}
-  </div>
 </section>
 
-<div class="marquee" aria-hidden="true" style="margin-top:40px"><div class="marquee-track">${Array(2).fill(['Aerospace titanium', '200 MP Pro camera', 'Nova G3 · 3 nm', '7 years of updates', 'Astra AI on-device', '90 W HyperCharge', 'IP68 + IP69'].map(t => `<span>${t}</span>`).join('')).join('')}</div></div>
+<div class="marquee" aria-hidden="true"><div class="marquee-track">${Array(2).fill(['Aerospace titanium', '200 MP Pro camera', 'Nova G3 · 3 nm', '7 years of updates', 'Astra AI on-device', '90 W HyperCharge', 'IP68 + IP69'].map(t => `<span>${t}</span>`).join('')).join('')}</div></div>
 
-<!-- 3D rotation storytelling -->
+<!-- 3D rotation storytelling: phone turns while type and grid slide behind it -->
 <section class="story" id="story" aria-label="X1 Pro design">
   <div class="story-sticky">
-    <div class="story-bg"></div><div class="story-glow" id="storyGlow"></div>
+    <div class="story-grid" id="storyGrid"></div>
+    <div class="story-word" id="storyWord">TITANIUM · TITANIUM ·</div>
     <div class="story-title" id="storyTitle">
       <p class="eyebrow">Design</p>
-      <h2 class="display-2" style="margin-top:12px">Forged in <span class="silver-text">titanium</span>.</h2>
+      <h2 class="display-2" style="margin-top:12px">Forged in titanium.</h2>
     </div>
     <div class="phone3d-wrap"><div class="phone3d" id="phone3d">
       <div class="face front"><img src="${P}x-front.webp" alt="ASTRA X1 Pro front"></div>
@@ -67,15 +103,26 @@ export default {
   </div>
 </section>
 
+<!-- Scenes: the phone holds still while worlds change behind it -->
+<section class="scenes" id="scenes" aria-label="Shot on ASTRA">
+  <div class="scenes-sticky">
+    ${SCENES.map((s, i) => `<div class="scene" data-i="${i}"><img src="${s.img}" alt="" loading="${i ? 'lazy' : 'eager'}"></div>`).join('')}
+    <div class="scenes-head"><div class="container"><p class="eyebrow">Shot on ASTRA X1 Pro</p></div></div>
+    <div class="scenes-phone"><img src="${P}x-front.webp" alt="ASTRA X1 Pro" id="scenesPhone"></div>
+    <div class="scenes-copy">${SCENES.map((s, i) => `<div class="scene-cap${i ? '' : ' on'}"><span class="num">0${i + 1} / 0${SCENES.length}</span><h3>${s.t}</h3><p>${s.s}</p></div>`).join('')}</div>
+    <div class="scenes-bar"><i id="scenesBar"></i></div>
+  </div>
+</section>
+
 <!-- Camera zoom reveal -->
 <section class="zoom-section" id="zoom" aria-label="Camera">
   <div class="zoom-sticky">
     <img src="${P}x-macro.jpg" alt="Close-up of the X1 Pro triple camera" id="zoomImg">
     <div class="shade"></div>
     <div class="zoom-text"><div class="container">
-      <p class="eyebrow" id="zoomEyebrow">Pro camera system</p>
-      <h2 class="display-2" style="margin-top:14px;max-width:900px" id="zoomTitle">200 megapixels.<br><span class="muted">See what others miss.</span></h2>
-      <div class="zoom-stats" id="zoomStats">
+      <p class="eyebrow">Pro camera system</p>
+      <h2 class="display-2" style="margin-top:14px;max-width:900px">200 megapixels.<br><span class="muted">See what others miss.</span></h2>
+      <div class="zoom-stats">
         <div><b>1/1.3″</b><span>Main sensor</span></div>
         <div><b>5×</b><span>Optical periscope</span></div>
         <div><b>100×</b><span>AstraZoom</span></div>
@@ -85,13 +132,13 @@ export default {
   </div>
 </section>
 
-<!-- Chip -->
+<!-- Performance bento -->
 <section class="section" aria-label="Performance">
   <div class="container">
     <div class="bento">
-      <div class="b-span-6 card" style="min-height:min(70vh,640px)" data-reveal="scale">
-        <img class="bimg" src="${P}x-chip.jpg" alt="ASTRA Nova G3 chip" loading="lazy" data-parallax="0.06" style="inset:-6% 0">
-        <div class="bcap" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;z-index:2">
+      <div class="b-span-6 card" style="min-height:min(72vh,660px)" data-reveal="scale">
+        <img class="bimg" src="${P}x-chip.jpg" alt="ASTRA Nova G3 chip" loading="lazy" data-parallax="0.06" style="inset:-6% 0;height:112%">
+        <div class="bcap" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;z-index:2;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 40%,rgba(0,0,0,.7))">
           <div><p class="eyebrow">Nova G3 · 3 nm</p><h2 class="display-2" style="margin-top:12px" data-split>The mind<br>behind the magic.</h2></div>
           <div class="row" style="gap:clamp(24px,6vw,80px);align-items:flex-end">
             <div><div class="big-num"><span data-count="78">0</span></div><span class="muted">TOPS neural engine</span></div>
@@ -100,7 +147,7 @@ export default {
           </div>
         </div>
       </div>
-      <div class="b-span-3 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 80% 0%,rgba(185,198,255,.16),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01))">
+      <div class="b-span-3 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:space-between">
         <div>${icon('ai')}<h3 class="h3" style="margin-top:20px">Astra AI. Private by design.</h3><p class="muted" style="margin-top:10px">Live Translate calls in 40 languages, summarise anything, erase distractions from photos — all on-device.</p></div>
         <div class="row" style="margin-top:28px;flex-wrap:wrap;gap:8px">${['Live Translate', 'Magic Eraser Pro', 'Smart Summaries', 'Circle Search', 'Call Notes'].map(t => `<span class="chip">${t}</span>`).join('')}</div>
       </div>
@@ -111,31 +158,21 @@ export default {
         <div class="row" style="justify-content:space-between;font-size:14px;margin-top:16px"><span class="muted">Video playback</span><b>31 hrs</b></div><div class="progress-bar" style="margin-top:8px"><i data-fill="86"></i></div></div>
       </div>
       <a href="#/phone/x1-pro" class="b-span-4 card shade-t" data-reveal style="min-height:420px">
-        <img class="bimg" src="${P}x-display.jpg" alt="X1 Pro display" loading="lazy">
-        <div class="bcap bottom"><p class="eyebrow">Display</p><h3 class="h2" style="margin-top:8px">3,000 nits of brilliance.</h3></div>
+        <img class="bimg" src="${P}x-side.jpg" alt="X1 Pro titanium side profile" loading="lazy" style="object-position:50% 40%">
+        <div class="bcap bottom"><p class="eyebrow">Design</p><h3 class="h2" style="margin-top:8px">8.2 mm of titanium.</h3></div>
       </a>
-      <div class="b-span-2 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:420px;background:linear-gradient(160deg,#1a1c24,#0a0a0d)">
+      <div class="b-span-2 card" data-reveal style="padding:32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:420px">
         <div class="big-num"><span data-count="7">0</span></div><h3 class="h3" style="margin-top:8px">years of updates</h3><p class="muted" style="margin-top:8px">New AstraOS features and security patches until 2033.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Horizontal gallery -->
-<section class="hscroll" id="hscroll" aria-label="Shot on ASTRA">
-  <div class="hscroll-sticky">
-    <div class="container" style="margin-bottom:32px"><p class="eyebrow">Shot on ASTRA</p><h2 class="display-2" style="margin-top:12px">Moments, <span class="muted">masterfully kept.</span></h2></div>
-    <div class="hscroll-track" id="hTrack">
-      ${[['x-night.jpg', 'Night Vision Pro', 'Shot on X1 Pro · 1/1.3″ sensor'], ['x-lifestyle.jpg', 'Portrait Studio', 'Shot on X1 Pro · 85 mm portrait'], ['s-lifestyle.jpg', 'Group Selfie AI', 'Shot on S5 Plus · Ultra-wide front'], ['a-lifestyle.jpg', 'Everyday Brilliance', 'Shot on A3 · 50 MP AI camera'], ['x-display.jpg', 'Living Colour', 'X1 Pro · 10-bit AMOLED']].map(([img, t, s]) => `<figure class="hpanel" style="margin:0"><img src="${P}${img}" alt="${t}" loading="lazy"><figcaption class="cap"><h3 class="h3">${t}</h3><p class="muted" style="font-size:14px;margin-top:4px">${s}</p></figcaption></figure>`).join('')}
-    </div>
-  </div>
-</section>
-
 <!-- Lineup -->
-<section class="section" aria-label="Lineup">
+<section class="section-sm" aria-label="Lineup">
   <div class="container">
     <div class="row" style="justify-content:space-between;align-items:flex-end;margin-bottom:40px">
-      <div><p class="eyebrow" data-reveal>The lineup</p><h2 class="display-2" style="margin-top:12px" data-split>Find your ASTRA.</h2></div>
+      <div><p class="eyebrow">Best sellers</p><h2 class="display-2" style="margin-top:12px" data-split>Find your ASTRA.</h2></div>
       <a href="#/phones" class="link" data-reveal>Shop all phones ${icon('arrow')}</a>
     </div>
     <div class="grid-cards" id="featured" data-stagger=".1">${featured.map(p => phoneCard(p)).join('')}</div>
@@ -159,11 +196,11 @@ export default {
     <div class="card" style="border-radius:var(--radius-lg);overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center" data-reveal="scale">
       <div style="padding:clamp(28px,5vw,64px)">
         <p class="eyebrow">Trade in & upgrade</p>
-        <h2 class="h2" style="margin-top:12px">Get up to <span class="silver-text">$860</span> off X1 Pro.</h2>
+        <h2 class="h2" style="margin-top:12px">Get up to $860 off X1 Pro.</h2>
         <p class="lead" style="margin-top:14px">Trade in your eligible smartphone and get an extra $100 upgrade bonus when you switch to the X Series.</p>
         <div class="row" style="margin-top:28px;gap:14px"><a href="#/trade-in" class="btn btn-primary">Get your estimate ${icon('arrow', 'arrow')}</a><a href="#/phone/x1-pro" class="btn btn-ghost">Buy X1 Pro</a></div>
       </div>
-      <div style="height:100%;min-height:320px;position:relative;overflow:hidden"><img src="${P}x-silver.jpg" alt="ASTRA X1 Pro in Silver Frost" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%" data-parallax="0.08"></div>
+      <div style="height:100%;min-height:340px;position:relative;overflow:hidden"><img src="${L}lineup.jpg" alt="The ASTRA lineup" loading="lazy" style="position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover" data-parallax="0.08"></div>
     </div>
   </div>
 </section>`;
@@ -173,42 +210,85 @@ export default {
     wireCards(root.querySelector('#featured'));
     wireCards(root.querySelector('#accs'));
     const offs = [];
+    const mobile = () => innerWidth <= 720;
 
     // Progress bars fill when visible
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.style.width = e.target.dataset.fill + '%'; io.unobserve(e.target); } }), { threshold: .5 });
     root.querySelectorAll('[data-fill]').forEach(el => io.observe(el));
     offs.push(() => io.disconnect());
 
-    // 3D phone rotation story
-    const story = root.querySelector('#story'), phone = root.querySelector('#phone3d'), glow = root.querySelector('#storyGlow');
+    /* ---- Layered hero: background, phones and rocks travel at different speeds ---- */
+    const hero = root.querySelector('#lhero');
+    const bg = root.querySelector('#lhBg'), ph = root.querySelector('#lhPhones'), fg = root.querySelector('#lhFg');
+    const content = root.querySelector('#lhContent'), dim = root.querySelector('#lhDim');
+    let mx = 0, my = 0, tmx = 0, tmy = 0, heroP = 0, raf = 0;
+    const paintHero = () => {
+      const p = heroP, e = ease(p);
+      if (!reduce) {
+        bg.style.transform = `translate3d(${(-mx * 8).toFixed(1)}px, ${(p * 5 - my * 6).toFixed(2)}vh, 0) scale(${(1.04 + e * 0.14).toFixed(4)})`;
+        ph.style.transform = `translate3d(${(mx * 22).toFixed(1)}px, calc(${(-e * (mobile() ? 16 : 30)).toFixed(2)}vh + ${(my * 14).toFixed(1)}px), 0) rotate(${(-e * 7 + mx * 1.5).toFixed(2)}deg) scale(${(1 + e * 0.14).toFixed(4)})`;
+        fg.style.transform = `translate3d(${(mx * 36).toFixed(1)}px, ${(e * 10).toFixed(2)}vh, 0) scale(${(1 + e * 0.1).toFixed(4)})`;
+        content.style.transform = `translate3d(0, ${(-e * 18).toFixed(2)}vh, 0)`;
+      }
+      content.style.opacity = Math.max(0, 1 - range(p, 0.05, 0.55) * 1.2).toFixed(3);
+      dim.style.opacity = (range(p, 0.6, 1) * 0.85).toFixed(3);
+    };
+    offs.push(onScroll(() => { heroP = sectionProgress(hero); paintHero(); }));
+    if (finePointer && !reduce) {
+      const loop = () => { mx += (tmx - mx) * 0.06; my += (tmy - my) * 0.06; paintHero(); raf = Math.abs(tmx - mx) + Math.abs(tmy - my) > 0.001 ? requestAnimationFrame(loop) : 0; };
+      const onMove = e => { tmx = e.clientX / innerWidth - 0.5; tmy = e.clientY / innerHeight - 0.5; if (!raf && scrollY < innerHeight) raf = requestAnimationFrame(loop); };
+      addEventListener('pointermove', onMove, { passive: true });
+      offs.push(() => { removeEventListener('pointermove', onMove); cancelAnimationFrame(raf); });
+    }
+
+    /* ---- Statement: words light up as you scroll ---- */
+    const st = root.querySelector('#statement'), words = [...root.querySelectorAll('#stmt .w')];
+    offs.push(onScroll(() => {
+      const p = range(sectionProgress(st), 0.05, 0.85), n = Math.round(p * words.length);
+      words.forEach((w, i) => { w.style.opacity = i < n ? 1 : 0.14; });
+    }));
+
+    /* ---- 3D story: phone rotates, type and grid move the opposite way ---- */
+    const story = root.querySelector('#story'), phone = root.querySelector('#phone3d');
+    const word = root.querySelector('#storyWord'), grid = root.querySelector('#storyGrid');
     const title = root.querySelector('#storyTitle'), callouts = [...root.querySelectorAll('.callout')], dots = [...root.querySelectorAll('.story-progress i')];
     offs.push(onScroll(() => {
       const p = sectionProgress(story);
       const rot = reduce ? 0 : lerp(-25, 395, ease(range(p, 0, 0.92)));
       const tilt = Math.sin(p * Math.PI * 2) * 8;
       const scale = lerp(0.8, 1.15, range(p, 0, 0.25)) - range(p, 0.85, 1) * 0.2;
-      phone.style.transform = `rotateY(${rot.toFixed(2)}deg) rotateX(${tilt.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-      glow.style.transform = `scale(${(0.8 + p * 0.8).toFixed(3)})`;
+      phone.style.transform = `translateY(${(Math.sin(p * Math.PI) * -3).toFixed(2)}vh) rotateY(${rot.toFixed(2)}deg) rotateX(${tilt.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      word.style.transform = `translate3d(${lerp(10, -70, p).toFixed(2)}%, -50%, 0)`;
+      grid.style.transform = `translate3d(0, ${(-p * 160).toFixed(1)}px, 0)`;
       title.style.opacity = 1 - range(p, 0.05, 0.12);
-      callouts.forEach((c, i) => { const at = parseFloat(c.dataset.at); c.classList.toggle('on', p >= at && p < at + 0.24); });
+      callouts.forEach(c => { const at = parseFloat(c.dataset.at); c.classList.toggle('on', p >= at && p < at + 0.24); });
       dots.forEach((d, i) => d.classList.toggle('on', p >= 0.12 + i * 0.2 && p < 0.32 + i * 0.2));
     }));
 
-    // Camera zoom-out reveal
+    /* ---- Scenes: phone stays put while backgrounds wipe and drift behind it ---- */
+    const sc = root.querySelector('#scenes'), scenes = [...sc.querySelectorAll('.scene')], caps = [...sc.querySelectorAll('.scene-cap')];
+    const sPhone = root.querySelector('#scenesPhone'), bar = root.querySelector('#scenesBar');
+    offs.push(onScroll(() => {
+      const p = sectionProgress(sc), n = scenes.length, seg = 1 / n;
+      scenes.forEach((s, i) => {
+        const local = range(p, (i - 0.5) * seg, (i + 0.15) * seg); // wipe in
+        if (i) s.style.clipPath = `inset(${((1 - ease(local)) * 100).toFixed(2)}% 0 0 0)`;
+        const drift = range(p, (i - 0.5) * seg, (i + 1) * seg);
+        s.firstElementChild.style.transform = `translate3d(0, ${lerp(6, -6, drift).toFixed(2)}%, 0) scale(${lerp(1.15, 1.02, drift).toFixed(3)})`;
+      });
+      const active = Math.min(n - 1, Math.floor((p + seg * 0.35) / seg));
+      caps.forEach((c, i) => c.classList.toggle('on', i === active));
+      if (!reduce) sPhone.style.transform = `translate3d(0, ${(Math.sin(p * Math.PI * n) * 2.2).toFixed(2)}vh, 0) rotate(${(Math.sin(p * Math.PI * n) * -2.5).toFixed(2)}deg) rotateY(${lerp(-14, 14, p).toFixed(2)}deg)`;
+      bar.style.transform = `scaleX(${p.toFixed(4)})`;
+    }));
+
+    /* ---- Camera zoom-out reveal ---- */
     const zoom = root.querySelector('#zoom'), zImg = root.querySelector('#zoomImg'), zt = root.querySelector('.zoom-text');
     offs.push(onScroll(() => {
       const p = sectionProgress(zoom);
       zImg.style.transform = `scale(${lerp(1.7, 1, ease(range(p, 0, 0.7))).toFixed(3)})`;
       zt.style.opacity = range(p, 0.25, 0.5);
       zt.style.transform = `translateY(${lerp(60, 0, ease(range(p, 0.25, 0.6)))}px)`;
-    }));
-
-    // Horizontal scroll gallery
-    const hs = root.querySelector('#hscroll'), track = root.querySelector('#hTrack');
-    offs.push(onScroll(() => {
-      const p = sectionProgress(hs);
-      const max = track.scrollWidth - innerWidth;
-      track.style.transform = `translate3d(${(-max * ease(p)).toFixed(1)}px,0,0)`;
     }));
 
     return () => offs.forEach(f => f());

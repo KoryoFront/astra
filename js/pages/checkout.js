@@ -4,15 +4,11 @@ import { crumbs, lineItem, totalsHtml, esc, $, $$, fieldError, emailOk, shake, t
 import * as store from '../store.js';
 import { confetti } from '../fx.js';
 
-/* ---------- Card utilities (demo) ---------- */
-export const TEST_CARDS = [
-  { num: '4242424242424242', label: 'Visa — approved', outcome: 'approve' },
-  { num: '5555555555554444', label: 'Mastercard — approved', outcome: 'approve' },
-  { num: '378282246310005', label: 'Amex — approved', outcome: 'approve' },
-  { num: '4000002760003184', label: 'Visa — 3-D Secure (code 123456)', outcome: '3ds' },
-  { num: '4000000000000002', label: 'Visa — card declined', outcome: 'declined' },
-  { num: '4000000000009995', label: 'Visa — insufficient funds', outcome: 'insufficient' },
-];
+/* ---------- Card utilities ----------
+   Payments are simulated entirely in the browser: nothing is sent anywhere and only the
+   brand + last four digits are kept with the order. Any valid card number is "approved".
+   A few reserved numbers trigger other outcomes for demos (see README). */
+const SCENARIOS = { '4000002760003184': '3ds', '4000000000000002': 'declined', '4000000000009995': 'insufficient' };
 const brandOf = n => /^3[47]/.test(n) ? 'amex' : /^(5[1-5]|2[2-7])/.test(n) ? 'mastercard' : /^4/.test(n) ? 'visa' : /^6(011|5)/.test(n) ? 'discover' : '';
 const BRAND_LABEL = { visa: 'VISA', mastercard: '<span style="display:inline-flex"><i style="width:22px;height:22px;border-radius:50%;background:#eb001b;display:block"></i><i style="width:22px;height:22px;border-radius:50%;background:#f79e1b;display:block;margin-left:-9px;mix-blend-mode:screen"></i></span>', amex: 'AMEX', discover: 'DISCOVER' };
 const luhn = n => { let s = 0, alt = false; for (let i = n.length - 1; i >= 0; i--) { let d = +n[i]; if (alt) { d *= 2; if (d > 9) d -= 9; } s += d; alt = !alt; } return n.length >= 13 && s % 10 === 0; };
@@ -37,7 +33,7 @@ export const checkoutPage = {
     return `<div class="container">
       <header class="page-head" style="padding-bottom:24px">
         ${crumbs([['Bag', '#/cart'], ['Checkout', '#/checkout']])}
-        <div class="row" style="justify-content:space-between"><h1 class="h2">Checkout</h1><span class="chip chip-warn">${icon('info')} Demo mode — no real charges</span></div>
+        <div class="row" style="justify-content:space-between"><h1 class="h2">Checkout</h1><span class="chip">${icon('lock')} Secure checkout</span></div>
       </header>
       <div class="co-grid">
         <div>
@@ -114,14 +110,13 @@ export const checkoutPage = {
       if (co.step === 3) {
         const k = co.card;
         panel.innerHTML = `<form class="co-panel" id="f3" novalidate autocomplete="off">
-          <div class="sim-banner" style="margin-bottom:24px">${icon('alert')}<div><b>Simulated payment.</b> This is a demo store — no money moves and no card is charged. Use one of the test cards below; other card numbers are rejected. Card details are never stored or sent anywhere.</div></div>
           <div class="cc-scene"><div class="cc" id="cc">
             <div class="cc-face cc-front">
               <div class="cc-top"><span class="cc-chip"></span><span class="cc-brand" id="ccBrand">${LOGO_MARK.replace('class="mark"', 'style="height:26px;width:auto"')}</span></div>
               <div class="cc-num" id="ccNum">•••• •••• •••• ••••</div>
               <div class="cc-bottom"><div><small>Card holder</small><span class="nm" id="ccName">YOUR NAME</span></div><div style="text-align:right"><small>Expires</small><span id="ccExp">MM/YY</span></div></div>
             </div>
-            <div class="cc-face cc-back"><div class="cc-stripe"></div><div class="cc-sig"><span id="ccCvv">•••</span></div><p>This card is a simulated payment instrument for the ASTRA demo store. It cannot be used for real transactions.</p></div>
+            <div class="cc-face cc-back"><div class="cc-stripe"></div><div class="cc-sig"><span id="ccCvv">•••</span></div><p>Authorised signature. Not valid unless signed.</p></div>
           </div></div>
           <div class="form-grid">
             <div class="field full"><label for="cnum">Card number</label><input id="cnum" inputmode="numeric" autocomplete="off" placeholder="1234 5678 9012 3456" value="${esc(fmtCard(k.num, brandOf(k.num)))}" maxlength="19"><span class="adorn" id="brandTag"></span></div>
@@ -129,11 +124,8 @@ export const checkoutPage = {
             <div class="field"><label for="ccvv">Security code (CVV)</label><input id="ccvv" inputmode="numeric" placeholder="123" maxlength="4" value="${esc(k.cvv)}"><span class="adorn">${icon('lock').replace('<svg', '<svg style="width:16px;height:16px;color:var(--text-3)"')}</span></div>
             <div class="field full"><label for="cname">Name on card</label><input id="cname" autocomplete="off" placeholder="As shown on card" value="${esc(k.name || (c.first + ' ' + c.last).trim())}"></div>
           </div>
-          <details style="margin-top:18px" open><summary class="muted" style="cursor:pointer;font-size:14px">Test cards (click to fill)</summary>
-            <div class="test-cards">${TEST_CARDS.map(t => `<button type="button" data-test="${t.num}"><code>${fmtCard(t.num, brandOf(t.num))}</code><span class="dim">${t.label}</span></button>`).join('')}</div>
-            <p class="dim" style="font-size:12px;margin-top:8px">Use any future expiry date and any 3-digit CVV (4 digits for Amex).</p>
-          </details>
           <label class="check" style="margin-top:20px"><input type="checkbox" id="billSame" checked> Billing address same as delivery</label>
+          <div class="row" style="margin-top:14px;gap:10px;color:var(--text-3);font-size:13px">${['VISA', 'Mastercard', 'AMEX', 'Discover'].map(b => `<span class="chip" style="font-size:11px">${b}</span>`).join('')}</div>
           <div class="row" style="margin-top:24px"><button type="button" class="btn btn-ghost btn-lg" data-back="2">${icon('arrowL')} Back</button><button class="btn btn-primary btn-lg" style="flex:1">Review order ${icon('arrow', 'arrow')}</button></div>
         </form>`;
         const f = $('#f3', panel), cc = $('#cc', panel);
@@ -156,15 +148,6 @@ export const checkoutPage = {
         nm.addEventListener('input', paint);
         cvv.addEventListener('focus', () => cc.classList.add('flip'));
         cvv.addEventListener('blur', () => cc.classList.remove('flip'));
-        // keep focus on the field so blur validation doesn't shift layout mid-click
-        $$('[data-test]', f).forEach(b => b.onmousedown = e => e.preventDefault());
-        $$('[data-test]', f).forEach(b => b.onclick = () => {
-          const n = b.dataset.test; num.value = fmtCard(n, brandOf(n));
-          const d = new Date(); exp.value = String(d.getMonth() + 1).padStart(2, '0') + '/' + String((d.getFullYear() + 3) % 100);
-          cvv.value = brandOf(n) === 'amex' ? '1234' : '123';
-          if (!nm.value.trim()) nm.value = (c.first + ' ' + c.last).trim() || 'Demo Customer';
-          paint(); $$('.field', f).forEach(x => x.classList.remove('invalid'));
-        });
         const rules = {
           cnum: v => { const r = v.replace(/\D/g, ''); return !r ? 'Enter your card number.' : !luhn(r) ? 'This card number is invalid.' : ''; },
           cexp: v => { const m = v.match(/^(\d{2})\/(\d{2})$/); if (!m) return 'Use MM/YY format.'; const mm = +m[1], yy = 2000 + +m[2]; if (mm < 1 || mm > 12) return 'Invalid month.'; const now = new Date(); if (yy < now.getFullYear() || (yy === now.getFullYear() && mm < now.getMonth() + 1)) return 'This card has expired.'; if (yy > now.getFullYear() + 20) return 'Invalid year.'; return ''; },
@@ -175,7 +158,6 @@ export const checkoutPage = {
         f.onsubmit = e => {
           e.preventDefault(); let bad = null;
           Object.keys(rules).forEach(k => { const el = $('#' + k, f); const m = rules[k](el.value); fieldError(el, m); if (m && !bad) bad = el; });
-          if (!bad && !TEST_CARDS.some(t => t.num === num.value.replace(/\D/g, ''))) { fieldError(num, 'Demo store: please use one of the test cards below. Real cards are never accepted.'); bad = num; }
           if (bad) { bad.focus(); shake(bad.closest('.field')); return; }
           Object.assign(co.card, { num: num.value.replace(/\D/g, ''), exp: exp.value, cvv: cvv.value, name: nm.value.trim() });
           co.step = 4; draw(); scrollTo({ top: 0, behavior: 'smooth' });
@@ -189,10 +171,10 @@ export const checkoutPage = {
           <h2 class="h3">Review your order</h2>
           <div class="card card-pad row" style="justify-content:space-between;align-items:flex-start"><div><span class="eyebrow">Contact & delivery</span><p style="margin-top:8px">${esc(c.first)} ${esc(c.last)}<br><span class="muted">${esc(c.line1)}${c.line2 ? ', ' + esc(c.line2) : ''}<br>${esc(c.city)} ${esc(c.zip)}, ${esc(c.country)}<br>${esc(c.email)} · ${esc(c.phone)}</span></p></div><button class="link" data-back="1">Edit</button></div>
           <div class="card card-pad row" style="justify-content:space-between;align-items:flex-start"><div><span class="eyebrow">Delivery</span><p style="margin-top:8px">${s.name} <span class="muted">· ${s.eta}</span></p></div><button class="link" data-back="2">Edit</button></div>
-          <div class="card card-pad row" style="justify-content:space-between;align-items:flex-start"><div><span class="eyebrow">Payment</span><p style="margin-top:8px;display:flex;gap:10px;align-items:center">${icon('card').replace('<svg', '<svg style="width:20px;height:20px"')} ${b.toUpperCase()} ending ${co.card.num.slice(-4)} <span class="chip chip-warn" style="font-size:11px">Test card</span></p></div><button class="link" data-back="3">Edit</button></div>
-          <label class="check"><input type="checkbox" id="terms"> I agree to the <a class="link" href="#/legal/terms" target="_blank">terms of sale</a> and understand this is a simulated purchase.</label>
-          <button class="btn btn-primary btn-lg btn-block" id="placeBtn">${icon('lock')} Pay ${store.money2(t.total)} (simulated)</button>
-          <p class="dim center" style="font-size:12px">Secured by Astra Pay · 256-bit encryption (demo)</p>
+          <div class="card card-pad row" style="justify-content:space-between;align-items:flex-start"><div><span class="eyebrow">Payment</span><p style="margin-top:8px;display:flex;gap:10px;align-items:center">${icon('card').replace('<svg', '<svg style="width:20px;height:20px"')} ${b.toUpperCase()} ending ${co.card.num.slice(-4)}</p></div><button class="link" data-back="3">Edit</button></div>
+          <label class="check"><input type="checkbox" id="terms"> I agree to the <a class="link" href="#/legal/terms" target="_blank">terms of sale</a>.</label>
+          <button class="btn btn-primary btn-lg btn-block" id="placeBtn">${icon('lock')} Pay ${store.money2(t.total)}</button>
+          <p class="dim center" style="font-size:12px">Prototype checkout — no payment is processed and card details never leave your browser.</p>
         </div>`;
         $('#placeBtn', panel).onclick = () => {
           if (!$('#terms', panel).checked) { const l = $('#terms', panel).closest('.check'); shake(l); l.style.color = 'var(--err)'; toast('Please accept the terms to continue.', { error: true }); return; }
@@ -212,7 +194,7 @@ export const checkoutPage = {
       proc.classList.add('open');
     };
     const threeDS = () => new Promise(resolve => {
-      proc.innerHTML = `<form class="proc-box glass" id="otp"><div class="row" style="justify-content:center;margin-bottom:12px">${icon('shield').replace('<svg', '<svg style="width:40px;height:40px"')}</div><h2 class="h3">Verify it's you</h2><p class="muted" style="font-size:14px;margin-top:8px">Your bank (simulated) sent a one-time code to the phone ending ${esc(co.contact.phone.replace(/\D/g, '').slice(-2) || '00')}.<br>Demo code: <b style="color:#fff">123456</b></p>
+      proc.innerHTML = `<form class="proc-box glass" id="otp"><div class="row" style="justify-content:center;margin-bottom:12px">${icon('shield').replace('<svg', '<svg style="width:40px;height:40px"')}</div><h2 class="h3">Verify it's you</h2><p class="muted" style="font-size:14px;margin-top:8px">Your bank sent a one-time code to the phone ending ${esc(co.contact.phone.replace(/\D/g, '').slice(-2) || '00')}.</p>
         <div class="otp-inputs">${Array(6).fill('<input inputmode="numeric" maxlength="1" aria-label="Digit">').join('')}</div>
         <p class="err" id="otpErr" style="color:var(--err);font-size:13px;min-height:18px"></p>
         <button class="btn btn-primary btn-block">Verify</button><button type="button" class="btn btn-ghost btn-block" style="margin-top:8px" id="otpCancel">Cancel payment</button></form>`;
@@ -223,18 +205,18 @@ export const checkoutPage = {
         inp.onpaste = e => { const d = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6); if (d) { e.preventDefault(); d.split('').forEach((ch, j) => ins[j] && (ins[j].value = ch)); ins[Math.min(5, d.length)].focus(); } };
       });
       ins[0].focus();
-      $('#otp', proc).onsubmit = e => { e.preventDefault(); const code = ins.map(i => i.value).join(''); if (code === '123456') resolve(true); else { $('#otpErr', proc).textContent = 'Incorrect code. Try 123456.'; shake($('.otp-inputs', proc)); } };
+      $('#otp', proc).onsubmit = e => { e.preventDefault(); const code = ins.map(i => i.value).join(''); if (code === '123456') resolve(true); else { $('#otpErr', proc).textContent = 'Incorrect code. Please try again.'; shake($('.otp-inputs', proc)); } };
       $('#otpCancel', proc).onclick = () => resolve(false);
     });
     const fail = async msg => {
-      proc.innerHTML = `<div class="proc-box glass">${ring(true, true)}<h2 class="h3">Payment declined</h2><p class="muted" style="margin-top:8px">${msg}</p><p class="dim" style="font-size:12px;margin-top:8px">(Simulated response — no money was moved.)</p><button class="btn btn-primary btn-block" style="margin-top:22px" id="retry">Try another card</button></div>`;
+      proc.innerHTML = `<div class="proc-box glass">${ring(true, true)}<h2 class="h3">Payment declined</h2><p class="muted" style="margin-top:8px">${msg}</p><button class="btn btn-primary btn-block" style="margin-top:22px" id="retry">Try another card</button></div>`;
       $('#retry', proc).onclick = () => { proc.classList.remove('open'); co.step = 3; draw(); };
     };
 
     let paying = false;
     const pay = async () => {
       if (paying) return; paying = true;
-      const test = TEST_CARDS.find(t => t.num === co.card.num);
+      const test = { outcome: SCENARIOS[co.card.num] || 'approve' };
       try {
         showProc(0); await sleep(900);
         showProc(1); await sleep(1100);
@@ -257,7 +239,7 @@ export const checkoutPage = {
           card: { brand: brandOf(co.card.num), last4: co.card.num.slice(-4) }, simulated: true,
           authCode: Math.random().toString(36).slice(2, 8).toUpperCase(),
         });
-        proc.innerHTML = `<div class="proc-box glass">${ring(true)}<h2 class="h3">Payment approved</h2><p class="muted" style="margin-top:6px">Simulated authorisation ${order.authCode}</p></div>`;
+        proc.innerHTML = `<div class="proc-box glass">${ring(true)}<h2 class="h3">Payment approved</h2><p class="muted" style="margin-top:6px">Authorisation ${order.authCode}</p></div>`;
         await sleep(900);
         store.clearCart(); co = null;
         proc.classList.remove('open');
@@ -280,14 +262,14 @@ export const confirmationPage = {
       <svg class="success-mark" viewBox="0 0 96 96" fill="none"><circle cx="48" cy="48" r="44" stroke="var(--ok)" stroke-width="3"/><path d="m30 49 12 12 24-26" stroke="var(--ok)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <p class="eyebrow" data-reveal>Order confirmed</p>
       <h1 class="display-2" style="margin-top:12px" data-split>Thank you, ${esc(o.name.split(' ')[0] || 'friend')}.</h1>
-      <p class="lead" style="margin-top:16px" data-reveal>Your order <b style="color:#fff">${o.num}</b> has been placed. A confirmation would be sent to ${esc(o.email)} (not sent in demo mode).</p>
+      <p class="lead" style="margin-top:16px" data-reveal>Your order <b style="color:#fff">${o.num}</b> has been placed. A confirmation is on its way to ${esc(o.email)}.</p>
       <div class="row" style="justify-content:center;margin-top:28px;gap:12px" data-reveal>
         <a href="#/track?order=${o.num}&email=${encodeURIComponent(o.email)}" class="btn btn-primary">${icon('truck')} Track order</a>
         <a href="#/phones" class="btn btn-ghost">Continue shopping</a>
       </div>
       <div class="card card-pad" style="text-align:left;margin-top:48px" data-reveal>
         <div class="row" style="justify-content:space-between;margin-bottom:6px"><b>Order ${o.num}</b><span class="chip chip-ok">${st.label}</span></div>
-        <p class="dim" style="font-size:14px">Placed ${store.fmtDate(o.placed)} · Estimated delivery ${store.fmtDate(st.eta)} · Paid with ${o.card.brand.toUpperCase()} •••• ${o.card.last4} (simulated)</p>
+        <p class="dim" style="font-size:14px">Placed ${store.fmtDate(o.placed)} · Estimated delivery ${store.fmtDate(st.eta)} · Paid with ${o.card.brand.toUpperCase()} •••• ${o.card.last4}</p>
         <div style="margin-top:12px">${o.lines.map(l => lineItem(l, { editable: false })).join('')}</div>
         <div style="margin-top:18px">${totalsHtml(o.totals)}</div>
       </div>

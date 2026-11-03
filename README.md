@@ -5,8 +5,9 @@ All product and lifestyle imagery was generated with Higgsfield AI (GPT Image 2.
 master renders as references so phone designs, camera layouts, colours and the ASTRA wordmark
 stay consistent across every shot.
 
-> **Demo only.** ASTRA is fictional. Checkout is a simulation: no payment is processed, real card
-> numbers are rejected, and all data (accounts, orders, bag) lives in your browser's localStorage.
+> **Prototype.** ASTRA is a fictional brand. The checkout never processes a payment: card details
+> are validated in the browser, never transmitted, and only the brand and last four digits are kept.
+> Accounts, orders and the bag live in your browser's localStorage.
 
 ## Run it
 
@@ -23,7 +24,7 @@ python3 -m http.server 8000   # or any static server
 
 | Area | Route |
 | --- | --- |
-| Home: animated hero, 3D scroll-rotating phone, camera zoom reveal, horizontal gallery, bento features | `#/` |
+| Home: layered hero (phones, landscape and rocks move at different speeds), word-by-word statement, 3D rotating phone over moving type, fixed phone over changing scenes, camera zoom reveal, bento features | `#/` |
 | Phone catalogue: filter by series, price, storage, colour and features; sort; compare tray | `#/phones` |
 | Product pages: gallery (zoom, swipe, lightbox), colours, storage, Astra Care+, sticky buy bar, specs | `#/phone/x1-pro` |
 | Compare up to 3 phones, with a "highlight differences" option | `#/compare` |
@@ -40,13 +41,11 @@ python3 -m http.server 8000   # or any static server
 
 - Account: `demo@astra.com` / `astra2026`. Comes with seeded order history; try tracking `AST-2610-48213`.
 - Promo codes: `ASTRA10`, `WELCOME50` (orders over $400), `FREESHIP`.
-- Test cards (any future expiry; CVV `123`, or `1234` for Amex):
+- Checkout accepts any card number that passes validation (Luhn check, future expiry, 3- or 4-digit CVV).
+  A few reserved numbers trigger other outcomes for demos (not shown anywhere on the site):
 
 | Card | Result |
 | --- | --- |
-| 4242 4242 4242 4242 | Approved (Visa) |
-| 5555 5555 5555 4444 | Approved (Mastercard) |
-| 3782 822463 10005 | Approved (Amex) |
 | 4000 0027 6000 3184 | 3-D Secure challenge, code `123456` |
 | 4000 0000 0000 0002 | Declined |
 | 4000 0000 0000 9995 | Insufficient funds |
@@ -63,7 +62,7 @@ js/ui.js              header, footer, bag drawer, search, toasts, shared compone
 js/fx.js              scroll engine, reveal-on-scroll, parallax, tilt, counters, confetti
 js/icons.js           SVG icon set and ASTRA logo
 js/pages/*.js         one module per page (render + mount)
-assets/img/           AI-generated product, accessory and lifestyle imagery
+assets/img/           AI-generated product, accessory, lifestyle and layered hero imagery
 ```
 
 Animations respect `prefers-reduced-motion`.

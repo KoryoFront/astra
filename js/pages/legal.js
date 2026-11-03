@@ -4,7 +4,7 @@ import { icon } from '../icons.js';
 const DOCS = {
   privacy: ['Privacy policy', [
     ['Demo notice', 'ASTRA is a fictional brand and this website is a prototype. No personal data is transmitted to any server. Everything you enter — accounts, addresses, orders — is stored only in your browser\'s local storage and can be cleared at any time from Account → Settings → Reset demo data.'],
-    ['Payment data', 'Card numbers, expiry dates and security codes entered at checkout are held in memory only for the duration of the simulated payment. Only the card brand and last four digits are saved with your demo order. Real card numbers are rejected.'],
+    ['Payment data', 'Card numbers, expiry dates and security codes entered at checkout are held in memory only while the order is placed and are never transmitted. Only the card brand and last four digits are saved with your order.'],
     ['Cookies', 'This prototype does not set tracking cookies. Fonts are loaded from Google Fonts.'],
   ]],
   terms: ['Terms of sale', [

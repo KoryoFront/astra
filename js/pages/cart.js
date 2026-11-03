@@ -36,7 +36,7 @@ export const cartPage = {
         <p class="dim" style="font-size:12px;margin-bottom:20px">Try <b>ASTRA10</b>, <b>WELCOME50</b> or <b>FREESHIP</b>.</p>
         ${totalsHtml(t)}
         <a href="#/checkout" class="btn btn-primary btn-block btn-lg" style="margin-top:22px">Checkout ${icon('lock')}</a>
-        <p class="dim center" style="font-size:12px;margin-top:12px">${icon('info', '').replace('<svg', '<svg style="width:14px;height:14px;display:inline;vertical-align:-2px"')} Simulated checkout — no real payment taken.</p>
+        <p class="dim center" style="font-size:12px;margin-top:12px">Free returns within 30 days · 2-year warranty</p>
       </aside>`;
       wireLineItems($('#lines', wrap));
       $('#promoForm', wrap).onsubmit = e => {
