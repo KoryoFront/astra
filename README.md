@@ -68,3 +68,9 @@ assets/img/           AI-generated product, accessory, lifestyle and layered her
 ```
 
 Animations respect `prefers-reduced-motion`.
+
+## Embedding (Claude artifact)
+
+`artifact.html` is the entry page for hosts that supply their own `<html>/<head>/<body>` and don't allow
+`#/path` URLs (such as a Claude artifact). It sets `window.ASTRA_EMBED = true`, which makes `js/nav.js`
+keep the route in memory and intercept in-site links instead of using the URL hash.

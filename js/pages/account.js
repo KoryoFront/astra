@@ -4,6 +4,12 @@ import * as store from '../store.js';
 import { ORDER_STAGES } from '../store.js';
 import { notFound } from './legal.js';
 
+function confirmTwice(btn, msg, fn) {
+  if (btn.dataset.armed) { fn(); return; }
+  const label = btn.textContent; btn.dataset.armed = '1'; btn.textContent = msg; btn.classList.add('btn-primary');
+  setTimeout(() => { delete btn.dataset.armed; btn.textContent = label; btn.classList.remove('btn-primary'); }, 4000);
+}
+
 const nextOf = q => (q.next && q.next.startsWith('/') ? '#' + q.next : '#/account');
 
 function authShell(inner, img = 'assets/img/products/x-lifestyle.jpg') {
@@ -164,7 +170,7 @@ export const orderDetailPage = {
     if (!$('#logout', root)) return;
     wireLogout(root);
     const o = store.myOrders().find(o => o.num === params.num); if (!o) return;
-    $('#cancel', root)?.addEventListener('click', () => { if (confirm('Cancel this order?')) { store.cancelOrder(o.num); toast('Order cancelled.'); go('#/account/orders/' + o.num); dispatchEvent(new HashChangeEvent('hashchange')); } });
+    $('#cancel', root)?.addEventListener('click', e => confirmTwice(e.currentTarget, 'Tap again to cancel order', () => { store.cancelOrder(o.num); toast('Order cancelled.'); go('#/account/orders/' + o.num); }));
     $('#reorder', root).onclick = () => { o.items.forEach(i => { const { qty, ...rest } = i; store.addToCart(rest, qty); }); toast('Items added to your bag.'); go('#/cart'); };
   },
 };
@@ -199,6 +205,6 @@ export const settingsPage = {
       store.updateProfile({ name: $('#name', root).value.trim() || store.currentUser().name, addresses: [{ line1: $('#line1', root).value, city: $('#city', root).value, zip: $('#zip', root).value, country: $('#country', root).value }] });
       toast('Your changes have been saved.');
     };
-    $('#clearData', root).onclick = () => { if (confirm('Clear all data saved on this device (bag, account, orders)?')) { try { localStorage.removeItem('astra.v1'); } catch { } location.hash = '#/'; location.reload(); } };
+    $('#clearData', root).onclick = e => confirmTwice(e.currentTarget, 'Tap again to clear bag, account and orders', () => { try { localStorage.removeItem('astra.v1'); } catch { } location.reload(); });
   },
 };

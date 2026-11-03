@@ -2,6 +2,7 @@ import { icon } from '../icons.js';
 import { PHONES, ACCESSORIES, SERIES, findPhone, findAccessory } from '../data.js';
 import { crumbs, stars, esc, $, $$, toast, openCart, openLightbox, accessoryCard, phoneCard, wireCards, isTransparent, go } from '../ui.js';
 import * as store from '../store.js';
+import * as nav from '../nav.js';
 import { notFound } from './legal.js';
 import { storyHtml, mountStory } from './phonestory.js';
 
@@ -116,7 +117,7 @@ export const phonePage = {
       main.classList.remove('zoomed');
       $$('button', thumbs).forEach((b, j) => b.classList.toggle('on', j === idx));
     };
-    const syncUrl = () => history.replaceState(null, '', `#/phone/${p.id}?color=${color.id}&storage=${st.gb}`);
+    const syncUrl = () => nav.replace(`#/phone/${p.id}?color=${color.id}&storage=${st.gb}`);
     const updatePrice = () => {
       const care = $('#care', root).checked ? CARE_PRICE[p.series] : 0;
       const pr = $('#price', root); pr.innerHTML = `<span class="price-anim">${store.money(st.price + care)}</span>`;

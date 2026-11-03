@@ -1012,3 +1012,4 @@ body.hdr-hide .pnav { top: 10px; }
 .lineup-item { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .lineup-label { bottom: 4vh; }
 @media (max-width: 720px) { .lineup-rot { width: 30vw; margin-top: -4vh; } }
+.site-header { top: env(safe-area-inset-top, 0px); }

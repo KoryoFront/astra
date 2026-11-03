@@ -1,5 +1,6 @@
 // ASTRA storefront — hash router and app bootstrap.
 import * as store from './store.js';
+import * as nav from './nav.js';
 import * as ui from './ui.js';
 import { initFx, resetScrollFns } from './fx.js';
 
@@ -53,7 +54,7 @@ function match(path) {
 }
 
 function parseHash() {
-  const raw = location.hash.slice(1) || '/';
+  const raw = nav.current().slice(1) || '/';
   // support in-page anchors like #/about#sustainability
   const [pathQ, anchor] = raw.split('#');
   const [path, qs] = pathQ.split('?');
@@ -72,7 +73,7 @@ async function render() {
   const { page, params } = match(path);
 
   // Guarded routes
-  if (page.auth && !store.currentUser()) { location.replace('#/login?next=' + encodeURIComponent(path)); return; }
+  if (page.auth && !store.currentUser()) { nav.go('#/login?next=' + encodeURIComponent(path)); return; }
 
   const samePage = path === lastPath;
   lastPath = path;
@@ -110,7 +111,7 @@ async function boot() {
   ui.initDrawer();
   await store.ensureDemo();
   store.subscribe(() => { ui.updateCartBadge(); if (document.getElementById('cartDrawer').classList.contains('open')) ui.renderDrawer(); });
-  addEventListener('hashchange', render);
+  nav.onChange(render);
   render();
 }
 boot();

@@ -2,6 +2,7 @@ import { icon } from '../icons.js';
 import { PHONES, findPhone, fromPrice } from '../data.js';
 import { crumbs, esc, $, $$ } from '../ui.js';
 import * as store from '../store.js';
+import * as nav from '../nav.js';
 
 function pickIds(query) {
   let ids = (query.ids || '').split(',').filter(id => findPhone(id));
@@ -31,7 +32,7 @@ export default {
     const table = $('#cmp', root);
     const draw = () => {
       const phones = ids.map(findPhone);
-      history.replaceState(null, '', '#/compare?ids=' + ids.join(','));
+      nav.replace('#/compare?ids=' + ids.join(','));
       store.setCompare(ids);
       const groups = [...new Set(phones.flatMap(p => Object.keys(p.specs)))];
       table.innerHTML = `<thead><tr><th class="rowh"></th>${phones.map((p, i) => `<th>

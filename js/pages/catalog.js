@@ -3,13 +3,14 @@ import { PHONES, ACCESSORIES, SERIES, fromPrice } from '../data.js';
 import { phoneCard, accessoryCard, wireCards, crumbs, $, $$, go } from '../ui.js';
 import * as store from '../store.js';
 import { initReveal, initTilt } from '../fx.js';
+import * as nav from '../nav.js';
 
 const COLOR_FAMILIES = { Dark: ['graphite', 'onyx', 'ocean'], Light: ['silver', 'sand', 'glacier'], Colourful: ['lavender', 'sage', 'desert'] };
 const SORTS = [['featured', 'Featured'], ['price-asc', 'Price: low to high'], ['price-desc', 'Price: high to low'], ['newest', 'Newest'], ['rating', 'Top rated']];
 
 function setQuery(q) {
   const qs = new URLSearchParams(Object.entries(q).filter(([, v]) => v !== '' && v != null)).toString();
-  history.replaceState(null, '', '#' + location.hash.slice(1).split('?')[0] + (qs ? '?' + qs : ''));
+  nav.replace(nav.current().split('?')[0] + (qs ? '?' + qs : ''));
 }
 
 function compareTray() {
