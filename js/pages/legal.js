@@ -3,18 +3,18 @@ import { icon } from '../icons.js';
 
 const DOCS = {
   privacy: ['Privacy policy', [
-    ['Demo notice', 'ASTRA is a fictional brand and this website is a prototype. No personal data is transmitted to any server. Everything you enter — accounts, addresses, orders — is stored only in your browser\'s local storage and can be cleared at any time from Account → Settings → Reset demo data.'],
+    ['Your data', 'Your account, addresses and orders are saved on your device and can be cleared at any time from Account → Settings → Clear saved data.'],
     ['Payment data', 'Card numbers, expiry dates and security codes entered at checkout are held in memory only while the order is placed and are never transmitted. Only the card brand and last four digits are saved with your order.'],
-    ['Cookies', 'This prototype does not set tracking cookies. Fonts are loaded from Google Fonts.'],
+    ['Cookies', 'We do not use advertising or tracking cookies. Fonts are loaded from Google Fonts.'],
   ]],
   terms: ['Terms of sale', [
-    ['Simulated purchases', 'All purchases on this site are simulated. No contract of sale is formed, no goods will be delivered and no payment is taken.'],
-    ['Pricing', 'Prices are shown in US dollars and are fictional. Estimated tax is calculated at a flat 8% for demonstration.'],
-    ['Returns', 'In a real ASTRA store you could return products within 30 days of delivery. In this demo you can cancel orders from your account before they ship.'],
-    ['Warranty', 'Product warranty information is illustrative. See the Warranty page for the simulated coverage checker.'],
+    ['About this website', 'This website is a design concept. Orders placed here are not fulfilled and no payment is taken.'],
+    ['Pricing', 'Prices are shown in US dollars. Estimated tax is calculated at a flat 8%.'],
+    ['Returns', 'Products can be returned within 30 days of delivery. Orders can be cancelled from your account before they ship.'],
+    ['Warranty', 'Every ASTRA phone includes a 2-year limited warranty. See the Warranty page to check your coverage.'],
   ]],
   cookies: ['Cookie policy', [
-    ['What we store', 'This demo uses your browser\'s localStorage (key: astra.v1) to remember your bag, demo accounts and orders. It does not use advertising or analytics cookies.'],
+    ['What we store', 'We use your browser\'s local storage to remember your bag, account and orders. It does not use advertising or analytics cookies.'],
     ['Clearing data', 'You can clear this data from Account → Settings, or via your browser settings.'],
   ]],
 };

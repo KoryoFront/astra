@@ -3,6 +3,11 @@ import { PHONES, ACCESSORIES, SERIES, fromPrice } from '../data.js';
 import { phoneCard, accessoryCard, wireCards } from '../ui.js';
 import { onScroll, sectionProgress, range, lerp, ease, reduce, finePointer } from '../fx.js';
 import * as store from '../store.js';
+import { phone3d } from '../phone3d.js';
+
+const RING = [
+  ['x1-pro', 'x-back.webp'], ['x1', 'x-front.webp'], ['s5-plus', 's-back.webp'], ['s5', 's-front.webp'], ['a3', 'a-back.webp'], ['a3-lite', 'a-front.webp'],
+];
 
 const P = 'assets/img/products/';
 const H = 'assets/img/hero/';
@@ -88,11 +93,7 @@ export default {
       <p class="eyebrow">Design</p>
       <h2 class="display-2" style="margin-top:12px">Forged in titanium.</h2>
     </div>
-    <div class="phone3d-wrap"><div class="phone3d" id="phone3d">
-      <div class="face front"><img src="${P}x-front.webp" alt="ASTRA X1 Pro front"></div>
-      <div class="edge"></div>
-      <div class="face back"><img src="${P}x-back.webp" alt="ASTRA X1 Pro back"></div>
-    </div></div>
+    ${phone3d({ front: P + 'x-front.webp', back: P + 'x-back.webp', frame: '#5b5d63', id: 'phone3d', alt: 'ASTRA X1 Pro' })}
     <div class="story-callouts">
       <div class="callout c-l1" data-at=".12"><span class="num">6.8″</span><p>LTPO AMOLED that adapts from 1 to 144 Hz and peaks at 3,000 nits.</p></div>
       <div class="callout c-r1" data-at=".32"><span class="num">8.2 mm</span><p>Grade 5 titanium frame. Strong, light, and sculpted to disappear in your hand.</p></div>
@@ -165,6 +166,17 @@ export default {
         <div class="big-num"><span data-count="7">0</span></div><h3 class="h3" style="margin-top:8px">years of updates</h3><p class="muted" style="margin-top:8px">New AstraOS features and security patches until 2033.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- 3D lineup ring -->
+<section class="lineup" id="ring" aria-label="The ASTRA lineup">
+  <div class="lineup-sticky">
+    <div class="lineup-head container"><p class="eyebrow">The lineup</p><h2 class="display-2" style="margin-top:10px">Six phones. Turn to explore.</h2></div>
+    <div class="lineup-stage"><div class="lineup-floor"></div><div class="lineup-rot" id="ringRot">
+      ${RING.map(([id, img], i) => { const ph = PHONES.find(x => x.id === id); return `<a class="lineup-item" href="#/phone/${id}" style="--i:${i}" aria-label="${ph.name}"><img src="${P}${img}" alt="${ph.name}" loading="lazy"></a>`; }).join('')}
+    </div></div>
+    <div class="lineup-label" id="ringLabel"></div>
   </div>
 </section>
 
@@ -280,6 +292,26 @@ export default {
       caps.forEach((c, i) => c.classList.toggle('on', i === active));
       if (!reduce) sPhone.style.transform = `translate3d(0, ${(Math.sin(p * Math.PI * n) * 2.2).toFixed(2)}vh, 0) rotate(${(Math.sin(p * Math.PI * n) * -2.5).toFixed(2)}deg) rotateY(${lerp(-14, 14, p).toFixed(2)}deg)`;
       bar.style.transform = `scaleX(${p.toFixed(4)})`;
+    }));
+
+    /* ---- 3D lineup ring turns with scroll ---- */
+    const ring = root.querySelector('#ring'), rot = root.querySelector('#ringRot'), label = root.querySelector('#ringLabel');
+    const items = [...rot.children];
+    let lastIdx = -1;
+    offs.push(onScroll(() => {
+      const p = sectionProgress(ring);
+      const deg = -ease(range(p, 0.05, 0.95)) * 300;
+      rot.style.transform = `translateZ(calc(var(--R) * -1)) rotateX(-6deg) rotateY(${deg.toFixed(2)}deg)`;
+      items.forEach((it, i) => {
+        const a = ((i * 60 + deg) % 360 + 360) % 360, facing = Math.cos(a * Math.PI / 180);
+        it.style.opacity = (0.25 + 0.75 * Math.max(0, facing)).toFixed(3);
+        it.firstElementChild.style.filter = `drop-shadow(0 30px 40px rgba(0,0,0,.6)) brightness(${(0.45 + 0.55 * Math.max(0, facing)).toFixed(2)})`;
+      });
+      const idx = ((Math.round(-deg / 60) % 6) + 6) % 6;
+      if (idx !== lastIdx) {
+        lastIdx = idx; const ph = PHONES.find(x => x.id === RING[idx][0]);
+        label.innerHTML = `<p class="eyebrow">${ph.tier}</p><h3 style="margin-top:6px">${ph.name}</h3><p class="muted" style="margin-top:6px">${ph.tagline} · From ${store.money(fromPrice(ph))}</p><a class="btn btn-ghost btn-sm" style="margin-top:16px" href="#/phone/${ph.id}">Explore ${icon('arrow', 'arrow')}</a>`;
+      }
     }));
 
     /* ---- Camera zoom-out reveal ---- */

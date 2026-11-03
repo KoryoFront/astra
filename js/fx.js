@@ -44,7 +44,8 @@ function counters(el) {
   el.querySelectorAll('[data-count]').forEach(c => {
     if (c.dataset.counted) return; c.dataset.counted = 1;
     const target = parseFloat(c.dataset.count), dec = (c.dataset.count.split('.')[1] || '').length;
-    const fmt = v => Number(v.toFixed(dec)).toLocaleString('en-US', { minimumFractionDigits: dec });
+    const plain = c.hasAttribute('data-plain');
+    const fmt = v => plain ? v.toFixed(dec) : Number(v.toFixed(dec)).toLocaleString('en-US', { minimumFractionDigits: dec });
     if (reduce) { c.textContent = fmt(target); return; }
     const t0 = performance.now(), dur = 1600;
     const step = now => { const t = clamp((now - t0) / dur); c.textContent = fmt(target * ease(t)); if (t < 1) requestAnimationFrame(step); };

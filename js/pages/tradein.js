@@ -31,7 +31,7 @@ export default {
           <p class="muted" id="estNote"></p>
           <div class="totals" id="estBreak"></div>
           <button class="btn btn-primary btn-lg btn-block" id="applyTI">Apply to my order ${icon('arrow', 'arrow')}</button>
-          <p class="dim" style="font-size:12px">Final value confirmed after inspection. Demo estimates for illustration only.</p>
+          <p class="dim" style="font-size:12px">Final value confirmed after inspection. Estimates are valid for 14 days.</p>
         </div>
       </section>
     </div>`;

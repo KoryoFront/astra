@@ -3,7 +3,7 @@ import { PHONES, ACCESSORIES, SERIES, findPhone, findAccessory } from '../data.j
 import { crumbs, stars, esc, $, $$, toast, openCart, openLightbox, accessoryCard, phoneCard, wireCards, isTransparent, go } from '../ui.js';
 import * as store from '../store.js';
 import { notFound } from './legal.js';
-import { onScroll, sectionProgress, range, lerp, ease, reduce } from '../fx.js';
+import { storyHtml, mountStory } from './phonestory.js';
 
 const CARE_PRICE = { x: 199, s: 129, a: 79 };
 
@@ -22,9 +22,8 @@ export const phonePage = {
     const slides = gallerySlides(p, color);
     const care = CARE_PRICE[p.series];
     const acc = ACCESSORIES.filter(a => !a.compat || a.compat === p.id).slice(0, 4);
-    const lifestyle = p.gallery.find(g => g.includes('lifestyle')) || p.gallery.at(-1);
-    return `<div class="container">
-      <div style="padding-top:32px">${crumbs([['Home', '#/'], ['Phones', '#/phones'], [SERIES[p.series].name.replace('ASTRA ', ''), `#/phones?series=${p.series}`], [p.name, '#']])}</div>
+    return storyHtml(p) + `<div class="container" id="buy" style="scroll-margin-top:120px">
+      <div style="padding-top:72px"><p class="eyebrow">Buy</p><h2 class="display-2" style="margin:10px 0 18px">Make it yours.</h2>${crumbs([['Home', '#/'], ['Phones', '#/phones'], [SERIES[p.series].name.replace('ASTRA ', ''), `#/phones?series=${p.series}`], [p.name, '#']])}</div>
       <section class="pdp">
         <div class="gallery">
           <div class="gallery-main" id="gMain" role="img" aria-label="${esc(p.name)} gallery">
@@ -38,7 +37,7 @@ export const phonePage = {
         <div class="buy stack" style="--stack:26px">
           <div>
             <div class="row">${p.badge ? `<span class="chip chip-new">${p.badge}</span>` : ''}<span class="chip">${p.tier}</span></div>
-            <h1 style="margin-top:14px">${esc(p.name)}</h1>
+            <h2 class="h2" style="margin-top:14px;font-size:clamp(34px,4vw,52px)">${esc(p.name)}</h2>
             <p class="lead" style="margin-top:8px">${esc(p.tagline)}</p>
             <div class="row" style="margin-top:12px;font-size:14px">${stars(p.rating)}<span class="muted">${p.rating} · ${p.reviews.toLocaleString()} reviews</span></div>
             <p class="muted" style="margin-top:16px">${esc(p.blurb)}</p>
@@ -81,20 +80,8 @@ export const phonePage = {
       </section>
     </div>
 
-    <section class="pscene" id="pscene" aria-label="${esc(p.name)} in context">
-      <div class="pscene-sticky">
-        <div class="pscene-bg"><img src="${p.series === 'x' ? 'assets/img/hero/hero-bg.jpg' : lifestyle}" alt="" loading="lazy" id="psBg" style="${p.series === 'x' ? '' : 'filter:blur(10px) brightness(.55) saturate(1.1)'}"></div>
-        <div class="pscene-phone"><img src="${p.gallery.find(g => g.includes('-front')) || p.colors[0].img}" alt="${esc(p.name)} front" id="psPhone"></div>
-        <div class="pscene-copy"><div class="container">
-          <p class="eyebrow" data-reveal>${SERIES[p.series].name}</p>
-          <h2 class="display-2" style="margin-top:12px;max-width:620px" data-split>${esc(p.tagline)}</h2>
-          <p class="lead" style="margin-top:16px;max-width:460px" data-reveal>${esc(p.blurb)}</p>
-        </div></div>
-      </div>
-    </section>
-
     <div class="container">
-      <section class="section-sm" id="specs">
+      <section class="section-sm" id="specs" style="scroll-margin-top:120px">
         <div class="row" style="justify-content:space-between;align-items:flex-end;margin-bottom:28px">
           <h2 class="h2" data-reveal>Tech specs</h2>
           <a href="#/compare?ids=${p.id}" class="link">${icon('compare')} Compare with other models</a>
@@ -102,7 +89,7 @@ export const phonePage = {
         <div class="spec-table">${Object.entries(p.specs).map(([g, rows]) => `<div class="spec-group" data-reveal><h3>${g}</h3><dl>${Object.entries(rows).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>`).join('')}
           <div class="spec-group" data-reveal><h3>In the box</h3><dl><dt>Contents</dt><dd>${esc(p.name)}, USB-C to USB-C cable (1 m), SIM tool, quick start guide. Charger sold separately to reduce e-waste.</dd></dl></div>
         </div>
-        <p class="dim" style="font-size:12px;margin-top:20px">*Financing shown for illustration only in this demo store. Battery and performance figures are based on ASTRA internal testing of pre-production units.</p>
+        <p class="dim" style="font-size:12px;margin-top:20px">*0% APR financing subject to status. Battery and performance figures are based on ASTRA internal testing of pre-production units.</p>
       </section>
 
       <section class="section-sm">
@@ -111,10 +98,7 @@ export const phonePage = {
       </section>
     </div>
 
-    <div class="sticky-buy glass" id="stickyBuy"><div class="container">
-      <b style="font-family:var(--font-display);font-weight:500">${esc(p.name)}</b><span class="muted hide-sm" id="sbMeta"></span><span class="spacer"></span>
-      <b id="sbPrice"></b><button class="btn btn-primary btn-sm" id="sbAdd">Add to bag</button>
-    </div></div>`;
+    `;
   },
   mount(root, ctx) {
     const p = findPhone(ctx.params.id); if (!p) return;
@@ -137,8 +121,6 @@ export const phonePage = {
       const care = $('#care', root).checked ? CARE_PRICE[p.series] : 0;
       const pr = $('#price', root); pr.innerHTML = `<span class="price-anim">${store.money(st.price + care)}</span>`;
       $('#monthly', root).textContent = `or ${store.money2((st.price + care) / 24)}/mo. for 24 mo.*`;
-      $('#sbPrice', root).textContent = store.money(st.price + care);
-      $('#sbMeta', root).textContent = `${color.name} · ${store.fmtGB(st.gb)}`;
     };
 
     $('.prev', main).onclick = e => { e.stopPropagation(); show(idx - 1); };
@@ -178,26 +160,12 @@ export const phonePage = {
       return true;
     };
     $('#addBtn', root).onclick = () => { add(); toast(`${p.name} · ${color.name} · ${store.fmtGB(st.gb)} added`, { action: ['View bag', openCart] }); };
-    $('#sbAdd', root).onclick = () => { add(); openCart(); };
     $('#buyNow', root).onclick = () => { add(); go('#/checkout'); };
     wireCards($('#accs', root));
 
-    // Sticky buy bar when main buttons leave viewport
-    const sb = $('#stickyBuy', root);
-    const io = new IntersectionObserver(([e]) => sb.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top < 0), { threshold: 0 });
-    io.observe($('#buyBtns', root));
     updatePrice();
 
-    // Layered scene: the phone rises and turns faster than its background drifts
-    const ps = $('#pscene', root), psBg = $('#psBg', root), psPhone = $('#psPhone', root);
-    const off = onScroll(() => {
-      const r = ps.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (r.height + innerHeight)));
-      if (reduce) return;
-      psBg.style.transform = `translate3d(0, ${lerp(-4, 4, p).toFixed(2)}%, 0) scale(${lerp(1.18, 1.04, p).toFixed(3)})`;
-      psPhone.style.transform = `translate3d(0, ${lerp(38, -14, ease(p)).toFixed(2)}vh, 0) rotate(${lerp(10, -4, ease(p)).toFixed(2)}deg)`;
-    });
-    return () => { io.disconnect(); off(); };
+    return mountStory(root, p, { onPickColor: id => root.querySelector(`#colors [data-color="${id}"]`)?.click() });
   },
 };
 

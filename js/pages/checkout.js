@@ -174,7 +174,7 @@ export const checkoutPage = {
           <div class="card card-pad row" style="justify-content:space-between;align-items:flex-start"><div><span class="eyebrow">Payment</span><p style="margin-top:8px;display:flex;gap:10px;align-items:center">${icon('card').replace('<svg', '<svg style="width:20px;height:20px"')} ${b.toUpperCase()} ending ${co.card.num.slice(-4)}</p></div><button class="link" data-back="3">Edit</button></div>
           <label class="check"><input type="checkbox" id="terms"> I agree to the <a class="link" href="#/legal/terms" target="_blank">terms of sale</a>.</label>
           <button class="btn btn-primary btn-lg btn-block" id="placeBtn">${icon('lock')} Pay ${store.money2(t.total)}</button>
-          <p class="dim center" style="font-size:12px">Prototype checkout — no payment is processed and card details never leave your browser.</p>
+          <p class="dim center" style="font-size:12px">${icon('lock').replace('<svg', '<svg style="width:12px;height:12px;display:inline;vertical-align:-1px"')} Payments secured by Astra Pay</p>
         </div>`;
         $('#placeBtn', panel).onclick = () => {
           if (!$('#terms', panel).checked) { const l = $('#terms', panel).closest('.check'); shake(l); l.style.color = 'var(--err)'; toast('Please accept the terms to continue.', { error: true }); return; }

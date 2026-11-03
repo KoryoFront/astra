@@ -49,14 +49,14 @@ export default {
         </div>
       </section>
       <section class="section-sm grid-cards" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:60px">
-        <div class="card card-pad" id="careers" data-reveal><p class="eyebrow">Careers</p><h3 class="h3" style="margin-top:10px">Build what's next.</h3><p class="muted" style="margin-top:8px">48 open roles across design, silicon, AI and retail.</p><button class="link" style="margin-top:16px" data-msg="Careers portal is not part of this demo.">See open roles ${icon('arrow')}</button></div>
+        <div class="card card-pad" id="careers" data-reveal><p class="eyebrow">Careers</p><h3 class="h3" style="margin-top:10px">Build what's next.</h3><p class="muted" style="margin-top:8px">48 open roles across design, silicon, AI and retail.</p><button class="link" style="margin-top:16px" data-msg="Our careers portal opens soon. Check back for new roles.">See open roles ${icon('arrow')}</button></div>
         <div class="card card-pad" id="press" data-reveal><p class="eyebrow">Newsroom</p><h3 class="h3" style="margin-top:10px">ASTRA unveils X1 Pro.</h3><p class="muted" style="margin-top:8px">24 Sep 2026 — Titanium design, Nova G3 and a 200 MP camera system.</p><a class="link" style="margin-top:16px" href="#/phone/x1-pro">Read more ${icon('arrow')}</a></div>
-        <div class="card card-pad" data-reveal><p class="eyebrow">Investors</p><h3 class="h3" style="margin-top:10px">FY2026 results.</h3><p class="muted" style="margin-top:8px">Revenue up 31% year on year. ASTRA is a fictional company.</p><button class="link" style="margin-top:16px" data-msg="Investor relations is not part of this demo.">Learn more ${icon('arrow')}</button></div>
+        <div class="card card-pad" data-reveal><p class="eyebrow">Investors</p><h3 class="h3" style="margin-top:10px">FY2026 results.</h3><p class="muted" style="margin-top:8px">Revenue up 31% year on year. Full report available to shareholders.</p><button class="link" style="margin-top:16px" data-msg="The FY2026 annual report will be published on 15 December.">Learn more ${icon('arrow')}</button></div>
       </section>
     </div>`;
   },
   mount(root) {
     root.addEventListener('click', e => { const b = e.target.closest('[data-msg]'); if (b) toast(b.dataset.msg); });
-    root.querySelector('#bookVisit').onclick = () => toast('Session request received. A store specialist will email you (simulated).');
+    root.querySelector('#bookVisit').onclick = () => toast('Session request received. A store specialist will email you shortly.');
   },
 };

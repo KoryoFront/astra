@@ -113,9 +113,10 @@ export function renderHeader() {
   addEventListener('scroll', () => {
     const y = scrollY;
     h.classList.toggle('scrolled', y > 40);
-    const noHide = document.body.dataset.route === 'phone' || document.body.dataset.route === 'compare';
+    const noHide = document.body.dataset.route === 'compare';
     h.classList.toggle('hide', !noHide && y > 420 && y > lastY + 4 && !document.body.classList.contains('no-scroll'));
     if (y < lastY - 4 || y < 420) h.classList.remove('hide');
+    document.body.classList.toggle('hdr-hide', h.classList.contains('hide'));
     lastY = y;
   }, { passive: true });
   updateCartBadge(false);

@@ -24,9 +24,9 @@ python3 -m http.server 8000   # or any static server
 
 | Area | Route |
 | --- | --- |
-| Home: layered hero (phones, landscape and rocks move at different speeds), word-by-word statement, 3D rotating phone over moving type, fixed phone over changing scenes, camera zoom reveal, bento features | `#/` |
+| Home: layered hero (phones, landscape and rocks move at different speeds), word-by-word statement, 3D rotating phone over moving type, fixed phone over changing scenes, 3D lineup carousel, camera zoom reveal, bento features | `#/` |
 | Phone catalogue: filter by series, price, storage, colour and features; sort; compare tray | `#/phones` |
-| Product pages: gallery (zoom, swipe, lightbox), colours, storage, Astra Care+, sticky buy bar, specs | `#/phone/x1-pro` |
+| Phone pages: a 3D scroll story for each phone (rotating 3D hero, design spin, camera dive, display, chip, battery ring, colour carousel), then a configurator and full specs | `#/phone/x1-pro` |
 | Compare up to 3 phones, with a "highlight differences" option | `#/compare` |
 | Accessories store and product pages | `#/accessories`, `#/accessory/buds-pro` |
 | Bag with promo codes, trade-in credit, shipping and tax | `#/cart` |
@@ -39,7 +39,7 @@ python3 -m http.server 8000   # or any static server
 
 ### Demo credentials
 
-- Account: `demo@astra.com` / `astra2026`. Comes with seeded order history; try tracking `AST-2610-48213`.
+- Seeded account (not shown on the site): `demo@astra.com` / `astra2026`. Comes with seeded order history; try tracking `AST-2610-48213`.
 - Promo codes: `ASTRA10`, `WELCOME50` (orders over $400), `FREESHIP`.
 - Checkout accepts any card number that passes validation (Luhn check, future expiry, 3- or 4-digit CVV).
   A few reserved numbers trigger other outcomes for demos (not shown anywhere on the site):
@@ -62,6 +62,8 @@ js/ui.js              header, footer, bag drawer, search, toasts, shared compone
 js/fx.js              scroll engine, reveal-on-scroll, parallax, tilt, counters, confetti
 js/icons.js           SVG icon set and ASTRA logo
 js/pages/*.js         one module per page (render + mount)
+js/pages/phonestory.js  per-phone 3D scroll story; copy lives in js/stories.js
+js/phone3d.js         CSS 3D phone (front, back and four metal sides)
 assets/img/           AI-generated product, accessory, lifestyle and layered hero imagery
 ```
 

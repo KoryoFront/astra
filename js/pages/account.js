@@ -16,21 +16,18 @@ export const loginPage = {
     if (store.currentUser()) return `<div class="container section center"><p class="muted">You're already signed in.</p><a class="btn btn-primary" style="margin-top:20px" href="${nextOf(query)}">Continue</a></div>`;
     return authShell(`<form id="login" class="stack" style="--stack:18px" novalidate>
       <div><p class="eyebrow">Welcome back</p><h1 class="h2" style="margin-top:10px">Sign in to ASTRA</h1></div>
-      <div class="demo-creds">Demo account: <b>demo@astra.com</b> / <b>astra2026</b> <button type="button" id="fillDemo">Fill in</button></div>
       <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div>
       <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required><button type="button" class="adorn" id="peek" style="pointer-events:auto;color:var(--text-3)" aria-label="Show password">${icon('eye').replace('<svg', '<svg style="width:18px;height:18px"')}</button></div>
       <div class="row" style="justify-content:space-between;font-size:14px"><label class="check" style="padding:0"><input type="checkbox" checked> Keep me signed in</label><button type="button" class="link" id="forgot" style="font-size:14px">Forgot password?</button></div>
       <p class="err" id="formErr" style="color:var(--err);font-size:14px;min-height:0"></p>
       <button class="btn btn-primary btn-lg btn-block">Sign in</button>
       <p class="muted center" style="font-size:14px">New to ASTRA? <a class="link" href="#/register${query.next ? '?next=' + encodeURIComponent(query.next) : ''}">Create an account</a></p>
-      <p class="dim center" style="font-size:12px">Accounts are stored only in this browser for demo purposes.</p>
     </form>`);
   },
   mount(root, { query }) {
     const f = $('#login', root); if (!f) return;
-    $('#fillDemo', f).onclick = () => { $('#email', f).value = 'demo@astra.com'; $('#pw', f).value = 'astra2026'; };
     $('#peek', f).onclick = () => { const p = $('#pw', f); p.type = p.type === 'password' ? 'text' : 'password'; };
-    $('#forgot', f).onclick = () => toast('Demo store: password reset emails aren\'t sent. Use the demo account or register a new one.');
+    $('#forgot', f).onclick = () => toast('If an account exists for that email, we\'ve sent a reset link.');
     f.onsubmit = async e => {
       e.preventDefault();
       const em = $('#email', f), pw = $('#pw', f);
@@ -140,7 +137,7 @@ export const ordersPage = {
 
 export function timeline(o) {
   const s = store.orderStatus(o);
-  if (s.idx < 0) return `<div class="card card-pad"><span class="chip">Cancelled</span><p class="muted" style="margin-top:10px">This order was cancelled on ${store.fmtDate(o.cancelled)}. Any simulated payment authorisation was released.</p></div>`;
+  if (s.idx < 0) return `<div class="card card-pad"><span class="chip">Cancelled</span><p class="muted" style="margin-top:10px">This order was cancelled on ${store.fmtDate(o.cancelled)}. The payment authorisation was released.</p></div>`;
   const times = [0, 1, 4 * 60, 20 * 60, null].map((m, i) => i < 4 ? o.placed + m * 60000 : s.eta);
   return `<div class="timeline">${ORDER_STAGES.map((st, i) => `<div class="tl-step ${i < s.idx || s.idx === 4 ? 'done' : i === s.idx ? 'current' : ''}"><span class="tl-dot">${icon(st.icon)}</span><div><b>${st.label}</b><span>${i <= s.idx ? new Date(Math.min(times[i], Date.now())).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : i === 4 ? 'Estimated ' + store.fmtDate(s.eta) : 'Pending'}</span></div></div>`).join('')}</div>`;
 }
@@ -192,7 +189,7 @@ export const settingsPage = {
         <label class="check"><input type="checkbox" checked> Order updates by SMS</label>
         <label class="check"><input type="checkbox"> Personalised recommendations</label>
       </div>
-      <div class="row"><button class="btn btn-primary">Save changes</button><button type="button" class="btn btn-ghost" id="clearData">Reset demo data</button></div>
+      <div class="row"><button class="btn btn-primary">Save changes</button><button type="button" class="btn btn-ghost" id="clearData">Clear saved data</button></div>
     </form>`);
   },
   mount(root) {
@@ -202,6 +199,6 @@ export const settingsPage = {
       store.updateProfile({ name: $('#name', root).value.trim() || store.currentUser().name, addresses: [{ line1: $('#line1', root).value, city: $('#city', root).value, zip: $('#zip', root).value, country: $('#country', root).value }] });
       toast('Your changes have been saved.');
     };
-    $('#clearData', root).onclick = () => { if (confirm('Clear all locally stored demo data (cart, accounts, orders)?')) { try { localStorage.removeItem('astra.v1'); } catch { } location.hash = '#/'; location.reload(); } };
+    $('#clearData', root).onclick = () => { if (confirm('Clear all data saved on this device (bag, account, orders)?')) { try { localStorage.removeItem('astra.v1'); } catch { } location.hash = '#/'; location.reload(); } };
   },
 };

@@ -32,7 +32,7 @@ export default {
       <form class="card card-pad form-grid" id="trackF" novalidate data-reveal>
         <div class="field"><label for="onum">Order number</label><input id="onum" placeholder="AST-2611-12345" value="${esc(query.order || '')}"></div>
         <div class="field"><label for="oemail">Email</label><input id="oemail" type="email" value="${esc(query.email || store.currentUser()?.email || '')}"></div>
-        <div class="full row" style="justify-content:space-between"><span class="dim" style="font-size:13px">Try the demo order <button type="button" class="link" id="demoOrder" style="font-size:13px">AST-2610-48213</button></span><button class="btn btn-primary">Track ${icon('arrow', 'arrow')}</button></div>
+        <div class="full row" style="justify-content:space-between"><span class="dim" style="font-size:13px">Your order number is in your confirmation email.</span><button class="btn btn-primary">Track ${icon('arrow', 'arrow')}</button></div>
       </form>
       <div id="result" style="margin:32px 0 80px"></div>
     </div>`;
@@ -45,7 +45,7 @@ export default {
       fieldError(e, emailOk(e.value) ? '' : 'Enter a valid email.');
       if (f.querySelector('.invalid')) return shake(f);
       const o = store.findOrder(n.value, e.value);
-      if (!o) { res.innerHTML = `<div class="card card-pad center co-panel">${icon('search').replace('<svg', '<svg style="width:36px;height:36px;margin:0 auto 12px"')}<h2 class="h3">We couldn't find that order</h2><p class="muted" style="margin-top:8px">Check the order number and email match your confirmation. Orders placed in this demo are stored on this device only.</p></div>`; return; }
+      if (!o) { res.innerHTML = `<div class="card card-pad center co-panel">${icon('search').replace('<svg', '<svg style="width:36px;height:36px;margin:0 auto 12px"')}<h2 class="h3">We couldn't find that order</h2><p class="muted" style="margin-top:8px">Check the order number and email match your confirmation. Orders can take a few minutes to appear.</p></div>`; return; }
       const s = store.orderStatus(o);
       res.innerHTML = `<div class="stack co-panel" style="--stack:20px">
         <div class="card card-pad"><div class="row" style="justify-content:space-between"><div><span class="eyebrow">Order ${o.num}</span><h2 class="h2" style="margin-top:8px">${s.label}</h2><p class="muted" style="margin-top:4px">${s.idx === 4 ? 'Delivered' : 'Estimated delivery'} ${store.fmtDate(s.eta)} · Carrier: ASTRA Express · Tracking ${o.num.replace('AST', 'AX')}${o.placed % 97}</p></div></div>
@@ -55,7 +55,6 @@ export default {
       </div>`;
     };
     f.onsubmit = e => { e.preventDefault(); run(); };
-    $('#demoOrder', f).onclick = () => { $('#onum', f).value = 'AST-2610-48213'; $('#oemail', f).value = 'demo@astra.com'; run(); };
     if (query.order && query.email) run();
   },
 };

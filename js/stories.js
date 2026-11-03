@@ -1,0 +1,58 @@
+// Per-phone scroll-story content: imagery, chapter copy and headline stats.
+const P = 'assets/img/products/';
+const H = 'assets/img/hero/';
+
+const X_ASSETS = { bg: H + 'hero-bg.jpg', front: P + 'x-front.webp', back: P + 'x-back.webp', frame: '#5b5d63', cam: P + 'x-macro.jpg', camOrigin: '30% 40%', shots: [P + 'x-night.jpg', P + 'x-lifestyle.jpg', P + 'x-display.jpg'] };
+const S_ASSETS = { bg: H + 's-bg.jpg', front: P + 's-front.webp', back: P + 's-back.webp', frame: '#9d92cf', cam: P + 's-lavender.jpg', camOrigin: '32% 22%', shots: [P + 's-lifestyle.jpg', P + 'x-night.jpg', P + 's-glacier.jpg'] };
+const A_ASSETS = { bg: H + 'a-bg.jpg', front: P + 'a-front.webp', back: P + 'a-back.webp', frame: '#7c9686', cam: P + 'a-sage.jpg', camOrigin: '30% 20%', shots: [P + 'a-lifestyle.jpg', P + 'a-sand.jpg', P + 'a-graphite.jpg'] };
+
+export const STORIES = {
+  'x1-pro': { ...X_ASSETS, word: 'TITANIUM',
+    intro: 'Our most powerful phone, carved from aerospace titanium.',
+    design: { title: 'Forged in titanium.', callouts: [['8.2 mm', 'Grade 5 titanium frame, lighter and stronger than steel.'], ['214 g', 'Perfectly balanced, with a frosted matte glass back.'], ['IP69', 'Sealed against dust, water and high-pressure jets.'], ['Ultra', 'Astra Shield Glass Ultra — our toughest ever.']] },
+    camera: { title: '200 MP. See what others miss.', sub: 'A 1/1.3″ main sensor, a 50 MP ultra wide and a 5× periscope telephoto, tuned by Astra AI.', stats: [['200', ' MP', 'Main sensor'], ['5', '×', 'Optical zoom'], ['100', '×', 'AstraZoom'], ['8', 'K', 'Dolby Vision video']] },
+    display: { title: 'Brilliant in every light.', sub: 'A 6.8″ LTPO AMOLED that glides from 1 to 144 Hz and peaks at 3,000 nits.', stats: [['6.8', '″', 'LTPO AMOLED'], ['3000', ' nits', 'Peak brightness'], ['144', ' Hz', 'Adaptive refresh'], ['10', '-bit', 'Colour depth']] },
+    perf: { chip: 'Nova G3', title: 'The mind behind the magic.', sub: '3 nm. 8 cores. A 78 TOPS neural engine that runs Astra AI entirely on-device.', stats: [['78', ' TOPS', 'Neural engine'], ['4.1', ' GHz', 'Peak CPU'], ['16', ' GB', 'LPDDR5X RAM'], ['12', '-core', 'Ray-traced GPU']] },
+    battery: { title: 'Two days. 29 minutes.', sub: 'A 5,500 mAh silicon-carbon cell with 90 W HyperCharge and 50 W AstraMag wireless.', mah: 5500, stats: [['90', ' W', 'HyperCharge'], ['29', ' min', '0–100%'], ['50', ' W', 'Wireless']] },
+  },
+  'x1': { ...X_ASSETS, word: 'FLAGSHIP',
+    intro: 'Everything you love about X Series, distilled into 182 grams.',
+    design: { title: 'Light. Precise. Flagship.', callouts: [['7.9 mm', 'Aerospace aluminium frame in four finishes.'], ['182 g', 'Our lightest flagship ever.'], ['IP68', 'Dust and water resistant to 6 metres.'], ['6.3″', 'Compact size, edge-to-edge display.']] },
+    camera: { title: 'Pro photos. Pocket size.', sub: 'A 50 MP main camera with OIS, 12 MP ultra wide and a 3× telephoto.', stats: [['50', ' MP', 'Main sensor'], ['3', '×', 'Optical zoom'], ['30', '×', 'AstraZoom'], ['4', 'K', '60 fps HDR video']] },
+    display: { title: 'Small screen. Big brilliance.', sub: 'A 6.3″ LTPO AMOLED with 1–120 Hz refresh and 2,600 nits peak brightness.', stats: [['6.3', '″', 'LTPO AMOLED'], ['2600', ' nits', 'Peak brightness'], ['120', ' Hz', 'Adaptive refresh'], ['10', '-bit', 'Colour depth']] },
+    perf: { chip: 'Nova G3', title: 'Same chip. Same genius.', sub: 'The full Nova G3 with its 78 TOPS neural engine, in a smaller frame.', stats: [['78', ' TOPS', 'Neural engine'], ['3.9', ' GHz', 'Peak CPU'], ['12', ' GB', 'LPDDR5X RAM'], ['10', '-core', 'GPU']] },
+    battery: { title: 'All-day, every day.', sub: 'A 5,000 mAh battery with 67 W HyperCharge and 25 W AstraMag wireless.', mah: 5000, stats: [['67', ' W', 'HyperCharge'], ['40', ' min', '0–100%'], ['25', ' W', 'Wireless']] },
+  },
+  's5-plus': { ...S_ASSETS, word: 'SATIN',
+    intro: 'A big, beautiful screen and a battery that keeps up with you.',
+    design: { title: 'Soft to the touch.', callouts: [['7.6 mm', 'Rounded aluminium frame that sits naturally in your hand.'], ['Satin', 'Soft-matte glass back in three calm colours.'], ['IP67', 'Protected against dust and splashes.'], ['188 g', 'Big screen, comfortable weight.']] },
+    camera: { title: 'Every moment, steady.', sub: 'A 64 MP main camera with optical stabilisation and a 12 MP ultra wide.', stats: [['64', ' MP', 'OIS main camera'], ['118', '°', 'Ultra wide'], ['16', ' MP', 'Selfie camera'], ['4', 'K', 'Video']] },
+    display: { title: 'Room for everything.', sub: 'A 6.7″ 120 Hz AMOLED display that hits 1,900 nits in sunlight.', stats: [['6.7', '″', 'AMOLED'], ['1900', ' nits', 'Peak brightness'], ['120', ' Hz', 'Refresh rate'], ['2.4', 'K', 'Resolution']] },
+    perf: { chip: 'Nova S2', title: 'Smart, fast, efficient.', sub: 'A 4 nm Nova S2 with a 40 TOPS NPU that powers Astra AI features on-device.', stats: [['40', ' TOPS', 'Neural engine'], ['3.2', ' GHz', 'Peak CPU'], ['12', ' GB', 'RAM'], ['4', ' nm', 'Process']] },
+    battery: { title: 'Two days. Easily.', sub: 'A 5,200 mAh battery with 45 W fast charging and 15 W wireless.', mah: 5200, stats: [['45', ' W', 'Fast charging'], ['2', ' days', 'Battery life'], ['15', ' W', 'Wireless']] },
+  },
+  's5': { ...S_ASSETS, word: 'EVERYDAY',
+    intro: 'Power for every day, in a size that just feels right.',
+    design: { title: 'Made to be held.', callouts: [['7.5 mm', 'Slim, rounded aluminium frame.'], ['172 g', 'Light enough to forget it’s there.'], ['IP67', 'Protected against dust and splashes.'], ['6.2″', 'One-hand friendly display.']] },
+    camera: { title: 'Brilliant after dark.', sub: 'A 50 MP OIS main camera with Night Mode that brightens low-light shots.', stats: [['50', ' MP', 'OIS main camera'], ['112', '°', 'Ultra wide'], ['16', ' MP', 'Selfie camera'], ['4', 'K', 'Video']] },
+    display: { title: 'Smooth as silk.', sub: 'A 6.2″ 120 Hz AMOLED that’s easy on the eyes, day and night.', stats: [['6.2', '″', 'AMOLED'], ['1700', ' nits', 'Peak brightness'], ['120', ' Hz', 'Refresh rate'], ['2.3', 'K', 'Resolution']] },
+    perf: { chip: 'Nova S2', title: 'Quick on its feet.', sub: 'The 4 nm Nova S2 keeps apps, games and Astra AI fast and efficient.', stats: [['40', ' TOPS', 'Neural engine'], ['3.0', ' GHz', 'Peak CPU'], ['8', ' GB', 'RAM'], ['4', ' nm', 'Process']] },
+    battery: { title: 'Charge less. Live more.', sub: 'A 4,800 mAh battery with 45 W fast charging and 15 W wireless.', mah: 4800, stats: [['45', ' W', 'Fast charging'], ['50', '%', 'In 20 minutes'], ['15', ' W', 'Wireless']] },
+  },
+  'a3': { ...A_ASSETS, word: 'RELIABLE',
+    intro: 'Smart, reliable and built to last — at a price that makes sense.',
+    design: { title: 'Built to last.', callouts: [['8.4 mm', 'Durable frame made from recycled polymer.'], ['Matte', 'Soft-touch back that resists fingerprints.'], ['IP54', 'Splash and dust resistant.'], ['4 yrs', 'Of AstraOS and security updates.']] },
+    camera: { title: '50 MP. Zero fuss.', sub: 'A 50 MP AI camera that picks the right settings for every shot.', stats: [['50', ' MP', 'Main camera'], ['5', ' MP', 'Ultra wide'], ['13', ' MP', 'Selfie camera'], ['60', ' fps', '1080p video']] },
+    display: { title: 'Big, bright and smooth.', sub: 'A 6.6″ 120 Hz OLED display — rare at this price.', stats: [['6.6', '″', 'OLED'], ['1200', ' nits', 'Peak brightness'], ['120', ' Hz', 'Refresh rate'], ['2.4', 'K', 'Resolution']] },
+    perf: { chip: 'Nova A1', title: 'Everything runs smoothly.', sub: 'The efficient 6 nm Nova A1 with a 12 TOPS NPU for Astra AI Essentials.', stats: [['12', ' TOPS', 'Neural engine'], ['2.6', ' GHz', 'Peak CPU'], ['8', ' GB', 'RAM'], ['6', ' nm', 'Process']] },
+    battery: { title: 'Up to 2.5 days.', sub: 'A huge 6,000 mAh battery with 33 W fast charging.', mah: 6000, stats: [['6000', ' mAh', 'Battery'], ['33', ' W', 'Fast charging'], ['2.5', ' days', 'Battery life']] },
+  },
+  'a3-lite': { ...A_ASSETS, word: 'ESSENTIAL',
+    intro: 'Everything you need, nothing you don’t.',
+    design: { title: 'Simple. Durable. Yours.', callouts: [['8.6 mm', 'Sturdy recycled-polymer frame.'], ['Matte', 'Soft-touch back in two finishes.'], ['IP52', 'Protected against splashes.'], ['3.5 mm', 'Headphone jack and microSD slot.']] },
+    camera: { title: 'Point. Shoot. Done.', sub: 'A 48 MP AI camera with portrait depth sensing.', stats: [['48', ' MP', 'Main camera'], ['2', ' MP', 'Depth sensor'], ['8', ' MP', 'Selfie camera'], ['1080', 'p', 'Video']] },
+    display: { title: 'A big window on your world.', sub: 'A 6.6″ 90 Hz display for smooth scrolling and video.', stats: [['6.6', '″', 'LCD'], ['700', ' nits', 'Brightness'], ['90', ' Hz', 'Refresh rate'], ['720', 'p', 'HD+']] },
+    perf: { chip: 'Nova A1', title: 'Dependable performance.', sub: 'The 6 nm Nova A1 runs AstraOS 6 Go smoothly and efficiently.', stats: [['12', ' TOPS', 'Neural engine'], ['2.4', ' GHz', 'Peak CPU'], ['6', ' GB', 'RAM'], ['6', ' nm', 'Process']] },
+    battery: { title: 'Days, not hours.', sub: 'A 6,000 mAh battery with 25 W fast charging.', mah: 6000, stats: [['6000', ' mAh', 'Battery'], ['25', ' W', 'Fast charging'], ['2.5', ' days', 'Battery life']] },
+  },
+};

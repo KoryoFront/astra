@@ -98,7 +98,7 @@ export const warrantyPage = {
         <form class="card card-pad form-grid" id="cov" novalidate>
           <div class="field"><label for="imei">Serial number or IMEI</label><input id="imei" placeholder="15-digit IMEI" inputmode="numeric" maxlength="15"></div>
           <div class="field"><label for="model">Model</label><select id="model">${PHONES.map(p => `<option>${p.name}</option>`).join('')}</select></div>
-          <div class="full row" style="justify-content:space-between"><span class="dim" style="font-size:13px">Dial *#06# on your phone to see its IMEI. Any 15 digits work in this demo.</span><button class="btn btn-primary">Check coverage</button></div>
+          <div class="full row" style="justify-content:space-between"><span class="dim" style="font-size:13px">Dial *#06# on your phone to see its IMEI.</span><button class="btn btn-primary">Check coverage</button></div>
         </form>
         <div id="covRes" style="margin-top:20px"></div>
       </section>
@@ -153,11 +153,11 @@ export const contactPage = {
       checks.forEach(([el, r]) => fieldError(el, r(el.value)));
       if (checks.some(([el, r]) => r(el.value))) return shake(f);
       const ticket = 'CS-' + Math.floor(100000 + Math.random() * 899999);
-      f.innerHTML = `<div class="center co-panel" style="padding:40px 0">${icon('check').replace('<svg', '<svg style="width:48px;height:48px;color:var(--ok);margin:0 auto 16px"')}<h2 class="h3">Message received</h2><p class="muted" style="margin-top:8px">Your case number is <b style="color:#fff">${ticket}</b>. We'll reply to your email within 2 hours (demo — no email is sent).</p></div>`;
+      f.innerHTML = `<div class="center co-panel" style="padding:40px 0">${icon('check').replace('<svg', '<svg style="width:48px;height:48px;color:var(--ok);margin:0 auto 16px"')}<h2 class="h3">Message received</h2><p class="muted" style="margin-top:8px">Your case number is <b style="color:#fff">${ticket}</b>. We'll reply to your email within 2 hours.</p></div>`;
     };
     root.addEventListener('click', e => {
       const b = e.target.closest('[data-act]'); if (!b) return;
-      ({ chat: () => toast('Connecting you to a specialist… (demo: live chat is simulated)'), call: () => toast('Callback requested. We\'ll call you within 15 minutes (simulated).'), mail: () => $('#cm', root)?.focus() })[b.dataset.act]();
+      ({ chat: () => toast('Connecting you to a specialist…'), call: () => toast('Callback requested. We\'ll call you within 15 minutes.'), mail: () => $('#cm', root)?.focus() })[b.dataset.act]();
     });
   },
 };
