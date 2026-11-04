@@ -101,6 +101,12 @@ export function renderHeader() {
   $('#mobileMenu').innerHTML = `<button class="icon-btn close" id="menuClose" aria-label="Close menu">${icon('close')}</button>
     ${[['Home', '#/'], ...NAV, ['Compare', '#/compare'], ['Account', '#/account'], ['Track order', '#/track']].map(([l, h], i) => `<a href="${h}" style="transition-delay:${0.04 * i + 0.05}s">${l}</a>`).join('')}`;
 
+  // Touch screens have no hover: first tap on "Phones" opens the menu, tapping outside closes it
+  const mega = $('.has-mega');
+  if (mega && matchMedia('(hover: none)').matches) {
+    mega.firstElementChild.addEventListener('click', e => { if (!mega.classList.contains('open')) { e.preventDefault(); mega.classList.add('open'); } else mega.classList.remove('open'); });
+    document.addEventListener('click', e => { if (!mega.contains(e.target) || e.target.closest('.mega a')) mega.classList.remove('open'); }, true);
+  }
   $('#searchBtn').onclick = openSearch;
   $('#cartBtn').onclick = openCart;
   $('#menuBtn').onclick = () => toggleMenu(true);
