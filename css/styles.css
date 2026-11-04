@@ -1287,3 +1287,29 @@ body.hdr-hide .pnav { top: 10px; }
 }
 .upd-steps b em { display: none; }
 .upd-track::after { content: 'AstraOS version by year'; display: block; margin-top: 12px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--text-3); }
+
+/* =========================================================
+   Phones dropdown (rebuilt). Own class names; every property set here.
+   ========================================================= */
+.nav { position: relative; }
+.pd { position: static; display: flex; align-items: center; }
+.pd-panel { position: absolute; left: 0; right: 0; top: calc(100% + 10px); z-index: 60; display: grid; grid-template-columns: minmax(0, 3fr) minmax(180px, 1fr); gap: 0; padding: 18px; border-radius: 24px; background: #0e0f13; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 30px 70px -20px rgba(0,0,0,.85); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px); transition: opacity .25s ease, transform .35s var(--ease-out), visibility 0s linear .35s; }
+.pd-panel::before { content: ''; position: absolute; left: 0; right: 0; top: -22px; height: 22px; }
+@media (hover: hover) { .pd:hover .pd-panel, .pd:focus-within .pd-panel { opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition-delay: 0s; } }
+.pd.open .pd-panel { opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition-delay: 0s; }
+.pd.shut .pd-panel { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+.pd-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.nav-links .pd-card, .pd-card { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; gap: 2px; padding: 18px 10px 16px; margin: 0; border-radius: 18px; background: transparent; border: 1px solid transparent; color: var(--text); font-size: 15px; line-height: 1.35; transition: background .25s, border-color .25s; }
+.nav-links .pd-card:hover, .pd-card:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); color: var(--text); }
+.nav-links .pd-card::after { display: none !important; content: none; }
+.pd-img { display: block; height: 170px; width: 100%; margin-bottom: 14px; background: transparent; }
+.pd-img img { display: block; height: 100%; width: auto; max-width: 100%; margin: 0 auto; object-fit: contain; background: transparent; filter: drop-shadow(0 18px 22px rgba(0,0,0,.6)); transition: transform .5s var(--ease-out); }
+.pd-card:hover .pd-img img { transform: translateY(-4px) scale(1.03); }
+.pd-name { font-family: var(--font-display); font-weight: 500; font-size: 16px; }
+.pd-tag { font-size: 13px; color: var(--text-3); }
+.pd-price { font-size: 13px; color: var(--text-2); margin-top: 4px; }
+.pd-links { display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 8px 0 8px 22px; margin-left: 10px; border-left: 1px solid rgba(255,255,255,.08); }
+.pd-head { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); font-weight: 600; padding: 0 12px 8px; }
+.nav-links .pd-links a { display: block; padding: 9px 12px; border-radius: 10px; font-size: 14px; color: var(--text-2); background: transparent; }
+.nav-links .pd-links a:hover { background: rgba(255,255,255,.06); color: var(--text); }
+.nav-links .pd-links a::after { display: none !important; content: none; }

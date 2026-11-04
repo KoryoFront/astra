@@ -84,12 +84,12 @@ const NAV = [['Phones', '#/phones'], ['Accessories', '#/accessories'], ['Trade I
 export function renderHeader() {
   const megaCards = Object.values(SERIES).map(s => {
     const p = PHONES.find(p => p.series === s.id);
-    return `<a class="mega-card" href="#/phones?series=${s.id}"><img src="assets/img/products/${s.id}-back.webp" alt="" loading="lazy"><b>${s.name.replace('ASTRA ', '')}</b><span>${s.tagline}</span><em>From ${store.money(Math.min(...PHONES.filter(x => x.series === s.id).map(fromPrice)))}</em></a>`;
+    return `<a class="pd-card" href="#/phones?series=${s.id}"><span class="pd-img"><img src="assets/img/products/${s.id}-back.webp" alt=""></span><span class="pd-name">${s.name.replace('ASTRA ', '')}</span><span class="pd-tag">${s.tagline}</span><span class="pd-price">From ${store.money(Math.min(...PHONES.filter(x => x.series === s.id).map(fromPrice)))}</span></a>`;
   }).join('');
   $('#siteHeader').innerHTML = `<div class="container nav">
     <a href="#/" class="logo-link" aria-label="ASTRA home">${LOGO}</a>
     <nav class="nav-links" aria-label="Primary">
-      ${NAV.map(([l, h]) => h === '#/phones' ? `<div class="has-mega"><a href="${h}" data-nav="${h}">${l}</a><div class="mega glass">${megaCards}<div class="mega-links"><span class="eyebrow" style="padding:8px 10px">Shop</span><a href="#/phones">All phones</a><a href="#/compare">Compare models</a><a href="#/trade-in">Trade in & upgrade</a><a href="#/warranty">Astra Care+</a></div></div></div>` : `<a href="${h}" data-nav="${h}">${l}</a>`).join('')}
+      ${NAV.map(([l, h]) => h === '#/phones' ? `<div class="pd"><a href="${h}" data-nav="${h}" class="pd-trigger">${l}</a><div class="pd-panel"><div class="pd-cards">${megaCards}</div><div class="pd-links"><span class="pd-head">Shop</span><a href="#/phones">All phones</a><a href="#/compare">Compare models</a><a href="#/trade-in">Trade in &amp; upgrade</a><a href="#/warranty">Astra Care+</a></div></div></div>` : `<a href="${h}" data-nav="${h}">${l}</a>`).join('')}
     </nav>
     <div class="nav-actions">
       <button class="icon-btn" id="searchBtn" aria-label="Search">${icon('search')}</button>
@@ -102,10 +102,14 @@ export function renderHeader() {
     ${[['Home', '#/'], ...NAV, ['Compare', '#/compare'], ['Account', '#/account'], ['Track order', '#/track']].map(([l, h], i) => `<a href="${h}" style="transition-delay:${0.04 * i + 0.05}s">${l}</a>`).join('')}`;
 
   // Touch screens have no hover: first tap on "Phones" opens the menu, tapping outside closes it
-  const mega = $('.has-mega');
-  if (mega && matchMedia('(hover: none)').matches) {
-    mega.firstElementChild.addEventListener('click', e => { if (!mega.classList.contains('open')) { e.preventDefault(); mega.classList.add('open'); } else mega.classList.remove('open'); });
-    document.addEventListener('click', e => { if (!mega.contains(e.target) || e.target.closest('.mega a')) mega.classList.remove('open'); }, true);
+  const pd = $('.pd');
+  if (pd) {
+    const close = () => pd.classList.remove('open');
+    if (matchMedia('(hover: none)').matches) {
+      pd.querySelector('.pd-trigger').addEventListener('click', e => { if (!pd.classList.contains('open')) { e.preventDefault(); pd.classList.add('open'); } else close(); });
+      document.addEventListener('click', e => { if (!pd.contains(e.target)) close(); }, true);
+    }
+    pd.querySelector('.pd-panel').addEventListener('click', e => { if (e.target.closest('a')) { close(); pd.classList.add('shut'); setTimeout(() => pd.classList.remove('shut'), 400); } });
   }
   $('#searchBtn').onclick = openSearch;
   $('#cartBtn').onclick = openCart;
