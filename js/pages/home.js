@@ -179,6 +179,10 @@ export default {
         <p class="dim" style="font-size:13px">90 W HyperCharge · 50 W AstraMag wireless</p>
       </div>
       <div class="b-span-4 card upd-card" data-reveal>
+        <div class="upd-visual" aria-hidden="true"><div class="upd-phone">
+          <img src="${P}x-front.webp" alt="" loading="lazy">
+          <div class="upd-toast"><span class="upd-ic">${icon('refresh')}</span><div><b>AstraOS 7 is ready</b><span>New Astra AI features · 2.1 GB</span><i class="upd-bar"><em></em></i></div></div>
+        </div></div>
         <div class="upd-head">
           <div><p class="eyebrow">AstraOS</p><h3 class="h2" style="margin-top:10px">Seven years of upgrades.</h3><p class="muted" style="margin-top:10px;max-width:440px">New AstraOS versions, Astra AI features and monthly security patches for every X Series phone until 2033.</p></div>
           <div class="upd-big"><span data-count="7">0</span><small>years</small></div>

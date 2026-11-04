@@ -1261,3 +1261,29 @@ body.hdr-hide .pnav { top: 10px; }
 .founder b { display: block; font-weight: 500; }
 .founder span:not(.founder-av) { font-size: 13px; color: var(--text-3); }
 @media (max-width: 720px) { .founders { grid-template-columns: 1fr 1fr; } }
+
+/* Updates card: X1 Pro showing an update notification beside the timeline */
+.upd-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto auto; column-gap: 32px; row-gap: 28px; align-items: start; }
+.upd-card > .upd-head, .upd-card > .upd-track, .upd-card > .upd-feats { grid-column: 1; }
+.upd-visual { grid-column: 2; grid-row: 1 / span 3; align-self: center; position: relative; }
+.upd-phone { position: relative; height: 360px; aspect-ratio: 976 / 2100; transform: rotate(4deg); filter: drop-shadow(0 30px 40px rgba(0,0,0,.6)); }
+.upd-phone img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.upd-toast { position: absolute; left: 7%; right: 7%; top: 38%; display: flex; gap: 8px; align-items: flex-start; padding: 9px 10px; border-radius: 12px; background: rgba(20, 21, 27, .82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 10px 24px rgba(0,0,0,.4); animation: toastPop .8s .4s var(--ease-out) both; }
+.in .upd-toast { animation-play-state: running; }
+@keyframes toastPop { from { opacity: 0; transform: translateY(10px) scale(.94); } }
+.upd-ic { width: 22px; height: 22px; border-radius: 6px; background: #fff; color: #0b0b0e; display: grid; place-items: center; flex-shrink: 0; }
+.upd-ic svg { width: 13px; height: 13px; }
+.upd-toast b { display: block; font-size: 10.5px; font-weight: 600; line-height: 1.2; }
+.upd-toast span:not(.upd-ic) { display: block; font-size: 8.5px; color: var(--text-2); margin-top: 2px; }
+.upd-bar { display: block; height: 3px; border-radius: 2px; background: rgba(255,255,255,.15); margin-top: 6px; overflow: hidden; }
+.upd-bar em { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #b9c6ff, #fff); border-radius: 2px; animation: updFill 4s 1s var(--ease-out) infinite; }
+@keyframes updFill { 0% { width: 0; } 70%, 100% { width: 100%; } }
+@media (max-width: 1100px) { .upd-phone { height: 300px; } }
+@media (max-width: 720px) {
+  .upd-card { grid-template-columns: 1fr; }
+  .upd-visual { grid-column: 1; grid-row: auto; justify-self: center; order: -1; }
+  .upd-phone { height: 260px; }
+  .upd-card > .upd-head, .upd-card > .upd-track, .upd-card > .upd-feats { grid-column: 1; }
+}
+.upd-steps b em { display: none; }
+.upd-track::after { content: 'AstraOS version by year'; display: block; margin-top: 12px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--text-3); }
