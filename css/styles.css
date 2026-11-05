@@ -1321,3 +1321,33 @@ body.hdr-hide .pnav { top: 10px; }
 .upd-phone img { width: 168px; height: auto; max-width: none; }
 @media (max-width: 1100px) { .upd-card { grid-template-columns: minmax(0, 1fr) 170px; } .upd-visual { width: 170px; } .upd-phone, .upd-phone img { width: 140px; } }
 @media (max-width: 720px) { .upd-card { grid-template-columns: minmax(0, 1fr); } .upd-visual { width: 100%; } .upd-phone, .upd-phone img { width: 120px; } }
+.founders { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 900px) { .founders { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .founders { grid-template-columns: 1fr 1fr; } }
+
+/* =========================================================
+   Scroll-linked effects. JS sets --p (0..1 through the viewport) and --in (eased entry 0..1).
+   Defaults keep everything fully visible if JS hasn't run.
+   ========================================================= */
+[data-sx] { --p: .5; --in: 1; }
+[data-sx="tilt"] { transform: perspective(1400px) translate3d(0, calc((1 - var(--in)) * 90px), 0) rotateX(calc((1 - var(--in)) * 24deg)) scale(calc(.94 + var(--in) * .06)); transform-origin: 50% 100%; opacity: calc(.15 + var(--in) * .85); will-change: transform; }
+[data-sx="stagger"] > * { transform: perspective(1400px) translate3d(0, calc((1 - var(--in)) * (80px + var(--k, 0) * 70px)), 0) rotateX(calc((1 - var(--in)) * 20deg)); transform-origin: 50% 100%; opacity: calc(.1 + var(--in) * .9); will-change: transform; }
+[data-sx="zoom"] .bimg { transform: scale(calc(1.3 - var(--in) * .3)) translate3d(0, calc((var(--p) - .5) * -40px), 0) !important; }
+[data-sx="zoom"] { clip-path: inset(calc((1 - var(--in)) * 12%) calc((1 - var(--in)) * 8%) round 28px); }
+[data-sx="drift"] .marquee-track { animation: none; transform: translate3d(calc(var(--p) * -40%), 0, 0); }
+
+/* Section details that follow scroll */
+.series-tall[data-sx] .st-media img { transform: translate3d(0, calc((var(--p) - .5) * -36px), 0) scale(1.06); }
+.series-tall[data-sx] .st-card:hover .st-media img { transform: translate3d(0, calc((var(--p) - .5) * -36px), 0) scale(1.12); }
+.bat-card[data-sx] .bat-shell i { width: calc(var(--in) * 100%); transition: none; }
+.upd-card[data-sx] .upd-line i { width: calc(var(--in) * 100%); transition: none; }
+.upd-card[data-sx] .upd-phone { transform: rotate(calc(12deg - var(--p) * 14deg)) translate3d(0, calc((.5 - var(--p)) * 50px), 0); }
+.side-card[data-sx] img { transform: translate3d(0, calc((.5 - var(--p)) * 60px), 0) rotate(calc((var(--p) - .5) * 8deg)); }
+.ai-card[data-sx] .ai-demo { transform: translate3d(calc((1 - var(--in)) * 60px), 0, 0); opacity: calc(.2 + var(--in) * .8); }
+.ai-card[data-sx] .ai-demo:nth-child(2) { transform: translate3d(calc((1 - var(--in)) * 110px), 0, 0); }
+.ai-card[data-sx] .ai-demo:nth-child(3) { transform: translate3d(calc((1 - var(--in)) * 160px), 0, 0); }
+.tradein-band[data-sx] img[src*="lineup-cut"] { transform: translate3d(0, calc((1 - var(--in)) * 120px + (.5 - var(--p)) * 30px), 0) scale(calc(.85 + var(--in) * .15)); }
+.sx-item { display: flex; }
+.sx-item > .p-card { flex: 1; }
+@media (prefers-reduced-motion: reduce) { [data-sx], [data-sx] * { transform: none !important; clip-path: none !important; opacity: 1 !important; } }
+.grid-cards > .card > .big-num { font-size: clamp(52px, 5.4vw, 86px); }

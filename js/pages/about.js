@@ -19,12 +19,12 @@ export default {
     <div class="container">
       <section class="section narrow" style="margin:0 auto">
         <p class="eyebrow" data-reveal>Our story</p>
-        <p class="h2" style="margin-top:18px;font-weight:300;line-height:1.25" data-reveal>ASTRA was founded in 2026 by Cullin, Mingu, Marley and Daniel, four friends who believed a smartphone should feel as considered as a fine watch and stay useful for just as long.</p>
+        <p class="h2" style="margin-top:18px;font-weight:300;line-height:1.25" data-reveal>ASTRA was founded in 2026 by Cullin, Mingu, Marley, Daniel and Adam, five friends who believed a smartphone should feel as considered as a fine watch and stay useful for just as long.</p>
         <p class="lead" style="margin-top:24px" data-reveal>In our first year we launched three series, from the A3 to the titanium X1 Pro. We design every product in our studios in London and Tokyo, write our own silicon, and support every flagship with seven years of updates.</p>
-        <div class="founders" data-reveal>${[['Cullin', 'C'], ['Mingu', 'M'], ['Marley', 'M'], ['Daniel', 'D']].map(([n, i]) => `<div class="founder"><span class="founder-av">${i}</span><div><b>${n}</b><span>Co-founder</span></div></div>`).join('')}</div>
+        <div class="founders" data-reveal>${[['Cullin', 'C'], ['Mingu', 'M'], ['Marley', 'M'], ['Daniel', 'D'], ['Adam', 'A']].map(([n, i]) => `<div class="founder"><span class="founder-av">${i}</span><div><b>${n}</b><span>Co-founder</span></div></div>`).join('')}</div>
       </section>
       <section class="grid-cards" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))" data-stagger=".08">
-        ${[['2026', '', 'founded'], ['4', '', 'co-founders'], ['62', '', 'countries we ship to'], ['7', ' yrs', 'of software updates']].map(([n, s, l]) => `<div class="card card-pad" data-reveal><div class="big-num"><span data-count="${n}" ${n.length === 4 ? 'data-plain' : ''}>0</span>${s}</div><p class="muted" style="margin-top:8px">${l}</p></div>`).join('')}
+        ${[['2026', '', 'founded'], ['5', '', 'co-founders'], ['62', '', 'countries we ship to'], ['7', ' yrs', 'of software updates']].map(([n, s, l]) => `<div class="card card-pad" data-reveal><div class="big-num"><span data-count="${n}" ${n.length === 4 ? 'data-plain' : ''}>0</span>${s}</div><p class="muted" style="margin-top:8px">${l}</p></div>`).join('')}
       </section>
       <section class="section">
         <div class="bento">

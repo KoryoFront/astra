@@ -70,7 +70,7 @@ export default {
     <div><p class="eyebrow">The family</p><h2 class="display-2" style="margin-top:10px" data-split>Three series.<br><span class="muted">One standard.</span></h2></div>
     <a href="#/phones" class="link" data-reveal>Shop all phones ${icon('arrow')}</a>
   </div>
-  <div class="series-tall" data-stagger=".1">
+  <div class="series-tall" data-sx="stagger" data-sx-end=".5">
     ${Object.values(SERIES).map(s => {
       const ps = PHONES.filter(p => p.series === s.id), p = ps[0];
       return `<a class="st-card" href="#/phones?series=${s.id}" data-reveal>
@@ -81,7 +81,7 @@ export default {
   </div>
 </section>
 
-<div class="marquee" aria-hidden="true"><div class="marquee-track">${Array(2).fill(['Aerospace titanium', '200 MP Pro camera', 'Nova G3 · 3 nm', '7 years of updates', 'Astra AI on-device', '90 W HyperCharge', 'IP68 + IP69'].map(t => `<span>${t}</span>`).join('')).join('')}</div></div>
+<div class="marquee" aria-hidden="true" data-sx="drift"><div class="marquee-track">${Array(2).fill(['Aerospace titanium', '200 MP Pro camera', 'Nova G3 · 3 nm', '7 years of updates', 'Astra AI on-device', '90 W HyperCharge', 'IP68 + IP69'].map(t => `<span>${t}</span>`).join('')).join('')}</div></div>
 
 <!-- 3D rotation storytelling: phone turns while type and grid slide behind it -->
 <section class="story" id="story" aria-label="X1 Pro design">
@@ -136,7 +136,7 @@ export default {
 <section class="section" aria-label="Performance">
   <div class="container">
     <div class="bento">
-      <div class="b-span-6 card" style="min-height:min(72vh,660px)" data-reveal="scale">
+      <div class="b-span-6 card chip-card" style="min-height:min(72vh,660px)" data-sx="zoom" data-sx-end=".55">
         <img class="bimg" src="${P}x-chip.jpg" alt="ASTRA Nova G3 chip" loading="lazy" data-parallax="0.06" style="inset:-6% 0;height:112%">
         <div class="bcap" style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;z-index:2;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 40%,rgba(0,0,0,.7))">
           <div><p class="eyebrow">Nova G3 · 3 nm</p><h2 class="display-2" style="margin-top:12px" data-split>The mind<br>behind the magic.</h2></div>
@@ -147,7 +147,7 @@ export default {
           </div>
         </div>
       </div>
-      <div class="b-span-4 card ai-card" data-reveal>
+      <div class="b-span-4 card ai-card" data-sx="tilt">
         <div class="ai-head"><p class="eyebrow">Astra AI</p><h3 class="h2" style="margin-top:10px">Private by design.</h3><p class="muted" style="margin-top:10px">Everything runs on the Nova G3 neural engine, so your calls, photos and notes never leave the phone.</p></div>
         <div class="ai-demos">
           <div class="ai-demo">
@@ -168,7 +168,7 @@ export default {
           </div>
         </div>
       </div>
-      <div class="b-span-2 card bat-card" data-reveal>
+      <div class="b-span-2 card bat-card" data-sx="tilt" data-sx-end=".5">
         <p class="eyebrow">Battery</p>
         <div class="bat-big"><span data-count="2">0</span><small>days</small></div>
         <p class="muted">5,500 mAh silicon-carbon cell. Video playback up to 31 hours.</p>
@@ -178,7 +178,7 @@ export default {
         </div>
         <p class="dim" style="font-size:13px">90 W HyperCharge · 50 W AstraMag wireless</p>
       </div>
-      <div class="b-span-4 card upd-card" data-reveal>
+      <div class="b-span-4 card upd-card" data-sx="tilt" data-sx-end=".5">
         <div class="upd-visual" aria-hidden="true"><div class="upd-phone">
           <img src="${P}x-front.webp" alt="" loading="lazy">
           <div class="upd-toast"><span class="upd-ic">${icon('refresh')}</span><div><b>AstraOS 7 is ready</b><span>New Astra AI features · 2.1 GB</span><i class="upd-bar"><em></em></i></div></div>
@@ -193,7 +193,7 @@ export default {
         </div>
         <div class="upd-feats"><span>${icon('shield')} Monthly security patches</span><span>${icon('sparkle')} New Astra AI features</span><span>${icon('refresh')} Free version upgrades</span></div>
       </div>
-      <a href="#/phone/x1-pro" class="b-span-2 card side-card" data-reveal>
+      <a href="#/phone/x1-pro" class="b-span-2 card side-card" data-sx="tilt">
         <img src="${P}x-side.jpg" alt="X1 Pro titanium side profile" loading="lazy">
         <div class="bcap"><p class="eyebrow">Design</p><h3 class="h3" style="margin-top:6px">8.2 mm of titanium.</h3></div>
       </a>
@@ -219,7 +219,7 @@ export default {
       <div><p class="eyebrow">Best sellers</p><h2 class="display-2" style="margin-top:12px" data-split>Find your ASTRA.</h2></div>
       <a href="#/phones" class="link" data-reveal>Shop all phones ${icon('arrow')}</a>
     </div>
-    <div class="grid-cards" id="featured" data-stagger=".1">${featured.map(p => phoneCard(p)).join('')}</div>
+    <div class="grid-cards" id="featured" data-sx="stagger" data-sx-end=".5">${featured.map(p => `<div class="sx-item">${phoneCard(p)}</div>`).join('')}</div>
   </div>
 </section>
 
@@ -230,14 +230,14 @@ export default {
       <div><p class="eyebrow">Accessories</p><h2 class="h2" style="margin-top:10px">Complete the experience.</h2></div>
       <a href="#/accessories" class="link">All accessories ${icon('arrow')}</a>
     </div>
-    <div class="grid-cards" id="accs" data-stagger=".08">${ACCESSORIES.slice(0, 4).map(accessoryCard).join('')}</div>
+    <div class="grid-cards" id="accs" data-sx="stagger" data-sx-end=".5">${ACCESSORIES.slice(0, 4).map(a => `<div class="sx-item">${accessoryCard(a)}</div>`).join('')}</div>
   </div>
 </section>
 
 <!-- Trade-in band -->
 <section class="section-sm">
   <div class="container">
-    <div class="card" style="border-radius:var(--radius-lg);overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center" data-reveal="scale">
+    <div class="card tradein-band" style="border-radius:var(--radius-lg);overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center" data-sx="tilt" data-sx-end=".5">
       <div style="padding:clamp(28px,5vw,64px)">
         <p class="eyebrow">Trade in & upgrade</p>
         <h2 class="h2" style="margin-top:12px">Get up to $860 off X1 Pro.</h2>

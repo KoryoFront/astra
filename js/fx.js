@@ -109,9 +109,36 @@ export function initMagnetic(root = document) {
   });
 }
 
+/** Scroll-linked effects: [data-sx] elements get --p (0..1 travel through the viewport)
+ *  and --in (eased entry, 0..1) as CSS variables; CSS turns them into motion. */
+export function initScrollFx(root = document) {
+  const els = [...root.querySelectorAll('[data-sx]')];
+  if (!els.length) return;
+  els.forEach(el => {
+    el.removeAttribute('data-reveal');
+    if (el.dataset.sx === 'stagger') [...el.children].forEach((c, k) => { c.style.setProperty('--k', k); c.removeAttribute('data-reveal'); c.querySelectorAll(':scope > [data-reveal]').forEach(x => x.classList.add('in')); });
+  });
+  // count-up numbers inside scroll-driven cards start when the card comes into view
+  const cio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { counters(e.target); cio.unobserve(e.target); } }), { threshold: 0.3 });
+  els.forEach(el => { if (el.querySelector('[data-count]')) cio.observe(el); });
+  if (reduce) { els.forEach(el => { el.style.setProperty('--in', 1); el.style.setProperty('--p', 0.5); }); return () => cio.disconnect(); }
+  const off = onScroll((y, vh) => {
+    els.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -vh * 0.5 || r.top > vh * 1.5) return;
+      const p = clamp((vh - r.top) / (vh + r.height));
+      const end = parseFloat(el.dataset.sxEnd || 0.42);
+      el.style.setProperty('--p', p.toFixed(4));
+      el.style.setProperty('--in', ease(range(p, 0.02, end)).toFixed(4));
+    });
+  });
+  return () => { off(); cio.disconnect(); };
+}
+
 export function initFx(root) {
   const offs = [];
   initReveal(root);
+  const sx = initScrollFx(root); if (sx) offs.push(sx);
   const p = initParallax(root); if (p) offs.push(p);
   initTilt(root); initMagnetic(root);
   return () => offs.forEach(f => f());
