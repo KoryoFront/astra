@@ -1351,3 +1351,5 @@ body.hdr-hide .pnav { top: 10px; }
 .sx-item > .p-card { flex: 1; }
 @media (prefers-reduced-motion: reduce) { [data-sx], [data-sx] * { transform: none !important; clip-path: none !important; opacity: 1 !important; } }
 .grid-cards > .card > .big-num { font-size: clamp(52px, 5.4vw, 86px); }
+/* 3D phone: both faces fill the frame exactly so the metal edges line up (A3/S5 renders differ slightly in height) */
+.p3d-face img { object-fit: fill; }
