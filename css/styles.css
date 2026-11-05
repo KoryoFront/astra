@@ -1313,3 +1313,11 @@ body.hdr-hide .pnav { top: 10px; }
 .nav-links .pd-links a { display: block; padding: 9px 12px; border-radius: 10px; font-size: 14px; color: var(--text-2); background: transparent; }
 .nav-links .pd-links a:hover { background: rgba(255,255,255,.06); color: var(--text); }
 .nav-links .pd-links a::after { display: none !important; content: none; }
+
+/* Updates card: fixed-size phone column so Safari can't size the track from the image's natural width */
+.upd-card { display: grid; grid-template-columns: minmax(0, 1fr) 200px; }
+.upd-visual { width: 200px; min-width: 0; display: flex; justify-content: center; }
+.upd-phone { width: 168px; height: auto; aspect-ratio: auto; flex: none; }
+.upd-phone img { width: 168px; height: auto; max-width: none; }
+@media (max-width: 1100px) { .upd-card { grid-template-columns: minmax(0, 1fr) 170px; } .upd-visual { width: 170px; } .upd-phone, .upd-phone img { width: 140px; } }
+@media (max-width: 720px) { .upd-card { grid-template-columns: minmax(0, 1fr); } .upd-visual { width: 100%; } .upd-phone, .upd-phone img { width: 120px; } }
