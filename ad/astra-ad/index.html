@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Inter Display"; src: url("assets/fonts/InterDisplay-Regular.otf") format("opentype"); font-weight: 400; }
+      @font-face { font-family: "Inter Display"; src: url("assets/fonts/InterDisplay-Medium.otf") format("opentype"); font-weight: 500; }
+      @font-face { font-family: "Inter Display"; src: url("assets/fonts/InterDisplay-SemiBold.otf") format("opentype"); font-weight: 600; }
+      @font-face { font-family: "Inter Display"; src: url("assets/fonts/InterDisplay-Bold.otf") format("opentype"); font-weight: 700; }
+      :root {
+        --ground: #05060a;
+        --ink: #f5f6fa;
+        --ink-2: #a8adbb;
+        --accent: #b9c6ff;
+        --font-display: "Inter Display", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: var(--font-display); color: var(--ink); }
+      .clip { position: absolute; inset: 0; overflow: hidden; }
+      .center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      .eyebrow { font-size: 30px; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; color: var(--ink-2); }
+      .mega { font-size: 210px; font-weight: 700; letter-spacing: -0.045em; line-height: .92; }
+      .h1 { font-size: 120px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+      .sub { font-size: 40px; font-weight: 400; color: var(--ink-2); letter-spacing: -0.01em; }
+      .grad { background: linear-gradient(100deg, #fff 20%, #b9c6ff 55%, #e9d8ff 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .shade-b { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,6,10,0) 40%, rgba(5,6,10,.85) 100%); }
+      .shade-l { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,6,10,.9) 0%, rgba(5,6,10,.35) 50%, rgba(5,6,10,0) 75%); }
+
+      /* S1 intro */
+      #s1 { background: radial-gradient(60% 60% at 50% 55%, #141a33 0%, #05060a 70%); }
+      #s1 .sweep { position: absolute; top: -20%; left: -40%; width: 30%; height: 140%; transform: rotate(14deg); background: linear-gradient(90deg, transparent, rgba(185,198,255,.18), transparent); }
+
+      /* S2 hero */
+      #s2 .bg { position: absolute; inset: -4%; width: 108%; height: 108%; object-fit: cover; }
+      #s2 .phones { position: absolute; left: 50%; bottom: 40px; height: 900px; transform: translateX(-50%); }
+      #s2 .fg { position: absolute; left: 0; bottom: -60px; width: 100%; }
+      #s2 .copy { position: absolute; left: 120px; bottom: 120px; }
+
+      /* S3 titanium spin */
+      #s3 { background: radial-gradient(55% 70% at 50% 50%, #1b2033 0%, #05060a 70%); }
+      #s3 .stage { position: absolute; left: 50%; top: 50%; width: 400px; height: 862px; margin: -431px 0 0 -200px; perspective: 2200px; }
+      #s3 .spin { position: absolute; inset: 0; transform-style: preserve-3d; }
+      #s3 .face { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; backface-visibility: hidden; -webkit-backface-visibility: hidden; filter: drop-shadow(0 40px 60px rgba(0,0,0,.6)); }
+      #s3 .face.back { transform: rotateY(180deg); }
+      #s3 .title { position: absolute; top: 60px; left: 0; right: 0; text-align: center; }
+      .callout { position: absolute; width: 420px; }
+      .callout b { display: block; font-size: 92px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+      .callout span { display: block; margin-top: 10px; font-size: 28px; color: var(--ink-2); line-height: 1.3; }
+      .callout.l { left: 170px; text-align: right; }
+      .callout.r { right: 170px; text-align: left; }
+
+      /* S4 camera */
+      #s4 .copy { position: absolute; left: 120px; top: 50%; transform: translateY(-50%); }
+      #s4 .big { font-size: 300px; font-weight: 700; letter-spacing: -0.06em; line-height: .85; }
+      #s4 .big small { font-size: 120px; letter-spacing: -0.03em; margin-left: 12px; }
+
+      /* S5 chip */
+      #s5 .copy { position: absolute; right: 120px; top: 50%; transform: translateY(-50%); text-align: right; }
+      #s5 .shade-r { position: absolute; inset: 0; background: linear-gradient(270deg, rgba(5,6,10,.92) 0%, rgba(5,6,10,.4) 50%, rgba(5,6,10,0) 75%); }
+      .chips { display: flex; gap: 48px; justify-content: flex-end; margin-top: 48px; }
+      .chips div b { display: block; font-size: 64px; font-weight: 700; letter-spacing: -0.03em; }
+      .chips div span { font-size: 30px; color: var(--ink-2); }
+
+      /* S6 battery */
+      #s6 { background: radial-gradient(50% 60% at 30% 50%, #12203a 0%, #05060a 70%); }
+      #s6 .ring { position: absolute; left: 230px; top: 50%; width: 620px; height: 620px; margin-top: -310px; }
+      #s6 .ring-label { position: absolute; left: 230px; top: 50%; width: 620px; margin-top: -90px; text-align: center; }
+      #s6 .ring-label b { display: block; font-size: 128px; font-weight: 700; letter-spacing: -0.05em; line-height: 1; }
+      #s6 .ring-label > span { font-size: 32px; color: var(--ink-2); }
+      #s6 .copy { position: absolute; left: 1000px; top: 50%; transform: translateY(-50%); width: 800px; }
+
+      /* S7 end card */
+      #s7 { background: radial-gradient(70% 70% at 50% 100%, #1a2140 0%, #05060a 65%); }
+      #s7 .lineup { position: absolute; left: 50%; bottom: -150px; width: 900px; margin-left: -450px; }
+      #s7 .copy { position: absolute; top: 70px; left: 0; right: 0; text-align: center; }
+      #s7 .logo { font-size: 44px; font-weight: 700; letter-spacing: .5em; margin-right: -.5em; }
+      #s7 .price { margin-top: 14px; font-size: 40px; color: var(--ink-2); }
+      #s7 .price b { color: var(--ink); font-weight: 600; }
+      .pill { display: inline-block; margin-top: 22px; padding: 18px 44px; border-radius: 999px; background: #f5f6fa; color: #05060a; font-size: 30px; font-weight: 600; }
+
+      #grain { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%); z-index: 50; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1920" data-height="1080">
+
+      <!-- S1: title -->
+      <section id="s1" class="clip center" data-start="0" data-duration="3.4" data-track-index="0">
+        <div class="sweep"></div>
+        <div class="eyebrow" id="s1-eye">Introducing</div>
+        <div class="mega grad" id="s1-title" style="margin-top:28px">ASTRA X1 Pro</div>
+      </section>
+
+      <!-- S2: hero layers -->
+      <section id="s2" class="clip" data-start="3.2" data-duration="4.2" data-track-index="0">
+        <img class="bg" id="s2-bg" src="assets/hero-bg.jpg" alt="" />
+        <img class="phones" id="s2-phones" src="assets/hero-phones.webp" alt="" />
+        <img class="fg" id="s2-fg" src="assets/hero-fg.webp" alt="" />
+        <div class="shade-b"></div>
+        <div class="copy">
+          <div class="h1" id="s2-l1">Power.</div>
+          <div class="h1" id="s2-l2">Intelligence.</div>
+          <div class="h1 grad" id="s2-l3">Elegance.</div>
+        </div>
+      </section>
+
+      <!-- S3: titanium spin -->
+      <section id="s3" class="clip" data-start="7.2" data-duration="4.2" data-track-index="0">
+        <div class="title"><div class="h1" id="s3-title">Forged in titanium.</div></div>
+        <div class="stage"><div class="spin" id="s3-spin">
+          <img class="face front" src="assets/x-front.webp" alt="" />
+          <img class="face back" src="assets/x-back.webp" alt="" />
+        </div></div>
+        <div class="callout l" id="s3-c1" style="top:430px"><b>8.2 mm</b><span>Grade 5 titanium frame</span></div>
+        <div class="callout l" id="s3-c2" style="top:690px"><b>214 g</b><span>Perfectly balanced</span></div>
+        <div class="callout r" id="s3-c3" style="top:430px"><b>IP69</b><span>Sealed against dust and water</span></div>
+        <div class="callout r" id="s3-c4" style="top:690px"><b>Ultra</b><span>Astra Shield Glass</span></div>
+      </section>
+
+      <!-- S4: camera -->
+      <section id="s4" class="clip" data-start="11.2" data-duration="3.6" data-track-index="0">
+        <img class="fill" id="s4-img" src="assets/x-macro.jpg" alt="" />
+        <div class="shade-l"></div>
+        <div class="copy">
+          <div class="eyebrow" id="s4-eye">Pro camera system</div>
+          <div class="big" id="s4-big"><span id="s4-num">0</span><small>MP</small></div>
+          <div class="sub" id="s4-sub" style="margin-top:24px">See what others miss.</div>
+        </div>
+      </section>
+
+      <!-- S5: chip -->
+      <section id="s5" class="clip" data-start="14.6" data-duration="3.2" data-track-index="0">
+        <img class="fill" id="s5-img" src="assets/x-chip.jpg" alt="" />
+        <div class="shade-r"></div>
+        <div class="copy">
+          <div class="eyebrow" id="s5-eye">3 nm silicon</div>
+          <div class="h1 grad" id="s5-title" style="font-size:170px;margin-top:16px">Nova G3</div>
+          <div class="chips" id="s5-chips">
+            <div><b>78</b><span>TOPS neural engine</span></div>
+            <div><b>4.1</b><span>GHz peak CPU</span></div>
+            <div><b>16</b><span>GB RAM</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- S6: battery -->
+      <section id="s6" class="clip" data-start="17.6" data-duration="3.2" data-track-index="0">
+        <svg class="ring" viewBox="0 0 620 620">
+          <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9c6ff"/><stop offset="1" stop-color="#e9d8ff"/></linearGradient></defs>
+          <circle cx="310" cy="310" r="280" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="22"/>
+          <circle id="s6-arc" cx="310" cy="310" r="280" fill="none" stroke="url(#rg)" stroke-width="22" stroke-linecap="round" stroke-dasharray="1759.3" stroke-dashoffset="1759.3" transform="rotate(-90 310 310)"/>
+        </svg>
+        <div class="ring-label"><b><span id="s6-num">0</span></b><span>mAh silicon-carbon</span></div>
+        <div class="copy">
+          <div class="h1" id="s6-l1">Two days.</div>
+          <div class="h1 grad" id="s6-l2">29 minutes.</div>
+          <div class="sub" id="s6-sub" style="margin-top:30px">90 W HyperCharge.</div>
+        </div>
+      </section>
+
+      <!-- S7: end card -->
+      <section id="s7" class="clip" data-start="20.6" data-duration="4.4" data-track-index="0">
+        <img class="lineup" id="s7-lineup" src="assets/lineup-cut.webp" alt="" />
+        <div class="copy">
+          <div class="logo" id="s7-logo">ASTRA</div>
+          <div class="h1" id="s7-title" style="margin-top:14px;font-size:120px">X1 Pro</div>
+          <div class="price" id="s7-price">From <b>$1,199</b></div>
+          <div id="s7-cta"><span class="pill">Available now</span></div>
+        </div>
+      </section>
+
+      <audio id="music" src="assets/music.wav" data-start="0" data-duration="25" data-volume="0.9" data-fade-out="1.5"></audio>
+      <div id="grain"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", IO = "power2.inOut";
+
+      // S1 — title reveal with a light sweep
+      tl.fromTo("#s1-eye", { opacity: 0, y: 20, scale: 1.12 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: E }, 0);
+      tl.fromTo("#s1-title", { opacity: 0, scale: 1.18, filter: "blur(18px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.4, ease: "expo.out" }, 0.55);
+      tl.fromTo("#s1 .sweep", { x: 0 }, { x: 3200, duration: 1.8, ease: "power1.inOut" }, 1.0);
+      tl.to("#s1-title, #s1-eye", { opacity: 0, scale: 0.94, filter: "blur(10px)", duration: 0.45, ease: "power2.in" }, 2.85);
+
+      // S2 — hero parallax push-in (phones move against the background)
+      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 3.2);
+      tl.fromTo("#s2-bg", { scale: 1.16 }, { scale: 1.0, duration: 4.2, ease: "power1.out" }, 3.2);
+      tl.fromTo("#s2-phones", { y: 260, scale: 0.9 }, { y: 0, scale: 1, duration: 3.0, ease: E }, 3.2);
+      tl.fromTo("#s2-fg", { y: 160 }, { y: -40, duration: 4.2, ease: "power1.out" }, 3.2);
+      ["#s2-l1", "#s2-l2", "#s2-l3"].forEach((s, i) => tl.fromTo(s, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.7, ease: E }, 3.8 + i * 0.35));
+
+      // S3 — 3D spin, back to front, with spec callouts
+      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.35 }, 7.2);
+      tl.fromTo("#s3-spin", { rotationY: 200, rotationX: 8, y: 200, scale: 0.74 }, { rotationY: -14, rotationX: 0, y: 110, scale: 0.8, duration: 3.2, ease: "power3.inOut" }, 7.25);
+      tl.fromTo("#s3-title", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.7, ease: E }, 7.5);
+      tl.fromTo("#s3-c1", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 8.6);
+      tl.fromTo("#s3-c3", { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 8.85);
+      tl.fromTo("#s3-c2", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 9.1);
+      tl.fromTo("#s3-c4", { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 9.35);
+
+      // S4 — camera macro zoom + counter
+      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.2);
+      tl.fromTo("#s4-img", { scale: 1.45, x: 140 }, { scale: 1.02, x: 0, duration: 3.6, ease: "power2.out" }, 11.2);
+      tl.fromTo("#s4-eye", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, 11.45);
+      tl.fromTo("#s4-big", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: E }, 11.55);
+      const cam = { v: 0 };
+      tl.fromTo(cam, { v: 0 }, { v: 200, duration: 1.4, ease: "power2.out", onUpdate: () => { document.getElementById("s4-num").textContent = Math.round(cam.v); } }, 11.55);
+      tl.fromTo("#s4-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: E }, 12.4);
+
+      // S5 — chip
+      tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 14.6);
+      tl.fromTo("#s5-img", { scale: 1.25, rotation: -3 }, { scale: 1.05, rotation: 0, duration: 3.2, ease: "power2.out" }, 14.6);
+      tl.fromTo("#s5-eye", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, 14.8);
+      tl.fromTo("#s5-title", { opacity: 0, scale: 1.12, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.9, ease: "expo.out" }, 14.9);
+      tl.fromTo("#s5-chips > div", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.55, ease: E, stagger: 0.18 }, 15.6);
+
+      // S6 — battery ring
+      tl.fromTo("#s6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 17.6);
+      tl.fromTo("#s6-arc", { attr: { "stroke-dashoffset": 1759.3 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "power2.inOut" }, 17.8);
+      const bat = { v: 0 };
+      tl.fromTo(bat, { v: 0 }, { v: 5500, duration: 1.4, ease: "power2.inOut", onUpdate: () => { document.getElementById("s6-num").textContent = Math.round(bat.v).toLocaleString("en-US"); } }, 17.8);
+      tl.fromTo("#s6-l1", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 18.1);
+      tl.fromTo("#s6-l2", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 18.4);
+      tl.fromTo("#s6-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, 18.7);
+
+      // S7 — end card
+      tl.fromTo("#s7", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 20.6);
+      tl.fromTo("#s7-lineup", { y: 320, opacity: 0 }, { y: 0, opacity: 1, duration: 1.6, ease: "expo.out" }, 20.7);
+      tl.fromTo("#s7-logo", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 1.0, ease: E }, 20.9);
+      tl.fromTo("#s7-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: E }, 21.2);
+      tl.fromTo("#s7-price", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: E }, 21.6);
+      tl.fromTo("#s7-cta", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, 21.9);
+      tl.to("#s7-lineup", { y: -20, duration: 2.6, ease: "none" }, 22.3);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

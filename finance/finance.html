@@ -1,0 +1,511 @@
+<meta charset="utf-8">
+<title>ASTRA Finance</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f4f5f7; --surface: #fcfcfb; --surface-2: #f1f2f4;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #7a7974;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,.10);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --good: #006300; --bad: #c62f2f; --accent: #2a78d6;
+  --btn: #0b0b0b; --btn-ink: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0a0b0f; --surface: #14161c; --surface-2: #1b1e26;
+    --ink: #f0efec; --ink-2: #c3c2b7; --muted: #8d8c86;
+    --grid: #262a33; --axis: #3a3e48; --border: rgba(255,255,255,.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --good: #0ca30c; --bad: #e66767; --accent: #8fa2ff;
+    --btn: #f0efec; --btn-ink: #0b0b0b;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0a0b0f; --surface: #14161c; --surface-2: #1b1e26;
+  --ink: #f0efec; --ink-2: #c3c2b7; --muted: #8d8c86;
+  --grid: #262a33; --axis: #3a3e48; --border: rgba(255,255,255,.10);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --good: #0ca30c; --bad: #e66767; --accent: #8fa2ff;
+  --btn: #f0efec; --btn-ink: #0b0b0b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.45 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+button, input, select { font: inherit; color: inherit; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px 64px; }
+header.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--page) 86%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+header.top .wrap { display: flex; align-items: center; gap: 16px; padding-top: 14px; padding-bottom: 14px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .26em; font-size: 15px; }
+.brand svg { width: 22px; height: 22px; }
+.brand small { letter-spacing: 0; font-weight: 500; color: var(--ink-2); font-size: 14px; margin-left: 4px; }
+.tag { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--ink-2); }
+.spacer { flex: 1; }
+.seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: none; padding: 6px 12px; border-radius: 7px; cursor: pointer; font-size: 13.5px; color: var(--ink-2); font-weight: 500; }
+.seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--surface); padding: 8px 14px; border-radius: 10px; cursor: pointer; font-size: 13.5px; font-weight: 500; white-space: nowrap; }
+.btn:hover { background: var(--surface-2); }
+.btn.primary { background: var(--btn); color: var(--btn-ink); border-color: transparent; }
+.btn.primary:hover { opacity: .9; }
+.btn.icon { padding: 8px 10px; }
+.btn.danger { color: var(--bad); }
+h1 { font-size: 34px; letter-spacing: -.025em; margin: 34px 0 4px; }
+.sub { color: var(--ink-2); margin: 0 0 24px; }
+h2 { font-size: 17px; margin: 0; letter-spacing: -.01em; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; min-width: 0; }
+.card-h { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.card-h .note { color: var(--muted); font-size: 13px; }
+.kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 14px; }
+.kpi .lbl { color: var(--ink-2); font-size: 13px; font-weight: 500; }
+.kpi .val { font-size: 30px; font-weight: 650; letter-spacing: -.03em; margin-top: 6px; }
+.kpi .delta { font-size: 13px; margin-top: 4px; color: var(--muted); }
+.kpi .delta b { font-weight: 600; }
+.up { color: var(--good); } .down { color: var(--bad); }
+.grid2 { display: grid; grid-template-columns: 1.65fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.chart text { fill: var(--muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.tip { position: absolute; pointer-events: none; z-index: 5; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(0,0,0,.18); border-radius: 10px; padding: 9px 11px; font-size: 12.5px; min-width: 150px; opacity: 0; transition: opacity .12s; }
+.tip.show { opacity: 1; }
+.tip .t { font-weight: 600; margin-bottom: 4px; }
+.tip .r { display: flex; justify-content: space-between; gap: 14px; color: var(--ink-2); }
+.tip .r b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+.hbar { display: grid; grid-template-columns: 150px 1fr 74px; align-items: center; gap: 10px; padding: 5px 0; font-size: 13.5px; }
+.hbar .track { height: 12px; border-radius: 0 4px 4px 0; position: relative; }
+.hbar .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--s1); border-radius: 0 4px 4px 0; min-width: 2px; }
+.hbar .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.hbar:hover .fill { filter: brightness(1.12); }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th, td { padding: 9px 10px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+th { font-weight: 600; color: var(--ink-2); font-size: 12.5px; position: sticky; top: 0; background: var(--surface); }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+tr.total td { font-weight: 650; border-top: 1.5px solid var(--axis); }
+tr.sect td { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; padding-top: 16px; }
+.scroll { overflow-x: auto; }
+.ledger-tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.input, .select { border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 8px 12px; font-size: 13.5px; min-width: 0; }
+.input:focus, .select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pill { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--ink-2); }
+.del { border: 0; background: none; color: var(--muted); cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+.del:hover { color: var(--bad); background: var(--surface-2); }
+.foot { color: var(--muted); font-size: 12.5px; margin-top: 28px; text-align: center; }
+dialog { border: 1px solid var(--border); border-radius: 18px; background: var(--surface); color: var(--ink); padding: 24px; width: min(480px, calc(100vw - 32px)); }
+dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+.form label { display: grid; gap: 5px; font-size: 12.5px; color: var(--ink-2); font-weight: 500; }
+.form .full { grid-column: 1 / -1; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--btn); color: var(--btn-ink); padding: 10px 16px; border-radius: 12px; font-size: 13.5px; opacity: 0; transition: .25s; z-index: 50; pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.more { text-align: center; margin-top: 12px; }
+@media (max-width: 1100px) { .kpis { grid-template-columns: repeat(3, 1fr); } .grid2, .grid3 { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px 48px; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .kpi .val { font-size: 24px; }
+  h1 { font-size: 26px; }
+  .hbar { grid-template-columns: 90px 1fr 64px; }
+  header.top .seg { order: 3; width: 100%; overflow-x: auto; }
+}
+</style>
+
+<header class="top"><div class="wrap">
+  <div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 3 3 21h18L12 3Z"/><path d="M8 15h8"/></svg>ASTRA <small>Finance</small></div>
+  <span class="tag" title="All figures are generated sample data">Simulated data</span>
+  <div class="spacer"></div>
+  <div class="seg" id="period" role="tablist" aria-label="Period"></div>
+  <button class="btn icon" id="theme" title="Toggle theme" aria-label="Toggle theme">◐</button>
+</div></header>
+
+<main class="wrap">
+  <h1>Financial records</h1>
+  <p class="sub" id="subline"></p>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="grid2">
+    <div class="card">
+      <div class="card-h"><h2>Revenue by series</h2><span class="note">Monthly, USD</span><div class="spacer"></div><div class="legend" id="revLegend"></div></div>
+      <div class="chart" id="revChart"></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Cash balance</h2><span class="note">End of month</span></div>
+      <div class="chart" id="cashChart"></div>
+    </div>
+  </section>
+
+  <section class="grid3">
+    <div class="card"><div class="card-h"><h2>Units by model</h2></div><div id="unitsBars"></div></div>
+    <div class="card"><div class="card-h"><h2>Operating expenses</h2></div><div id="opexBars"></div></div>
+    <div class="card"><div class="card-h"><h2>Revenue by region</h2></div><div id="regionBars"></div></div>
+  </section>
+
+  <section class="card" style="margin-bottom:14px">
+    <div class="card-h"><h2>Profit &amp; loss</h2><span class="note">By month in the selected period</span><div class="spacer"></div><button class="btn" id="exportPL">Export P&amp;L CSV</button></div>
+    <div class="scroll"><table id="pl"></table></div>
+  </section>
+
+  <section class="card">
+    <div class="card-h"><h2>General ledger</h2><span class="note" id="ledgerCount"></span><div class="spacer"></div>
+      <button class="btn primary" id="addBtn">+ New record</button>
+    </div>
+    <div class="ledger-tools">
+      <input class="input" id="q" placeholder="Search description, account, ref…" style="flex:1;min-width:200px" aria-label="Search">
+      <select class="select" id="fType" aria-label="Type"><option value="">All types</option></select>
+      <select class="select" id="fAcct" aria-label="Account"><option value="">All accounts</option></select>
+      <button class="btn" id="exportCsv">Export CSV</button>
+      <button class="btn danger" id="resetBtn">Reset sample data</button>
+    </div>
+    <div class="scroll"><table id="ledger"></table></div>
+    <div class="more"><button class="btn" id="moreBtn">Show more</button></div>
+  </section>
+
+  <p class="foot">ASTRA Finance · All figures are simulated for a fictional company and stored only in this browser.</p>
+</main>
+
+<dialog id="dlg">
+  <form method="dialog" id="recForm">
+    <h2>New ledger record</h2>
+    <div class="form">
+      <label>Date<input class="input" type="date" name="date" required min="2026-01-01" max="2026-12-31"></label>
+      <label>Type<select class="select" name="type" id="formType"></select></label>
+      <label class="full">Account<select class="select" name="account" id="formAcct"></select></label>
+      <label class="full">Description<input class="input" name="desc" required maxlength="80" placeholder="e.g. Q4 retail campaign"></label>
+      <label>Amount (USD)<input class="input" type="number" name="amount" required min="0.01" step="0.01"></label>
+      <label>Region<select class="select" name="region"><option value="">—</option><option>North America</option><option>Europe</option><option>Asia-Pacific</option><option>Rest of world</option></select></label>
+      <label>Units (sales only)<input class="input" type="number" name="units" min="0" step="1"></label>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn primary" value="ok">Save record</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const KEY = 'astra-finance-v1';
+  const $ = s => document.querySelector(s);
+  const MONTHS = ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10'];
+  const MNAME = m => new Date(m + '-15').toLocaleString('en-US', { month: 'short' });
+  const SERIES = [
+    { id: 'X', name: 'X Series', v: '--s1' },
+    { id: 'S', name: 'S Series', v: '--s2' },
+    { id: 'A', name: 'A Series', v: '--s3' },
+    { id: 'ACC', name: 'Accessories', v: '--s4' },
+  ];
+  const MODELS = [
+    { id: 'x1-pro', name: 'X1 Pro', s: 'X', asp: 1290, cogs: .56, from: 8 },
+    { id: 'x1', name: 'X1', s: 'X', asp: 985, cogs: .59, from: 8 },
+    { id: 's5-plus', name: 'S5 Plus', s: 'S', asp: 690, cogs: .61, from: 3 },
+    { id: 's5', name: 'S5', s: 'S', asp: 528, cogs: .63, from: 3 },
+    { id: 'a3', name: 'A3', s: 'A', asp: 318, cogs: .66, from: 3 },
+    { id: 'a3-lite', name: 'A3 Lite', s: 'A', asp: 208, cogs: .68, from: 3 },
+  ];
+  const REGIONS = [['North America', .46], ['Europe', .31], ['Asia-Pacific', .17], ['Rest of world', .06]];
+  const ACCOUNTS = {
+    'Revenue': ['Product sales', 'Accessory sales'],
+    'COGS': ['Cost of goods sold'],
+    'Expense': ['R&D', 'Marketing', 'Salaries & G&A', 'Logistics & fulfilment', 'Payment processing', 'Cloud & IT', 'Rent & facilities'],
+    'Funding': ['Equity financing'],
+  };
+
+  // ---------- deterministic sample generator ----------
+  function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function generate() {
+    const r = rng(2026), recs = []; let n = 1;
+    const add = (date, type, account, desc, amount, extra = {}) => recs.push({ id: 'GL-' + String(n++).padStart(5, '0'), date, type, account, desc, amount: Math.round(amount * 100) / 100, region: '', units: 0, ...extra });
+    const day = (m, d) => `${m}-${String(d).padStart(2, '0')}`;
+    add('2026-01-08', 'Funding', 'Equity financing', 'Seed round — lead investor tranche', 26000000);
+    add('2026-06-12', 'Funding', 'Equity financing', 'Series A — first close', 48000000);
+    add('2026-09-30', 'Funding', 'Equity financing', 'Series A — second close', 15000000);
+    MONTHS.forEach((m, i) => {
+      // demand curve: soft launch in April, steady ramp, X Series launch spike Sep/Oct
+      let phoneRev = 0;
+      MODELS.forEach(md => {
+        if (i < md.from) return;
+        const age = i - md.from;
+        let base = { 'x1-pro': 5200, 'x1': 6100, 's5-plus': 3400, 's5': 4600, 'a3': 6800, 'a3-lite': 7900 }[md.id];
+        let ramp = md.s === 'X' ? (age === 0 ? .32 : 1.18) : Math.min(1, .28 + age * .17) * (i >= 8 ? .92 : 1);
+        if (i === 6) ramp *= 1.08; // summer promo
+        const units = Math.round(base * ramp * (.9 + r() * .2));
+        REGIONS.forEach(([reg, share], k) => {
+          const u = Math.round(units * share * (.92 + r() * .16));
+          const rev = u * md.asp * (.97 + r() * .05);
+          phoneRev += rev;
+          add(day(m, 26 + k), 'Revenue', 'Product sales', `${md.name} sales — ${reg}`, rev, { region: reg, units: u, model: md.id });
+          add(day(m, 27 + k > 28 ? 28 : 27 + k), 'COGS', 'Cost of goods sold', `${md.name} cost of sales — ${reg}`, rev * md.cogs * (.98 + r() * .04), { region: reg, model: md.id });
+        });
+      });
+      if (phoneRev) REGIONS.forEach(([reg, share]) => {
+        const rev = phoneRev * .085 * share * (.9 + r() * .2);
+        add(day(m, 25), 'Revenue', 'Accessory sales', `Accessories — ${reg}`, rev, { region: reg, units: Math.round(rev / 74) });
+        add(day(m, 25), 'COGS', 'Cost of goods sold', `Accessories cost of sales — ${reg}`, rev * .36, { region: reg });
+      });
+      const hc = 18 + i * 9; // headcount ramp
+      add(day(m, 1), 'Expense', 'Rent & facilities', 'Studio & lab lease', 185000 + (i > 4 ? 120000 : 0));
+      add(day(m, 15), 'Expense', 'Salaries & G&A', `Payroll — ${hc} staff`, hc * 14800 * (.98 + r() * .04));
+      add(day(m, 10), 'Expense', 'R&D', 'Silicon & camera engineering', (1400000 + i * 160000) * (.9 + r() * .2));
+      add(day(m, 18), 'Expense', 'R&D', 'Prototype tooling & certification', (380000 + (i === 6 || i === 7 ? 900000 : 0)) * (.85 + r() * .3));
+      add(day(m, 12), 'Expense', 'Cloud & IT', 'Cloud, AstraOS build farm & SaaS', 64000 + i * 9000);
+      const mkt = i < 3 ? 120000 : i === 8 ? 5600000 : i === 9 ? 3100000 : 900000 + i * 140000;
+      add(day(m, 5), 'Expense', 'Marketing', i === 8 ? 'X Series launch campaign' : 'Paid media & creators', mkt * (.92 + r() * .16));
+      if (phoneRev) {
+        add(day(m, 28), 'Expense', 'Logistics & fulfilment', 'Freight, warehousing & last mile', phoneRev * .041);
+        add(day(m, 28), 'Expense', 'Payment processing', 'Card processing fees', phoneRev * .027);
+      }
+    });
+    return recs.sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+  }
+
+  // ---------- store ----------
+  let recs;
+  const load = () => { try { const s = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(s) && s.length) return s; } catch {} return generate(); };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(recs)); } catch {} };
+  recs = load();
+
+  // ---------- formatting ----------
+  const usd = (v, compact) => {
+    const a = Math.abs(v), sign = v < 0 ? '−' : '';
+    if (compact && a >= 1e6) return sign + '$' + (a / 1e6).toFixed(a >= 1e8 ? 0 : 1) + 'M';
+    if (compact && a >= 1e3) return sign + '$' + (a / 1e3).toFixed(0) + 'K';
+    return sign + '$' + a.toLocaleString('en-US', { maximumFractionDigits: compact ? 0 : 2, minimumFractionDigits: compact ? 0 : 2 });
+  };
+  const num = v => Math.round(v).toLocaleString('en-US');
+  const pct = v => (v * 100).toFixed(1) + '%';
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const toast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), 2200); };
+
+  // ---------- periods ----------
+  const PERIODS = [
+    ['ytd', 'YTD', MONTHS], ['q2', 'Q2', ['2026-04','2026-05','2026-06']], ['q3', 'Q3', ['2026-07','2026-08','2026-09']],
+    ['q4', 'Q4 to date', ['2026-10']], ['l6', 'Last 6 mo', MONTHS.slice(-6)],
+  ];
+  let period = 'ytd';
+  try { period = localStorage.getItem(KEY + ':period') || 'ytd'; } catch {}
+  const curMonths = () => (PERIODS.find(p => p[0] === period) || PERIODS[0])[2];
+  const monthsOf = () => { const set = new Set(recs.map(r => r.date.slice(0, 7))); return [...new Set([...MONTHS, ...set])].sort(); };
+
+  // ---------- aggregation ----------
+  const seriesOf = r => r.account === 'Accessory sales' ? 'ACC' : (MODELS.find(m => m.id === r.model)?.s || 'X');
+  function agg(months) {
+    const ms = new Set(months), o = { rev: 0, cogs: 0, opex: 0, units: 0, phoneUnits: 0, byM: {}, opexBy: {}, unitsBy: {}, regionBy: {} };
+    months.forEach(m => o.byM[m] = { rev: 0, cogs: 0, opex: 0, X: 0, S: 0, A: 0, ACC: 0, opexBy: {} });
+    recs.forEach(r => {
+      const m = r.date.slice(0, 7); if (!ms.has(m)) return; const b = o.byM[m];
+      if (r.type === 'Revenue') { o.rev += r.amount; b.rev += r.amount; b[seriesOf(r)] += r.amount;
+        if (r.region) o.regionBy[r.region] = (o.regionBy[r.region] || 0) + r.amount;
+        if (r.account === 'Product sales') { o.phoneUnits += r.units || 0; const k = MODELS.find(x => x.id === r.model)?.name || 'Other'; o.unitsBy[k] = (o.unitsBy[k] || 0) + (r.units || 0); } }
+      else if (r.type === 'COGS') { o.cogs += r.amount; b.cogs += r.amount; }
+      else if (r.type === 'Expense') { o.opex += r.amount; b.opex += r.amount; o.opexBy[r.account] = (o.opexBy[r.account] || 0) + r.amount; b.opexBy[r.account] = (b.opexBy[r.account] || 0) + r.amount; }
+    });
+    o.gp = o.rev - o.cogs; o.op = o.gp - o.opex; o.gm = o.rev ? o.gp / o.rev : 0;
+    return o;
+  }
+  function cashByMonth() {
+    const out = {}; let c = 0;
+    monthsOf().forEach(m => {
+      recs.forEach(r => { if (r.date.slice(0, 7) !== m) return; c += (r.type === 'Revenue' || r.type === 'Funding') ? r.amount : -r.amount; });
+      out[m] = c;
+    });
+    return out;
+  }
+  function prevMonths(months) {
+    const all = monthsOf(), i = all.indexOf(months[0]);
+    return i - months.length >= 0 ? all.slice(i - months.length, i) : null;
+  }
+
+  // ---------- tooltip ----------
+  function tip(host) {
+    let el = host.querySelector('.tip'); if (!el) { el = document.createElement('div'); el.className = 'tip'; host.appendChild(el); }
+    return {
+      show(html, x, y) { el.innerHTML = html; el.classList.add('show'); const w = el.offsetWidth, hw = host.clientWidth; el.style.left = Math.max(0, Math.min(hw - w, x - w / 2)) + 'px'; el.style.top = Math.max(-10, y - el.offsetHeight - 12) + 'px'; },
+      hide() { el.classList.remove('show'); },
+    };
+  }
+  const niceMax = v => { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); const f = v / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p; };
+
+  // ---------- charts ----------
+  function revChart(a, months) {
+    const host = $('#revChart'), W = host.clientWidth || 700, H = 290, L = 54, R = 8, T = 10, B = 28;
+    const pw = W - L - R, ph = H - T - B, max = niceMax(Math.max(...months.map(m => a.byM[m].rev), 1) / 4) * 4;
+    const bw = Math.min(54, pw / months.length * .62), step = pw / months.length;
+    let g = '';
+    for (let i = 0; i <= 4; i++) { const y = T + ph - ph * i / 4; g += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(${i ? '--grid' : '--axis'})" stroke-width="1"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${usd(max * i / 4, true)}</text>`; }
+    months.forEach((m, i) => {
+      const x = L + step * i + (step - bw) / 2; let y = T + ph; const b = a.byM[m];
+      const segs = SERIES.filter(s => b[s.id] > 0);
+      segs.forEach((s, k) => {
+        const h = b[s.id] / max * ph; const top = k === segs.length - 1;
+        const hh = Math.max(0, h - (k ? 2 : 0));
+        y -= h;
+        g += top && hh > 4 ? `<path d="M${x},${y + h - (k ? 2 : 0)} V${y + 4} Q${x},${y} ${x + 4},${y} H${x + bw - 4} Q${x + bw},${y} ${x + bw},${y + 4} V${y + h - (k ? 2 : 0)} Z" fill="var(${s.v})"/>` : `<rect x="${x}" y="${y}" width="${bw}" height="${hh}" fill="var(${s.v})"/>`;
+      });
+      if (step >= 40 || i % 2 === 0) g += `<text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${MNAME(m)}</text>`;
+      g += `<rect class="hit" data-i="${i}" x="${L + step * i}" y="${T}" width="${step}" height="${ph}" fill="transparent"/>`;
+    });
+    host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Monthly revenue by series">${g}</svg>`;
+    const t = tip(host);
+    host.querySelectorAll('.hit').forEach(h => {
+      h.addEventListener('pointerenter', () => { const m = months[+h.dataset.i], b = a.byM[m]; h.setAttribute('fill', 'rgba(127,127,127,.08)');
+        t.show(`<div class="t">${MNAME(m)} 2026 · ${usd(b.rev, true)}</div>` + SERIES.map(s => `<div class="r"><span><i style="background:var(${s.v})"></i>${s.name}</span><b>${usd(b[s.id], true)}</b></div>`).join(''), +h.getAttribute('x') + step / 2, T + ph * .25); });
+      h.addEventListener('pointerleave', () => { h.setAttribute('fill', 'transparent'); t.hide(); });
+    });
+    $('#revLegend').innerHTML = SERIES.map(s => `<span><i style="background:var(${s.v})"></i>${s.name}</span>`).join('');
+  }
+
+  function cashChart(months) {
+    const host = $('#cashChart'), cash = cashByMonth(), W = host.clientWidth || 400, H = 290, L = 54, R = 14, T = 14, B = 28;
+    const pw = W - L - R, ph = H - T - B, vals = months.map(m => cash[m] || 0);
+    const max = niceMax(Math.max(...vals, 1) / 4) * 4, min = 0, span = max;
+    const X = i => L + (months.length === 1 ? pw / 2 : pw * i / (months.length - 1)), Y = v => T + ph - (v - min) / span * ph;
+    let g = '';
+    for (let i = 0; i <= 4; i++) { const v = min + span * i / 4, y = Y(v); g += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(${i ? '--grid' : '--axis'})"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${usd(v, true)}</text>`; }
+    const pts = vals.map((v, i) => `${X(i)},${Y(v)}`).join(' ');
+    g += `<polygon points="${X(0)},${Y(min)} ${pts} ${X(vals.length - 1)},${Y(min)}" fill="var(--s1)" opacity=".12"/>`;
+    g += `<polyline points="${pts}" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    months.forEach((m, i) => { if (months.length <= 6 || i % 2 === 0 || i === months.length - 1) g += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle">${MNAME(m)}</text>`; });
+    g += `<line id="cx" y1="${T}" y2="${T + ph}" stroke="var(--axis)" opacity="0"/><circle id="cd" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2" opacity="0"/>`;
+    g += `<rect id="cHit" x="${L}" y="${T}" width="${pw}" height="${ph}" fill="transparent"/>`;
+    host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Cash balance by month">${g}</svg>`;
+    const t = tip(host), svg = host.querySelector('svg'), cx = svg.querySelector('#cx'), cd = svg.querySelector('#cd');
+    svg.querySelector('#cHit').addEventListener('pointermove', e => {
+      const rect = svg.getBoundingClientRect(), x = (e.clientX - rect.left) * W / rect.width;
+      const i = Math.max(0, Math.min(months.length - 1, Math.round((x - L) / (pw / Math.max(1, months.length - 1)))));
+      cx.setAttribute('x1', X(i)); cx.setAttribute('x2', X(i)); cx.setAttribute('opacity', 1);
+      cd.setAttribute('cx', X(i)); cd.setAttribute('cy', Y(vals[i])); cd.setAttribute('opacity', 1);
+      const prev = i ? vals[i] - vals[i - 1] : null;
+      t.show(`<div class="t">${MNAME(months[i])} 2026</div><div class="r"><span>Cash</span><b>${usd(vals[i], true)}</b></div>` + (prev != null ? `<div class="r"><span>Net change</span><b>${prev >= 0 ? '+' : ''}${usd(prev, true)}</b></div>` : ''), X(i) * rect.width / W, Y(vals[i]) * rect.height / H);
+    });
+    svg.querySelector('#cHit').addEventListener('pointerleave', () => { cx.setAttribute('opacity', 0); cd.setAttribute('opacity', 0); t.hide(); });
+  }
+
+  function hbars(sel, entries, fmt, color = '--s1') {
+    const host = $(sel), max = Math.max(...entries.map(e => e[1]), 1);
+    host.innerHTML = entries.length ? entries.map(([k, v]) => `<div class="hbar" title="${esc(k)}: ${fmt(v)}"><span>${esc(k)}</span><div class="track"><div class="fill" style="width:${v / max * 100}%;background:var(${color})"></div></div><span class="v">${fmt(v)}</span></div>`).join('') : '<p class="note" style="color:var(--muted)">No records in this period.</p>';
+  }
+
+  function delta(cur, prev, invert) {
+    if (prev == null || !isFinite(prev) || prev === 0) return '<span>— vs prior period</span>';
+    const d = (cur - prev) / Math.abs(prev), good = invert ? d < 0 : d > 0;
+    return `<b class="${good ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${Math.abs(d * 100).toFixed(1)}%</b> vs prior period`;
+  }
+
+  function render() {
+    const months = curMonths(), a = agg(months), pm = prevMonths(months), p = pm ? agg(pm) : null, cash = cashByMonth();
+    $('#period').innerHTML = PERIODS.map(([id, l]) => `<button role="tab" class="${id === period ? 'on' : ''}" data-p="${id}">${l}</button>`).join('');
+    $('#subline').textContent = `ASTRA Technologies, Inc. · FY2026 · ${MNAME(months[0])}–${MNAME(months.at(-1))} 2026 · ${recs.length.toLocaleString()} ledger records`;
+    const k = [
+      ['Revenue', usd(a.rev, true), delta(a.rev, p?.rev)],
+      ['Gross margin', pct(a.gm), p ? `<span>${usd(a.gp, true)} gross profit</span>` : ''],
+      ['Operating income', usd(a.op, true), p ? delta(a.op, p.op) : ''],
+      ['Phones shipped', num(a.phoneUnits), delta(a.phoneUnits, p?.phoneUnits)],
+      ['Cash on hand', usd(cash[months.at(-1)] || 0, true), `<span>End of ${MNAME(months.at(-1))}</span>`],
+    ];
+    $('#kpis').innerHTML = k.map(([l, v, d]) => `<div class="card kpi"><div class="lbl">${l}</div><div class="val">${v}</div><div class="delta">${d}</div></div>`).join('');
+    revChart(a, months); cashChart(months.length > 1 ? months : monthsOf().slice(-6));
+    hbars('#unitsBars', MODELS.map(m => [m.name, a.unitsBy[m.name] || 0]).filter(e => e[1]).sort((x, y) => y[1] - x[1]), num);
+    hbars('#opexBars', Object.entries(a.opexBy).sort((x, y) => y[1] - x[1]), v => usd(v, true));
+    hbars('#regionBars', REGIONS.map(([r]) => [r, a.regionBy[r] || 0]).filter(e => e[1]), v => usd(v, true));
+    renderPL(a, months);
+    renderLedger();
+  }
+
+  function plRows(a, months) {
+    const opexAcc = ACCOUNTS.Expense.filter(x => months.some(m => a.byM[m].opexBy[x]));
+    const rows = [
+      ['sect', 'Revenue'],
+      ...SERIES.map(s => [s.name, m => a.byM[m][s.id]]),
+      ['total', 'Total revenue', m => a.byM[m].rev],
+      ['', 'Cost of goods sold', m => -a.byM[m].cogs],
+      ['total', 'Gross profit', m => a.byM[m].rev - a.byM[m].cogs],
+      ['sect', 'Operating expenses'],
+      ...opexAcc.map(x => [x, m => -(a.byM[m].opexBy[x] || 0)]),
+      ['total', 'Total operating expenses', m => -a.byM[m].opex],
+      ['total', 'Operating income', m => a.byM[m].rev - a.byM[m].cogs - a.byM[m].opex],
+    ];
+    return rows.map(r => r.length === 2 && typeof r[1] === 'function' ? ['', r[0], r[1]] : r);
+  }
+  function renderPL(a, months) {
+    const rows = plRows(a, months);
+    let h = `<thead><tr><th>Line item</th>${months.map(m => `<th class="n">${MNAME(m)}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>`;
+    rows.forEach(([cls, label, f]) => {
+      if (cls === 'sect') { h += `<tr class="sect"><td colspan="${months.length + 2}">${label}</td></tr>`; return; }
+      const vals = months.map(f), tot = vals.reduce((s, v) => s + v, 0);
+      const cell = v => `<td class="n${label === 'Operating income' && v < 0 ? ' down' : ''}">${v === 0 ? '—' : usd(v, true)}</td>`;
+      h += `<tr class="${cls}"><td>${label}</td>${vals.map(cell).join('')}${cell(tot)}</tr>`;
+    });
+    $('#pl').innerHTML = h + '</tbody>';
+  }
+
+  // ---------- ledger ----------
+  let shown = 40;
+  const filtered = () => {
+    const q = $('#q').value.trim().toLowerCase(), t = $('#fType').value, ac = $('#fAcct').value, ms = new Set(curMonths());
+    return recs.filter(r => ms.has(r.date.slice(0, 7)) && (!t || r.type === t) && (!ac || r.account === ac) && (!q || (r.desc + ' ' + r.account + ' ' + r.id + ' ' + r.region).toLowerCase().includes(q)))
+      .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  };
+  function renderLedger() {
+    const list = filtered(), sum = list.reduce((s, r) => s + ((r.type === 'Revenue' || r.type === 'Funding') ? r.amount : -r.amount), 0);
+    $('#ledgerCount').textContent = `${list.length.toLocaleString()} records · net ${usd(sum, true)}`;
+    $('#ledger').innerHTML = `<thead><tr><th>Date</th><th>Ref</th><th>Type</th><th>Account</th><th>Description</th><th>Region</th><th class="n">Units</th><th class="n">Amount</th><th></th></tr></thead><tbody>` +
+      (list.slice(0, shown).map(r => { const inflow = r.type === 'Revenue' || r.type === 'Funding';
+        return `<tr><td>${r.date}</td><td style="color:var(--muted)">${esc(r.id)}</td><td><span class="pill">${r.type}</span></td><td>${esc(r.account)}</td><td>${esc(r.desc)}</td><td>${esc(r.region || '—')}</td><td class="n">${r.units ? num(r.units) : '—'}</td><td class="n ${inflow ? 'up' : ''}">${inflow ? '+' : '−'}${usd(r.amount).replace('$', '$')}</td><td><button class="del" data-del="${esc(r.id)}" title="Delete record" aria-label="Delete ${esc(r.id)}">✕</button></td></tr>`; }).join('') || `<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px">No records match.</td></tr>`) + '</tbody>';
+    $('#moreBtn').style.display = list.length > shown ? '' : 'none';
+    $('#moreBtn').textContent = `Show more (${(list.length - shown).toLocaleString()} left)`;
+  }
+  const csv = rows => rows.map(r => r.map(v => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(',')).join('\n');
+  const download = (name, text) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); };
+
+  // ---------- wiring ----------
+  const fill = (sel, opts, first) => { $(sel).innerHTML = (first ? `<option value="">${first}</option>` : '') + opts.map(o => `<option>${o}</option>`).join(''); };
+  fill('#fType', Object.keys(ACCOUNTS), 'All types');
+  fill('#fAcct', Object.values(ACCOUNTS).flat(), 'All accounts');
+  fill('#formType', Object.keys(ACCOUNTS));
+  const syncFormAcct = () => fill('#formAcct', ACCOUNTS[$('#formType').value]);
+  $('#formType').onchange = syncFormAcct; syncFormAcct();
+
+  $('#period').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; period = b.dataset.p; try { localStorage.setItem(KEY + ':period', period); } catch {} shown = 40; render(); });
+  ['#q', '#fType', '#fAcct'].forEach(s => $(s).addEventListener('input', () => { shown = 40; renderLedger(); }));
+  $('#moreBtn').onclick = () => { shown += 60; renderLedger(); };
+  $('#ledger').addEventListener('click', e => {
+    const b = e.target.closest('[data-del]'); if (!b) return;
+    if (b.dataset.armed) { recs = recs.filter(r => r.id !== b.dataset.del); save(); render(); toast(`Deleted ${b.dataset.del}`); return; }
+    b.dataset.armed = 1; b.textContent = 'Delete?'; b.style.color = 'var(--bad)'; setTimeout(() => { if (b.isConnected) { delete b.dataset.armed; b.textContent = '✕'; b.style.color = ''; } }, 2500);
+  });
+  $('#resetBtn').onclick = e => {
+    const b = e.currentTarget;
+    if (!b.dataset.armed) { b.dataset.armed = 1; b.textContent = 'Click again to reset'; setTimeout(() => { delete b.dataset.armed; b.textContent = 'Reset sample data'; }, 3000); return; }
+    delete b.dataset.armed; b.textContent = 'Reset sample data'; recs = generate(); save(); render(); toast('Sample data restored');
+  };
+  $('#exportCsv').onclick = () => { const l = filtered(); download('astra-ledger.csv', csv([['date', 'ref', 'type', 'account', 'description', 'region', 'units', 'amount_usd'], ...l.map(r => [r.date, r.id, r.type, r.account, r.desc, r.region, r.units || '', ((r.type === 'Revenue' || r.type === 'Funding') ? 1 : -1) * r.amount])])); toast(`Exported ${l.length} records`); };
+  $('#exportPL').onclick = () => { const months = curMonths(), a = agg(months); const rows = plRows(a, months).filter(r => r[0] !== 'sect').map(([, l, f]) => { const v = months.map(f); return [l, ...v.map(x => x.toFixed(2)), v.reduce((s, x) => s + x, 0).toFixed(2)]; }); download('astra-pnl.csv', csv([['line_item', ...months, 'total'], ...rows])); toast('P&L exported'); };
+
+  const dlg = $('#dlg');
+  $('#addBtn').onclick = () => { const f = $('#recForm'); f.reset(); syncFormAcct(); f.date.value = curMonths().at(-1) + '-28'; dlg.showModal(); };
+  dlg.addEventListener('close', () => {
+    if (dlg.returnValue !== 'ok') return; const f = $('#recForm');
+    const max = recs.reduce((m, r) => Math.max(m, parseInt(r.id.slice(3)) || 0), 0);
+    const rec = { id: 'GL-' + String(max + 1).padStart(5, '0'), date: f.date.value, type: f.type.value, account: f.account.value, desc: f.desc.value.trim(), amount: Math.round(parseFloat(f.amount.value) * 100) / 100, region: f.region.value, units: parseInt(f.units.value) || 0 };
+    if (!rec.date || !(rec.amount > 0) || !rec.desc) { toast('Record not saved — check the fields'); return; }
+    recs.push(rec); save();
+    if (!curMonths().includes(rec.date.slice(0, 7))) { period = 'ytd'; }
+    render(); toast(`Saved ${rec.id}`);
+  });
+
+  $('#theme').onclick = () => {
+    const root = document.documentElement, dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark'; try { localStorage.setItem(KEY + ':theme', root.dataset.theme); } catch {} render();
+  };
+  try { const th = localStorage.getItem(KEY + ':theme'); if (th) document.documentElement.dataset.theme = th; } catch {}
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(render, 120); });
+  render();
+})();
+</script>
