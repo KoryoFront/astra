@@ -462,7 +462,13 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     $('#moreBtn').textContent = `Show more (${(list.length - shown).toLocaleString()} left)`;
   }
   const csv = rows => rows.map(r => r.map(v => { const s = String(v ?? ''); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(',')).join('\n');
-  const download = (name, text) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); };
+  let dl = null; const dlReady = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('downloads').then(ns => (dl = ns)).catch(() => null) : Promise.resolve(null);
+  const download = async (name, text) => {
+    await dlReady;
+    if (dl) { try { await dl.save({ filename: name, data: new Blob([text], { type: 'text/csv' }) }); return true; } catch (e) { if (e && e.code === 'declined') return false; toast('Download unavailable here'); return false; } }
+    if (window.claude) { toast('Download unavailable here'); return false; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv' })); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); return true;
+  };
 
   // ---------- wiring ----------
   const fill = (sel, opts, first) => { $(sel).innerHTML = (first ? `<option value="">${first}</option>` : '') + opts.map(o => `<option>${o}</option>`).join(''); };
@@ -485,8 +491,8 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     if (!b.dataset.armed) { b.dataset.armed = 1; b.textContent = 'Click again to reset'; setTimeout(() => { delete b.dataset.armed; b.textContent = 'Reset sample data'; }, 3000); return; }
     delete b.dataset.armed; b.textContent = 'Reset sample data'; recs = generate(); save(); render(); toast('Sample data restored');
   };
-  $('#exportCsv').onclick = () => { const l = filtered(); download('astra-ledger.csv', csv([['date', 'ref', 'type', 'account', 'description', 'region', 'units', 'amount_usd'], ...l.map(r => [r.date, r.id, r.type, r.account, r.desc, r.region, r.units || '', ((r.type === 'Revenue' || r.type === 'Funding') ? 1 : -1) * r.amount])])); toast(`Exported ${l.length} records`); };
-  $('#exportPL').onclick = () => { const months = curMonths(), a = agg(months); const rows = plRows(a, months).filter(r => r[0] !== 'sect').map(([, l, f]) => { const v = months.map(f); return [l, ...v.map(x => x.toFixed(2)), v.reduce((s, x) => s + x, 0).toFixed(2)]; }); download('astra-pnl.csv', csv([['line_item', ...months, 'total'], ...rows])); toast('P&L exported'); };
+  $('#exportCsv').onclick = () => { const l = filtered(); download('astra-ledger.csv', csv([['date', 'ref', 'type', 'account', 'description', 'region', 'units', 'amount_usd'], ...l.map(r => [r.date, r.id, r.type, r.account, r.desc, r.region, r.units || '', ((r.type === 'Revenue' || r.type === 'Funding') ? 1 : -1) * r.amount])])).then(ok => ok && toast(`Exported ${l.length} records`)); };
+  $('#exportPL').onclick = () => { const months = curMonths(), a = agg(months); const rows = plRows(a, months).filter(r => r[0] !== 'sect').map(([, l, f]) => { const v = months.map(f); return [l, ...v.map(x => x.toFixed(2)), v.reduce((s, x) => s + x, 0).toFixed(2)]; }); download('astra-pnl.csv', csv([['line_item', ...months, 'total'], ...rows])).then(ok => ok && toast('P&L exported')); };
 
   const dlg = $('#dlg');
   $('#addBtn').onclick = () => { const f = $('#recForm'); f.reset(); syncFormAcct(); f.date.value = curMonths().at(-1) + '-28'; dlg.showModal(); };
