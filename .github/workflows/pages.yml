@@ -24,6 +24,7 @@ jobs:
         run: |
           mkdir -p _site/ad
           cp -r index.html css js assets finance _site/
+          cp finance/finance.html _site/finance/index.html
           cp ad/astra-ad/renders/astra-x1-pro-ad-60s.mp4 _site/ad/ 2>/dev/null || true
           touch _site/.nojekyll
 

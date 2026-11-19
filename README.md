@@ -14,7 +14,7 @@ stay consistent across every shot.
 Hosted on GitHub Pages (published from `main` by `.github/workflows/pages.yml`):
 
 - Store: https://koryofront.github.io/astra/
-- Financial records: https://koryofront.github.io/astra/finance/finance.html
+- Financial records: https://koryofront.github.io/astra/finance/
 - 60 s ad: https://koryofront.github.io/astra/ad/astra-x1-pro-ad-60s.mp4
 
 Prices are in South African rand (ZAR) and include 15% VAT.
