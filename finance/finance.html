@@ -130,7 +130,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
 
   <section class="grid2">
     <div class="card">
-      <div class="card-h"><h2>Revenue by series</h2><span class="note">Monthly, USD</span><div class="spacer"></div><div class="legend" id="revLegend"></div></div>
+      <div class="card-h"><h2>Revenue by series</h2><span class="note">Monthly, ZAR</span><div class="spacer"></div><div class="legend" id="revLegend"></div></div>
       <div class="chart" id="revChart"></div>
     </div>
     <div class="card">
@@ -176,8 +176,8 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
       <label>Type<select class="select" name="type" id="formType"></select></label>
       <label class="full">Account<select class="select" name="account" id="formAcct"></select></label>
       <label class="full">Description<input class="input" name="desc" required maxlength="80" placeholder="e.g. Q4 retail campaign"></label>
-      <label>Amount (USD)<input class="input" type="number" name="amount" required min="0.01" step="0.01"></label>
-      <label>Region<select class="select" name="region"><option value="">—</option><option>North America</option><option>Europe</option><option>Asia-Pacific</option><option>Rest of world</option></select></label>
+      <label>Amount (ZAR)<input class="input" type="number" name="amount" required min="0.01" step="0.01"></label>
+      <label>Region<select class="select" name="region"><option value="">—</option><option>South Africa</option><option>Rest of Africa</option><option>Europe</option><option>Rest of world</option></select></label>
       <label>Units (sales only)<input class="input" type="number" name="units" min="0" step="1"></label>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end">
@@ -190,7 +190,8 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
 
 <script>
 (() => {
-  const KEY = 'astra-finance-v1';
+  const KEY = 'astra-finance-v2';
+  const FX = 18.4; // operating costs budgeted in USD, booked in rand
   const $ = s => document.querySelector(s);
   const MONTHS = ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10'];
   const MNAME = m => new Date(m + '-15').toLocaleString('en-US', { month: 'short' });
@@ -201,14 +202,14 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     { id: 'ACC', name: 'Accessories', v: '--s4' },
   ];
   const MODELS = [
-    { id: 'x1-pro', name: 'X1 Pro', s: 'X', asp: 1290, cogs: .56, from: 8 },
-    { id: 'x1', name: 'X1', s: 'X', asp: 985, cogs: .59, from: 8 },
-    { id: 's5-plus', name: 'S5 Plus', s: 'S', asp: 690, cogs: .61, from: 3 },
-    { id: 's5', name: 'S5', s: 'S', asp: 528, cogs: .63, from: 3 },
-    { id: 'a3', name: 'A3', s: 'A', asp: 318, cogs: .66, from: 3 },
-    { id: 'a3-lite', name: 'A3 Lite', s: 'A', asp: 208, cogs: .68, from: 3 },
+    { id: 'x1-pro', name: 'X1 Pro', s: 'X', asp: 23500, cogs: .56, from: 8 },
+    { id: 'x1', name: 'X1', s: 'X', asp: 16500, cogs: .59, from: 8 },
+    { id: 's5-plus', name: 'S5 Plus', s: 'S', asp: 11800, cogs: .61, from: 3 },
+    { id: 's5', name: 'S5', s: 'S', asp: 9100, cogs: .63, from: 3 },
+    { id: 'a3', name: 'A3', s: 'A', asp: 5500, cogs: .66, from: 3 },
+    { id: 'a3-lite', name: 'A3 Lite', s: 'A', asp: 3600, cogs: .68, from: 3 },
   ];
-  const REGIONS = [['North America', .46], ['Europe', .31], ['Asia-Pacific', .17], ['Rest of world', .06]];
+  const REGIONS = [['South Africa', .58], ['Rest of Africa', .14], ['Europe', .17], ['Rest of world', .11]];
   const ACCOUNTS = {
     'Revenue': ['Product sales', 'Accessory sales'],
     'COGS': ['Cost of goods sold'],
@@ -222,9 +223,9 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     const r = rng(2026), recs = []; let n = 1;
     const add = (date, type, account, desc, amount, extra = {}) => recs.push({ id: 'GL-' + String(n++).padStart(5, '0'), date, type, account, desc, amount: Math.round(amount * 100) / 100, region: '', units: 0, ...extra });
     const day = (m, d) => `${m}-${String(d).padStart(2, '0')}`;
-    add('2026-01-08', 'Funding', 'Equity financing', 'Seed round — lead investor tranche', 26000000);
-    add('2026-06-12', 'Funding', 'Equity financing', 'Series A — first close', 48000000);
-    add('2026-09-30', 'Funding', 'Equity financing', 'Series A — second close', 15000000);
+    add('2026-01-08', 'Funding', 'Equity financing', 'Seed round — lead investor tranche', 26000000 * FX);
+    add('2026-06-12', 'Funding', 'Equity financing', 'Series A — first close', 48000000 * FX);
+    add('2026-09-30', 'Funding', 'Equity financing', 'Series A — second close', 15000000 * FX);
     MONTHS.forEach((m, i) => {
       // demand curve: soft launch in April, steady ramp, X Series launch spike Sep/Oct
       let phoneRev = 0;
@@ -245,16 +246,16 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
       });
       if (phoneRev) REGIONS.forEach(([reg, share]) => {
         const rev = phoneRev * .085 * share * (.9 + r() * .2);
-        add(day(m, 25), 'Revenue', 'Accessory sales', `Accessories — ${reg}`, rev, { region: reg, units: Math.round(rev / 74) });
+        add(day(m, 25), 'Revenue', 'Accessory sales', `Accessories — ${reg}`, rev, { region: reg, units: Math.round(rev / 1300) });
         add(day(m, 25), 'COGS', 'Cost of goods sold', `Accessories cost of sales — ${reg}`, rev * .36, { region: reg });
       });
       const hc = 18 + i * 9; // headcount ramp
-      add(day(m, 1), 'Expense', 'Rent & facilities', 'Studio & lab lease', 185000 + (i > 4 ? 120000 : 0));
-      add(day(m, 15), 'Expense', 'Salaries & G&A', `Payroll — ${hc} staff`, hc * 14800 * (.98 + r() * .04));
-      add(day(m, 10), 'Expense', 'R&D', 'Silicon & camera engineering', (1400000 + i * 160000) * (.9 + r() * .2));
-      add(day(m, 18), 'Expense', 'R&D', 'Prototype tooling & certification', (380000 + (i === 6 || i === 7 ? 900000 : 0)) * (.85 + r() * .3));
-      add(day(m, 12), 'Expense', 'Cloud & IT', 'Cloud, AstraOS build farm & SaaS', 64000 + i * 9000);
-      const mkt = i < 3 ? 120000 : i === 8 ? 5600000 : i === 9 ? 3100000 : 900000 + i * 140000;
+      add(day(m, 1), 'Expense', 'Rent & facilities', 'Studio & lab lease', (185000 + (i > 4 ? 120000 : 0)) * FX);
+      add(day(m, 15), 'Expense', 'Salaries & G&A', `Payroll — ${hc} staff`, hc * 14800 * FX * (.98 + r() * .04));
+      add(day(m, 10), 'Expense', 'R&D', 'Silicon & camera engineering', (1400000 + i * 160000) * FX * (.9 + r() * .2));
+      add(day(m, 18), 'Expense', 'R&D', 'Prototype tooling & certification', (380000 + (i === 6 || i === 7 ? 900000 : 0)) * FX * (.85 + r() * .3));
+      add(day(m, 12), 'Expense', 'Cloud & IT', 'Cloud, AstraOS build farm & SaaS', (64000 + i * 9000) * FX);
+      const mkt = (i < 3 ? 120000 : i === 8 ? 5600000 : i === 9 ? 3100000 : 900000 + i * 140000) * FX;
       add(day(m, 5), 'Expense', 'Marketing', i === 8 ? 'X Series launch campaign' : 'Paid media & creators', mkt * (.92 + r() * .16));
       if (phoneRev) {
         add(day(m, 28), 'Expense', 'Logistics & fulfilment', 'Freight, warehousing & last mile', phoneRev * .041);
@@ -271,11 +272,12 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
   recs = load();
 
   // ---------- formatting ----------
-  const usd = (v, compact) => {
+  const zar = (v, compact) => {
     const a = Math.abs(v), sign = v < 0 ? '−' : '';
-    if (compact && a >= 1e6) return sign + '$' + (a / 1e6).toFixed(a >= 1e8 ? 0 : 1) + 'M';
-    if (compact && a >= 1e3) return sign + '$' + (a / 1e3).toFixed(0) + 'K';
-    return sign + '$' + a.toLocaleString('en-US', { maximumFractionDigits: compact ? 0 : 2, minimumFractionDigits: compact ? 0 : 2 });
+    if (compact && a >= 1e9) return sign + 'R' + (a / 1e9).toFixed(2) + 'bn';
+    if (compact && a >= 1e6) return sign + 'R' + (a / 1e6).toFixed(a >= 1e8 ? 0 : 1) + 'm';
+    if (compact && a >= 1e3) return sign + 'R' + (a / 1e3).toFixed(0) + 'k';
+    return sign + 'R' + a.toLocaleString('en-US', { maximumFractionDigits: compact ? 0 : 2, minimumFractionDigits: compact ? 0 : 2 });
   };
   const num = v => Math.round(v).toLocaleString('en-US');
   const pct = v => (v * 100).toFixed(1) + '%';
@@ -338,7 +340,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     const pw = W - L - R, ph = H - T - B, max = niceMax(Math.max(...months.map(m => a.byM[m].rev), 1) / 4) * 4;
     const bw = Math.min(54, pw / months.length * .62), step = pw / months.length;
     let g = '';
-    for (let i = 0; i <= 4; i++) { const y = T + ph - ph * i / 4; g += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(${i ? '--grid' : '--axis'})" stroke-width="1"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${usd(max * i / 4, true)}</text>`; }
+    for (let i = 0; i <= 4; i++) { const y = T + ph - ph * i / 4; g += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(${i ? '--grid' : '--axis'})" stroke-width="1"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${zar(max * i / 4, true)}</text>`; }
     months.forEach((m, i) => {
       const x = L + step * i + (step - bw) / 2; let y = T + ph; const b = a.byM[m];
       const segs = SERIES.filter(s => b[s.id] > 0);
@@ -355,7 +357,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     const t = tip(host);
     host.querySelectorAll('.hit').forEach(h => {
       h.addEventListener('pointerenter', () => { const m = months[+h.dataset.i], b = a.byM[m]; h.setAttribute('fill', 'rgba(127,127,127,.08)');
-        t.show(`<div class="t">${MNAME(m)} 2026 · ${usd(b.rev, true)}</div>` + SERIES.map(s => `<div class="r"><span><i style="background:var(${s.v})"></i>${s.name}</span><b>${usd(b[s.id], true)}</b></div>`).join(''), +h.getAttribute('x') + step / 2, T + ph * .25); });
+        t.show(`<div class="t">${MNAME(m)} 2026 · ${zar(b.rev, true)}</div>` + SERIES.map(s => `<div class="r"><span><i style="background:var(${s.v})"></i>${s.name}</span><b>${zar(b[s.id], true)}</b></div>`).join(''), +h.getAttribute('x') + step / 2, T + ph * .25); });
       h.addEventListener('pointerleave', () => { h.setAttribute('fill', 'transparent'); t.hide(); });
     });
     $('#revLegend').innerHTML = SERIES.map(s => `<span><i style="background:var(${s.v})"></i>${s.name}</span>`).join('');
@@ -367,7 +369,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     const max = niceMax(Math.max(...vals, 1) / 4) * 4, min = 0, span = max;
     const X = i => L + (months.length === 1 ? pw / 2 : pw * i / (months.length - 1)), Y = v => T + ph - (v - min) / span * ph;
     let g = '';
-    for (let i = 0; i <= 4; i++) { const v = min + span * i / 4, y = Y(v); g += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(${i ? '--grid' : '--axis'})"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${usd(v, true)}</text>`; }
+    for (let i = 0; i <= 4; i++) { const v = min + span * i / 4, y = Y(v); g += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(${i ? '--grid' : '--axis'})"/><text x="${L - 8}" y="${y + 4}" text-anchor="end">${zar(v, true)}</text>`; }
     const pts = vals.map((v, i) => `${X(i)},${Y(v)}`).join(' ');
     g += `<polygon points="${X(0)},${Y(min)} ${pts} ${X(vals.length - 1)},${Y(min)}" fill="var(--s1)" opacity=".12"/>`;
     g += `<polyline points="${pts}" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
@@ -382,7 +384,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
       cx.setAttribute('x1', X(i)); cx.setAttribute('x2', X(i)); cx.setAttribute('opacity', 1);
       cd.setAttribute('cx', X(i)); cd.setAttribute('cy', Y(vals[i])); cd.setAttribute('opacity', 1);
       const prev = i ? vals[i] - vals[i - 1] : null;
-      t.show(`<div class="t">${MNAME(months[i])} 2026</div><div class="r"><span>Cash</span><b>${usd(vals[i], true)}</b></div>` + (prev != null ? `<div class="r"><span>Net change</span><b>${prev >= 0 ? '+' : ''}${usd(prev, true)}</b></div>` : ''), X(i) * rect.width / W, Y(vals[i]) * rect.height / H);
+      t.show(`<div class="t">${MNAME(months[i])} 2026</div><div class="r"><span>Cash</span><b>${zar(vals[i], true)}</b></div>` + (prev != null ? `<div class="r"><span>Net change</span><b>${prev >= 0 ? '+' : ''}${zar(prev, true)}</b></div>` : ''), X(i) * rect.width / W, Y(vals[i]) * rect.height / H);
     });
     svg.querySelector('#cHit').addEventListener('pointerleave', () => { cx.setAttribute('opacity', 0); cd.setAttribute('opacity', 0); t.hide(); });
   }
@@ -401,19 +403,19 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
   function render() {
     const months = curMonths(), a = agg(months), pm = prevMonths(months), p = pm ? agg(pm) : null, cash = cashByMonth();
     $('#period').innerHTML = PERIODS.map(([id, l]) => `<button role="tab" class="${id === period ? 'on' : ''}" data-p="${id}">${l}</button>`).join('');
-    $('#subline').textContent = `ASTRA Technologies, Inc. · FY2026 · ${MNAME(months[0])}–${MNAME(months.at(-1))} 2026 · ${recs.length.toLocaleString()} ledger records`;
+    $('#subline').textContent = `ASTRA Technologies (Pty) Ltd · FY2026 · ${MNAME(months[0])}–${MNAME(months.at(-1))} 2026 · ${recs.length.toLocaleString()} ledger records`;
     const k = [
-      ['Revenue', usd(a.rev, true), delta(a.rev, p?.rev)],
-      ['Gross margin', pct(a.gm), p ? `<span>${usd(a.gp, true)} gross profit</span>` : ''],
-      ['Operating income', usd(a.op, true), p ? delta(a.op, p.op) : ''],
+      ['Revenue', zar(a.rev, true), delta(a.rev, p?.rev)],
+      ['Gross margin', pct(a.gm), p ? `<span>${zar(a.gp, true)} gross profit</span>` : ''],
+      ['Operating income', zar(a.op, true), p ? delta(a.op, p.op) : ''],
       ['Phones shipped', num(a.phoneUnits), delta(a.phoneUnits, p?.phoneUnits)],
-      ['Cash on hand', usd(cash[months.at(-1)] || 0, true), `<span>End of ${MNAME(months.at(-1))}</span>`],
+      ['Cash on hand', zar(cash[months.at(-1)] || 0, true), `<span>End of ${MNAME(months.at(-1))}</span>`],
     ];
     $('#kpis').innerHTML = k.map(([l, v, d]) => `<div class="card kpi"><div class="lbl">${l}</div><div class="val">${v}</div><div class="delta">${d}</div></div>`).join('');
     revChart(a, months); cashChart(months.length > 1 ? months : monthsOf().slice(-6));
     hbars('#unitsBars', MODELS.map(m => [m.name, a.unitsBy[m.name] || 0]).filter(e => e[1]).sort((x, y) => y[1] - x[1]), num);
-    hbars('#opexBars', Object.entries(a.opexBy).sort((x, y) => y[1] - x[1]), v => usd(v, true));
-    hbars('#regionBars', REGIONS.map(([r]) => [r, a.regionBy[r] || 0]).filter(e => e[1]), v => usd(v, true));
+    hbars('#opexBars', Object.entries(a.opexBy).sort((x, y) => y[1] - x[1]), v => zar(v, true));
+    hbars('#regionBars', REGIONS.map(([r]) => [r, a.regionBy[r] || 0]).filter(e => e[1]), v => zar(v, true));
     renderPL(a, months);
     renderLedger();
   }
@@ -439,7 +441,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     rows.forEach(([cls, label, f]) => {
       if (cls === 'sect') { h += `<tr class="sect"><td colspan="${months.length + 2}">${label}</td></tr>`; return; }
       const vals = months.map(f), tot = vals.reduce((s, v) => s + v, 0);
-      const cell = v => `<td class="n${label === 'Operating income' && v < 0 ? ' down' : ''}">${v === 0 ? '—' : usd(v, true)}</td>`;
+      const cell = v => `<td class="n${label === 'Operating income' && v < 0 ? ' down' : ''}">${v === 0 ? '—' : zar(v, true)}</td>`;
       h += `<tr class="${cls}"><td>${label}</td>${vals.map(cell).join('')}${cell(tot)}</tr>`;
     });
     $('#pl').innerHTML = h + '</tbody>';
@@ -454,10 +456,10 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
   };
   function renderLedger() {
     const list = filtered(), sum = list.reduce((s, r) => s + ((r.type === 'Revenue' || r.type === 'Funding') ? r.amount : -r.amount), 0);
-    $('#ledgerCount').textContent = `${list.length.toLocaleString()} records · net ${usd(sum, true)}`;
+    $('#ledgerCount').textContent = `${list.length.toLocaleString()} records · net ${zar(sum, true)}`;
     $('#ledger').innerHTML = `<thead><tr><th>Date</th><th>Ref</th><th>Type</th><th>Account</th><th>Description</th><th>Region</th><th class="n">Units</th><th class="n">Amount</th><th></th></tr></thead><tbody>` +
       (list.slice(0, shown).map(r => { const inflow = r.type === 'Revenue' || r.type === 'Funding';
-        return `<tr><td>${r.date}</td><td style="color:var(--muted)">${esc(r.id)}</td><td><span class="pill">${r.type}</span></td><td>${esc(r.account)}</td><td>${esc(r.desc)}</td><td>${esc(r.region || '—')}</td><td class="n">${r.units ? num(r.units) : '—'}</td><td class="n ${inflow ? 'up' : ''}">${inflow ? '+' : '−'}${usd(r.amount).replace('$', '$')}</td><td><button class="del" data-del="${esc(r.id)}" title="Delete record" aria-label="Delete ${esc(r.id)}">✕</button></td></tr>`; }).join('') || `<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px">No records match.</td></tr>`) + '</tbody>';
+        return `<tr><td>${r.date}</td><td style="color:var(--muted)">${esc(r.id)}</td><td><span class="pill">${r.type}</span></td><td>${esc(r.account)}</td><td>${esc(r.desc)}</td><td>${esc(r.region || '—')}</td><td class="n">${r.units ? num(r.units) : '—'}</td><td class="n ${inflow ? 'up' : ''}">${inflow ? '+' : '−'}${zar(r.amount)}</td><td><button class="del" data-del="${esc(r.id)}" title="Delete record" aria-label="Delete ${esc(r.id)}">✕</button></td></tr>`; }).join('') || `<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:28px">No records match.</td></tr>`) + '</tbody>';
     $('#moreBtn').style.display = list.length > shown ? '' : 'none';
     $('#moreBtn').textContent = `Show more (${(list.length - shown).toLocaleString()} left)`;
   }
@@ -491,7 +493,7 @@ dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
     if (!b.dataset.armed) { b.dataset.armed = 1; b.textContent = 'Click again to reset'; setTimeout(() => { delete b.dataset.armed; b.textContent = 'Reset sample data'; }, 3000); return; }
     delete b.dataset.armed; b.textContent = 'Reset sample data'; recs = generate(); save(); render(); toast('Sample data restored');
   };
-  $('#exportCsv').onclick = () => { const l = filtered(); download('astra-ledger.csv', csv([['date', 'ref', 'type', 'account', 'description', 'region', 'units', 'amount_usd'], ...l.map(r => [r.date, r.id, r.type, r.account, r.desc, r.region, r.units || '', ((r.type === 'Revenue' || r.type === 'Funding') ? 1 : -1) * r.amount])])).then(ok => ok && toast(`Exported ${l.length} records`)); };
+  $('#exportCsv').onclick = () => { const l = filtered(); download('astra-ledger.csv', csv([['date', 'ref', 'type', 'account', 'description', 'region', 'units', 'amount_zar'], ...l.map(r => [r.date, r.id, r.type, r.account, r.desc, r.region, r.units || '', ((r.type === 'Revenue' || r.type === 'Funding') ? 1 : -1) * r.amount])])).then(ok => ok && toast(`Exported ${l.length} records`)); };
   $('#exportPL').onclick = () => { const months = curMonths(), a = agg(months); const rows = plRows(a, months).filter(r => r[0] !== 'sect').map(([, l, f]) => { const v = months.map(f); return [l, ...v.map(x => x.toFixed(2)), v.reduce((s, x) => s + x, 0).toFixed(2)]; }); download('astra-pnl.csv', csv([['line_item', ...months, 'total'], ...rows])).then(ok => ok && toast('P&L exported')); };
 
   const dlg = $('#dlg');

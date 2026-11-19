@@ -44,8 +44,8 @@ export const phonesPage = {
             ${Object.values(SERIES).map(s => `<label class="check"><input type="checkbox" name="series" value="${s.id}" ${sel.includes(s.id) ? 'checked' : ''}>${s.name.replace('ASTRA ', '')}<span class="count">${counts(s.id)}</span></label>`).join('')}
           </div>
           <div class="filter-group"><h4>Max price</h4>
-            <input type="range" class="range" id="price" min="199" max="${maxPrice}" step="50" value="${query.max || maxPrice}" aria-label="Maximum price">
-            <div class="row" style="justify-content:space-between;font-size:13px;color:var(--text-3)"><span>$199</span><span id="priceVal">Up to ${store.money(+(query.max || maxPrice))}</span></div>
+            <input type="range" class="range" id="price" min="3999" max="${maxPrice}" step="500" value="${query.max || maxPrice}" aria-label="Maximum price">
+            <div class="row" style="justify-content:space-between;font-size:13px;color:var(--text-3)"><span>R3,999</span><span id="priceVal">Up to ${store.money(+(query.max || maxPrice))}</span></div>
           </div>
           <div class="filter-group"><h4>Storage</h4>
             ${[64, 128, 256, 512, 1024].map(gb => `<label class="check"><input type="checkbox" name="storage" value="${gb}" ${(query.storage || '').split(',').includes(String(gb)) ? 'checked' : ''}>${store.fmtGB(gb)}</label>`).join('')}

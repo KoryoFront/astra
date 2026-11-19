@@ -9,6 +9,16 @@ stay consistent across every shot.
 > are validated in the browser, never transmitted, and only the brand and last four digits are kept.
 > Accounts, orders and the bag live in your browser's localStorage.
 
+## Live site
+
+Hosted on GitHub Pages (published from `main` by `.github/workflows/pages.yml`):
+
+- Store: https://koryofront.github.io/astra/
+- Financial records: https://koryofront.github.io/astra/finance/finance.html
+- 60 s ad: https://koryofront.github.io/astra/ad/astra-x1-pro-ad-60s.mp4
+
+Prices are in South African rand (ZAR) and include 15% VAT.
+
 ## Run it
 
 No build step or dependencies — it's static HTML/CSS/ES modules.
@@ -29,7 +39,7 @@ python3 -m http.server 8000   # or any static server
 | Phone pages: a 3D scroll story for each phone (rotating 3D hero, design spin, camera dive, display, chip, battery ring, colour carousel), then a configurator and full specs | `#/phone/x1-pro` |
 | Compare up to 3 phones, with a "highlight differences" option | `#/compare` |
 | Accessories store and product pages | `#/accessories`, `#/accessory/buds-pro` |
-| Bag with promo codes, trade-in credit, shipping and tax | `#/cart` |
+| Bag with promo codes, trade-in credit, shipping and VAT | `#/cart` |
 | 4-step checkout with a simulated card payment and 3-D Secure | `#/checkout` |
 | Order confirmation with a generated order number | `#/order/:num` |
 | Sign in / register / account / order history / order detail / settings | `#/login`, `#/account` |
@@ -40,7 +50,7 @@ python3 -m http.server 8000   # or any static server
 ### Demo credentials
 
 - Seeded account (not shown on the site): `demo@astra.com` / `astra2026`. Comes with seeded order history; try tracking `AST-2610-48213`.
-- Promo codes: `ASTRA10`, `WELCOME50` (orders over $400), `FREESHIP`.
+- Promo codes: `ASTRA10`, `WELCOME500` (R500 off orders over R8,000), `FREESHIP`.
 - Checkout accepts any card number that passes validation (Luhn check, future expiry, 3- or 4-digit CVV).
   A few reserved numbers trigger other outcomes for demos (not shown anywhere on the site):
 

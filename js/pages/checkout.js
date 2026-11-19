@@ -13,14 +13,14 @@ const brandOf = n => /^3[47]/.test(n) ? 'amex' : /^(5[1-5]|2[2-7])/.test(n) ? 'm
 const BRAND_LABEL = { visa: 'VISA', mastercard: '<span style="display:inline-flex"><i style="width:22px;height:22px;border-radius:50%;background:#eb001b;display:block"></i><i style="width:22px;height:22px;border-radius:50%;background:#f79e1b;display:block;margin-left:-9px;mix-blend-mode:screen"></i></span>', amex: 'AMEX', discover: 'DISCOVER' };
 const luhn = n => { let s = 0, alt = false; for (let i = n.length - 1; i >= 0; i--) { let d = +n[i]; if (alt) { d *= 2; if (d > 9) d -= 9; } s += d; alt = !alt; } return n.length >= 13 && s % 10 === 0; };
 const fmtCard = (n, brand) => brand === 'amex' ? [n.slice(0, 4), n.slice(4, 10), n.slice(10, 15)].filter(Boolean).join(' ') : n.match(/.{1,4}/g)?.join(' ') || '';
-const COUNTRIES = ['United States', 'United Kingdom', 'Canada', 'Germany', 'France', 'Netherlands', 'Australia', 'Japan', 'Singapore', 'United Arab Emirates'];
+const COUNTRIES = ['South Africa', 'Namibia', 'Botswana', 'United States', 'United Kingdom', 'Canada', 'Germany', 'France', 'Netherlands', 'Australia', 'Japan', 'Singapore', 'United Arab Emirates'];
 
 // Checkout session (kept in memory only; card data never persisted)
 let co = null;
 const fresh = () => {
   const u = store.currentUser();
   const a = u?.addresses?.[0] || {};
-  return { step: 1, ship: 'standard', contact: { email: u?.email || '', first: u?.name?.split(' ')[0] || '', last: u?.name?.split(' ').slice(1).join(' ') || '', phone: '', line1: a.line1 || '', line2: '', city: a.city || '', zip: a.zip || '', country: a.country || 'United States' }, card: { num: '', exp: '', cvv: '', name: '' } };
+  return { step: 1, ship: 'standard', contact: { email: u?.email || '', first: u?.name?.split(' ')[0] || '', last: u?.name?.split(' ').slice(1).join(' ') || '', phone: '', line1: a.line1 || '', line2: '', city: a.city || '', zip: a.zip || '', country: a.country || 'South Africa' }, card: { num: '', exp: '', cvv: '', name: '' } };
 };
 
 const STEP_NAMES = ['Details', 'Delivery', 'Payment', 'Review'];
@@ -76,7 +76,7 @@ export const checkoutPage = {
               <div class="field full"><label for="line1">Address</label><input id="line1" autocomplete="address-line1" value="${esc(c.line1)}" required></div>
               <div class="field full"><label for="line2">Apartment, suite (optional)</label><input id="line2" autocomplete="address-line2" value="${esc(c.line2)}"></div>
               <div class="field"><label for="city">City</label><input id="city" autocomplete="address-level2" value="${esc(c.city)}" required></div>
-              <div class="field"><label for="zip">Postcode / ZIP</label><input id="zip" autocomplete="postal-code" value="${esc(c.zip)}" required></div>
+              <div class="field"><label for="zip">Postal code</label><input id="zip" autocomplete="postal-code" value="${esc(c.zip)}" required></div>
               <div class="field full"><label for="country">Country</label><select id="country" autocomplete="country-name">${COUNTRIES.map(x => `<option ${x === c.country ? 'selected' : ''}>${x}</option>`).join('')}</select></div>
             </div></div>
           <button class="btn btn-primary btn-lg">Continue to delivery ${icon('arrow', 'arrow')}</button>

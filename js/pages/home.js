@@ -240,8 +240,8 @@ export default {
     <div class="card tradein-band" style="border-radius:var(--radius-lg);overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center" data-sx="tilt" data-sx-end=".5">
       <div style="padding:clamp(28px,5vw,64px)">
         <p class="eyebrow">Trade in & upgrade</p>
-        <h2 class="h2" style="margin-top:12px">Get up to $860 off X1 Pro.</h2>
-        <p class="lead" style="margin-top:14px">Trade in your eligible smartphone and get an extra $100 upgrade bonus when you switch to the X Series.</p>
+        <h2 class="h2" style="margin-top:12px">Get up to R14,500 off X1 Pro.</h2>
+        <p class="lead" style="margin-top:14px">Trade in your eligible smartphone and get an extra R1,500 upgrade bonus when you switch to the X Series.</p>
         <div class="row" style="margin-top:28px;gap:14px"><a href="#/trade-in" class="btn btn-primary">Get your estimate ${icon('arrow', 'arrow')}</a><a href="#/phone/x1-pro" class="btn btn-ghost">Buy X1 Pro</a></div>
       </div>
       <div style="height:100%;min-height:340px;position:relative;overflow:hidden"><img src="assets/img/hero/hero-bg-sm.jpg" alt="" loading="lazy" style="position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover" data-parallax="0.08"><img src="${L}lineup-cut.webp" alt="The ASTRA lineup" loading="lazy" style="position:absolute;inset:8% 6%;width:88%;height:84%;object-fit:contain;filter:drop-shadow(0 30px 40px rgba(0,0,0,.5))"></div>

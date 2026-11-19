@@ -19,7 +19,7 @@ export const PHONES = [
       { id: 'silver', name: 'Silver Frost', hex: '#c9ccd1', img: P + 'x-silver.jpg' },
       { id: 'desert', name: 'Desert Titanium', hex: '#b39a7f', img: P + 'x-desert.jpg' },
     ],
-    storage: [ { gb: 256, price: 1199 }, { gb: 512, price: 1349 }, { gb: 1024, price: 1599 } ],
+    storage: [ { gb: 256, price: 24999 }, { gb: 512, price: 27999 }, { gb: 1024, price: 32999 } ],
     gallery: [P + 'x-front.webp', P + 'x-back.webp', P + 'x-side.jpg', P + 'x-macro.jpg', P + 'x-display.jpg', P + 'x-lifestyle.jpg'],
     highlights: [
       ['chip', 'Nova G3', '3 nm, 8-core CPU'],
@@ -47,7 +47,7 @@ export const PHONES = [
       { id: 'graphite', name: 'Graphite', hex: '#3a3b3f', img: P + 'x-graphite.jpg' },
       { id: 'silver', name: 'Silver Frost', hex: '#c9ccd1', img: P + 'x-silver.jpg' },
     ],
-    storage: [ { gb: 128, price: 899 }, { gb: 256, price: 999 }, { gb: 512, price: 1149 } ],
+    storage: [ { gb: 128, price: 17999 }, { gb: 256, price: 19999 }, { gb: 512, price: 22999 } ],
     gallery: [P + 'x-front.webp', P + 'x-back.webp', P + 'x-side.jpg', P + 'x-display.jpg'],
     highlights: [
       ['chip', 'Nova G3', '3 nm, 8-core CPU'],
@@ -75,7 +75,7 @@ export const PHONES = [
       { id: 'glacier', name: 'Glacier Blue', hex: '#a9c7de', img: P + 's-glacier.jpg' },
       { id: 'onyx', name: 'Onyx', hex: '#232326', img: P + 's-onyx.jpg' },
     ],
-    storage: [ { gb: 256, price: 649 }, { gb: 512, price: 749 } ],
+    storage: [ { gb: 256, price: 12999 }, { gb: 512, price: 14999 } ],
     gallery: [P + 's-front.webp', P + 's-side.jpg', P + 's-lifestyle.jpg'],
     highlights: [
       ['chip', 'Nova S2', '4 nm, AI-ready'],
@@ -103,7 +103,7 @@ export const PHONES = [
       { id: 'lavender', name: 'Lavender Mist', hex: '#a99be0', img: P + 's-lavender.jpg' },
       { id: 'onyx', name: 'Onyx', hex: '#232326', img: P + 's-onyx.jpg' },
     ],
-    storage: [ { gb: 128, price: 499 }, { gb: 256, price: 579 } ],
+    storage: [ { gb: 128, price: 9999 }, { gb: 256, price: 11499 } ],
     gallery: [P + 's-front.webp', P + 's-side.jpg', P + 's-lifestyle.jpg'],
     highlights: [
       ['chip', 'Nova S2', '4 nm, AI-ready'],
@@ -131,7 +131,7 @@ export const PHONES = [
       { id: 'sand', name: 'Sand', hex: '#d8cbb5', img: P + 'a-sand.jpg' },
       { id: 'graphite', name: 'Graphite', hex: '#3a3b3f', img: P + 'a-graphite.jpg' },
     ],
-    storage: [ { gb: 128, price: 299 }, { gb: 256, price: 349 } ],
+    storage: [ { gb: 128, price: 5999 }, { gb: 256, price: 6999 } ],
     gallery: [P + 'a-front.webp', P + 'a-side.jpg', P + 'a-lifestyle.jpg'],
     highlights: [
       ['chip', 'Nova A1', '6 nm octa-core'],
@@ -158,7 +158,7 @@ export const PHONES = [
       { id: 'graphite', name: 'Graphite', hex: '#3a3b3f', img: P + 'a-graphite.jpg' },
       { id: 'sand', name: 'Sand', hex: '#d8cbb5', img: P + 'a-sand.jpg' },
     ],
-    storage: [ { gb: 64, price: 199 }, { gb: 128, price: 229 } ],
+    storage: [ { gb: 64, price: 3999 }, { gb: 128, price: 4499 } ],
     gallery: [P + 'a-front.webp', P + 'a-side.jpg'],
     highlights: [
       ['chip', 'Nova A1', '6 nm octa-core'],
@@ -179,31 +179,31 @@ export const PHONES = [
 ];
 
 export const ACCESSORIES = [
-  { id: 'buds-pro', cat: 'Audio', name: 'ASTRA Buds Pro 2', price: 229, img: A + 'buds-pro.jpg', rating: 4.8, badge: 'New',
+  { id: 'buds-pro', cat: 'Audio', name: 'ASTRA Buds Pro 2', price: 4499, img: A + 'buds-pro.jpg', rating: 4.8, badge: 'New',
     blurb: 'Adaptive ANC, lossless spatial audio and 36-hour battery life in a pebble-smooth titanium-finish case.',
     features: ['Adaptive noise cancelling up to 52 dB', 'Lossless spatial audio with head tracking', '8 h playback, 36 h with case', 'IP57 sweat & water resistance', 'Live Translate with Astra AI'],
     colors: [{ id: 'graphite', name: 'Graphite', hex: '#3a3b3f' }, { id: 'silver', name: 'Silver', hex: '#c9ccd1' }] },
-  { id: 'buds', cat: 'Audio', name: 'ASTRA Buds', price: 99, img: A + 'buds.jpg', rating: 4.6,
+  { id: 'buds', cat: 'Audio', name: 'ASTRA Buds', price: 1999, img: A + 'buds.jpg', rating: 4.6,
     blurb: 'Rich, balanced sound and active noise cancelling in a pocket-sized case.',
     features: ['Active noise cancelling', '7 h playback, 30 h with case', 'Fast pair with Astra phones', 'IPX4'],
     colors: [{ id: 'white', name: 'Cloud White', hex: '#e9e9ec' }, { id: 'graphite', name: 'Graphite', hex: '#3a3b3f' }] },
-  { id: 'charger-90', cat: 'Charging', name: 'HyperCharge 90 W GaN Charger', price: 59, img: A + 'charger.jpg', rating: 4.8,
+  { id: 'charger-90', cat: 'Charging', name: 'HyperCharge 90 W GaN Charger', price: 1199, img: A + 'charger.jpg', rating: 4.8,
     blurb: 'Charge your X1 Pro from 0 to 100% in 29 minutes. Three USB-C ports in a compact gallium-nitride design.',
     features: ['90 W HyperCharge for ASTRA phones', '65 W USB PD for laptops', 'Three USB-C ports', 'Foldable pins', '1 m USB-C cable included'],
     colors: [{ id: 'graphite', name: 'Graphite', hex: '#3a3b3f' }] },
-  { id: 'powerbank', cat: 'Charging', name: 'AstraMag Power Bank 10K', price: 69, img: A + 'powerbank.jpg', rating: 4.5,
+  { id: 'powerbank', cat: 'Charging', name: 'AstraMag Power Bank 10K', price: 1399, img: A + 'powerbank.jpg', rating: 4.5,
     blurb: '10,000 mAh magnetic power bank with a built-in kickstand. Slim enough to forget it\'s there.',
     features: ['10,000 mAh capacity', '15 W magnetic wireless', '30 W USB-C in/out', 'Fold-out kickstand'],
     colors: [{ id: 'graphite', name: 'Graphite', hex: '#3a3b3f' }, { id: 'silver', name: 'Silver', hex: '#c9ccd1' }] },
-  { id: 'case-x1pro', cat: 'Cases', name: 'X1 Pro Aramid Case', price: 59, img: A + 'case.jpg', rating: 4.7, compat: 'x1-pro',
+  { id: 'case-x1pro', cat: 'Cases', name: 'X1 Pro Aramid Case', price: 1199, img: A + 'case.jpg', rating: 4.7, compat: 'x1-pro',
     blurb: 'Ultra-thin 0.7 mm aramid fibre with AstraMag magnets. Feather-light, incredibly strong.',
     features: ['Aerospace aramid fibre', '0.7 mm thin, 14 g', 'AstraMag compatible', 'Raised camera lip'],
     colors: [{ id: 'black', name: 'Black Weave', hex: '#1b1b1d' }] },
-  { id: 'case-leather', cat: 'Cases', name: 'Vegan Leather Case', price: 49, img: A + 'case-leather.jpg', rating: 4.5,
+  { id: 'case-leather', cat: 'Cases', name: 'Vegan Leather Case', price: 999, img: A + 'case-leather.jpg', rating: 4.5,
     blurb: 'Soft-touch vegan leather made from plant-based materials with a microfibre lining. Available for X1 Pro, X1, S5 Plus and S5.',
     features: ['Plant-based vegan leather', 'Microfibre lining', 'AstraMag compatible', 'Aluminium buttons'],
     colors: [{ id: 'tan', name: 'Tan', hex: '#a7764d' }, { id: 'black', name: 'Black', hex: '#1b1b1d' }] },
-  { id: 'cable', cat: 'Charging', name: 'Braided USB-C Cable (2 m)', price: 25, img: A + 'cable.jpg', rating: 4.8,
+  { id: 'cable', cat: 'Charging', name: 'Braided USB-C Cable (2 m)', price: 499, img: A + 'cable.jpg', rating: 4.8,
     blurb: '240 W braided USB-C cable rated for 30,000 bends.',
     features: ['240 W power delivery', 'USB 3.2 data', 'Braided nylon', '2 m length'],
     colors: [{ id: 'graphite', name: 'Graphite', hex: '#3a3b3f' }] },
@@ -211,17 +211,17 @@ export const ACCESSORIES = [
 
 export const PROMO_CODES = {
   ASTRA10: { type: 'percent', value: 10, label: '10% off your order' },
-  WELCOME50: { type: 'fixed', value: 50, label: '$50 off orders over $400', min: 400 },
+  WELCOME500: { type: 'fixed', value: 500, label: 'R500 off orders over R8,000', min: 8000 },
   FREESHIP: { type: 'ship', value: 0, label: 'Free express shipping' },
 };
 
 export const SHIPPING = [
   { id: 'standard', name: 'Standard delivery', eta: '3–5 business days', price: 0 },
-  { id: 'express', name: 'Express delivery', eta: '1–2 business days', price: 14.99 },
-  { id: 'nextday', name: 'Next-day delivery', eta: 'Order by 8pm', price: 24.99 },
+  { id: 'express', name: 'Express delivery', eta: '1–2 business days', price: 149 },
+  { id: 'nextday', name: 'Next-day delivery', eta: 'Order by 8pm', price: 249 },
 ];
 
-// Trade-in estimates (USD) by device and condition
+// Trade-in estimates (ZAR) by device and condition
 export const TRADE_IN = {
   brands: {
     ASTRA: ['X0 Pro', 'X0', 'S4 Plus', 'S4', 'A2'],
@@ -231,14 +231,14 @@ export const TRADE_IN = {
     Other: ['Other Android smartphone'],
   },
   base: {
-    'X0 Pro': 520, 'X0': 400, 'S4 Plus': 260, 'S4': 200, 'A2': 80,
-    'iPhone 17 Pro Max': 760, 'iPhone 17 Pro': 650, 'iPhone 17': 470, 'iPhone 16 Pro': 480, 'iPhone 16': 340, 'iPhone 15': 240,
-    'Galaxy S26 Ultra': 640, 'Galaxy S26': 410, 'Galaxy S25 Ultra': 460, 'Galaxy S25': 300, 'Galaxy A56': 110,
-    'Pixel 11 Pro': 520, 'Pixel 11': 360, 'Pixel 10 Pro': 380, 'Pixel 10': 260,
-    'Other Android smartphone': 50,
+    'X0 Pro': 9000, 'X0': 7000, 'S4 Plus': 4500, 'S4': 3500, 'A2': 1400,
+    'iPhone 17 Pro Max': 13000, 'iPhone 17 Pro': 11000, 'iPhone 17': 8000, 'iPhone 16 Pro': 8200, 'iPhone 16': 5800, 'iPhone 15': 4100,
+    'Galaxy S26 Ultra': 11000, 'Galaxy S26': 7000, 'Galaxy S25 Ultra': 7800, 'Galaxy S25': 5100, 'Galaxy A56': 1900,
+    'Pixel 11 Pro': 9000, 'Pixel 11': 6100, 'Pixel 10 Pro': 6500, 'Pixel 10': 4400,
+    'Other Android smartphone': 850,
   },
   condition: { flawless: 1, good: 0.8, fair: 0.55, broken: 0.2 },
-  bonus: 100, // ASTRA upgrade bonus when buying a new X Series phone
+  bonus: 1500, // ASTRA upgrade bonus when buying a new X Series phone
 };
 
 export const FAQS = [
@@ -256,6 +256,8 @@ export const FAQS = [
 ];
 
 export const STORES = [
+  { city: 'Johannesburg', addr: 'Sandton City, 83 Rivonia Road, Sandhurst', hours: '09:00–19:00' },
+  { city: 'Cape Town', addr: 'V&A Waterfront, Dock Road', hours: '09:00–21:00' },
   { city: 'London', addr: '210 Regent Street, W1B 5AH', hours: '10:00–21:00' },
   { city: 'New York', addr: '535 Fifth Avenue, NY 10017', hours: '10:00–21:00' },
   { city: 'Tokyo', addr: '4-2-1 Ginza, Chuo-ku', hours: '11:00–20:00' },

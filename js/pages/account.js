@@ -126,7 +126,7 @@ export const accountPage = {
       </div>
       <div><div class="row" style="justify-content:space-between;margin-bottom:16px"><h2 class="h3">Recent orders</h2><a href="#/account/orders" class="link">View all ${icon('arrow')}</a></div>
         <div class="stack" style="--stack:14px">${orders.slice(0, 2).map(orderCard).join('') || `<div class="empty card">${icon('box')}<p>No orders yet.</p><a href="#/phones" class="btn btn-ghost" style="margin-top:16px">Start shopping</a></div>`}</div></div>
-      <div class="card card-pad row" style="justify-content:space-between" data-reveal><div><b>Upgrade to X1 Pro</b><p class="muted" style="font-size:14px">Members get an extra $100 trade-in bonus this month.</p></div><a href="#/trade-in" class="btn btn-primary btn-sm">Get estimate</a></div>
+      <div class="card card-pad row" style="justify-content:space-between" data-reveal><div><b>Upgrade to X1 Pro</b><p class="muted" style="font-size:14px">Members get an extra R1,500 trade-in bonus this month.</p></div><a href="#/trade-in" class="btn btn-primary btn-sm">Get estimate</a></div>
     </div>`);
   },
   mount(root) { wireLogout(root); },

@@ -27,7 +27,7 @@ export default {
         </form>
         <div class="card card-pad stack" style="--stack:18px;position:sticky;top:calc(var(--nav-h) + 20px)" data-reveal>
           <span class="eyebrow">Estimated trade-in value</span>
-          <div class="estimate" id="est">$0</div>
+          <div class="estimate" id="est">R0</div>
           <p class="muted" id="estNote"></p>
           <div class="totals" id="estBreak"></div>
           <button class="btn btn-primary btn-lg btn-block" id="applyTI">Apply to my order ${icon('arrow', 'arrow')}</button>

@@ -9,7 +9,7 @@ const DOCS = {
   ]],
   terms: ['Terms of sale', [
     ['About this website', 'This website is a design concept. Orders placed here are not fulfilled and no payment is taken.'],
-    ['Pricing', 'Prices are shown in US dollars. Estimated tax is calculated at a flat 8%.'],
+    ['Pricing', 'Prices are shown in South African rand (ZAR) and include VAT at 15%.'],
     ['Returns', 'Products can be returned within 30 days of delivery. Orders can be cancelled from your account before they ship.'],
     ['Warranty', 'Every ASTRA phone includes a 2-year limited warranty. See the Warranty page to check your coverage.'],
   ]],

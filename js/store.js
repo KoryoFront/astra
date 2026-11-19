@@ -1,7 +1,7 @@
 // Client-side state: cart, accounts, orders, compare list. Persisted to localStorage.
 import { findPhone, findAccessory, PROMO_CODES, SHIPPING } from './data.js';
 
-const KEY = 'astra.v1';
+const KEY = 'astra.v2';
 const listeners = new Set();
 
 const defaults = () => ({ cart: [], promo: null, users: {}, session: null, orders: [], compare: [], tradeIn: null, newsletter: [] });
@@ -75,8 +75,8 @@ export function totals(shipId = 'standard') {
   const tradeIn = state.tradeIn && lines.some(l => l.kind === 'phone') ? Math.min(state.tradeIn.value, subtotal - discount) : 0;
   if (!lines.length) shipping = 0;
   const taxable = Math.max(0, subtotal - discount - tradeIn);
-  const tax = taxable * 0.08;
-  const total = taxable + shipping + tax;
+  const total = taxable + shipping;
+  const tax = total * VAT / (1 + VAT); // South African prices include 15% VAT
   return { lines, subtotal, discount, shipping, tradeIn, tax, total, promo: state.promo };
 }
 
@@ -121,15 +121,15 @@ export function updateProfile(patch) { const u = currentUser(); if (!u) return; 
 export async function ensureDemo() {
   const email = 'demo@astra.com';
   if (state.users[email]) return;
-  state.users[email] = { name: 'Alex Morgan', email, pw: await hash('astra2026'), created: Date.parse('2026-02-14'), addresses: [{ line1: '210 Regent Street', city: 'London', zip: 'W1B 5AH', country: 'United Kingdom' }] };
+  state.users[email] = { name: 'Alex Morgan', email, pw: await hash('astra2026'), created: Date.parse('2026-02-14'), addresses: [{ line1: '140 West Street', city: 'Sandton, Johannesburg', zip: '2196', country: 'South Africa' }] };
   const mk = (num, daysAgo, items, ship = 'standard') => {
     const placed = Date.now() - daysAgo * 864e5;
     const lines = items.map(resolveItem);
     const sub = lines.reduce((s, l) => s + l.price * l.qty, 0);
     const shipping = (SHIPPING.find(s => s.id === ship) || SHIPPING[0]).price;
     return { num, placed, user: email, email, name: 'Alex Morgan', items, lines, ship,
-      address: { line1: '210 Regent Street', city: 'London', zip: 'W1B 5AH', country: 'United Kingdom' },
-      totals: { subtotal: sub, discount: 0, shipping, tradeIn: 0, tax: sub * 0.08, total: sub * 1.08 + shipping },
+      address: { line1: '140 West Street', city: 'Sandton, Johannesburg', zip: '2196', country: 'South Africa' },
+      totals: { subtotal: sub, discount: 0, shipping, tradeIn: 0, tax: (sub + shipping) * VAT / (1 + VAT), total: sub + shipping },
       card: { brand: 'visa', last4: '4242' }, simulated: true, seed: true };
   };
   state.orders.push(
@@ -173,7 +173,8 @@ export function cancelOrder(num) { const o = state.orders.find(o => o.num === nu
 export function subscribeNewsletter(email) { if (!state.newsletter.includes(email)) state.newsletter.push(email); save(); }
 
 /* ---------- Formatting ---------- */
-export const money = n => '$' + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
-export const money2 = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export const VAT = 0.15;
+export const money = n => 'R' + (Math.round(n * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+export const money2 = n => 'R' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 export const fmtGB = gb => gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`;
 export const fmtDate = t => new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });

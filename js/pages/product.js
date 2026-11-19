@@ -6,7 +6,7 @@ import * as nav from '../nav.js';
 import { notFound } from './legal.js';
 import { storyHtml, mountStory } from './phonestory.js';
 
-const CARE_PRICE = { x: 199, s: 129, a: 79 };
+const CARE_PRICE = { x: 3999, s: 2499, a: 1499 };
 
 function gallerySlides(p, color) {
   return [color.img, ...p.gallery];
@@ -61,7 +61,7 @@ export const phonePage = {
 
           <div class="card card-pad" style="padding:22px">
             <div class="price-box"><span class="price-big" id="price">${store.money(st.price)}</span><span class="muted" id="monthly">or ${store.money2(st.price / 24)}/mo. for 24 mo.*</span></div>
-            <p class="dim" style="font-size:13px;margin-top:6px">Free delivery · Trade in and save up to ${store.money(p.series === 'x' ? 860 : 400)}. <a class="link" href="#/trade-in" style="font-size:13px">Estimate</a></p>
+            <p class="dim" style="font-size:13px;margin-top:6px">Free delivery · Trade in and save up to ${store.money(p.series === 'x' ? 14500 : 6800)}. <a class="link" href="#/trade-in" style="font-size:13px">Estimate</a></p>
             <div class="row" style="margin-top:18px;gap:10px" id="buyBtns">
               <button class="btn btn-primary btn-lg" style="flex:1" id="addBtn">${icon('bag')} Add to bag</button>
               <button class="btn btn-ghost btn-lg" style="flex:1" id="buyNow">Buy now</button>

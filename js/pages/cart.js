@@ -33,7 +33,7 @@ export const cartPage = {
           <input class="input" id="promo" placeholder="Promo code" aria-label="Promo code" style="height:44px" value="${t.promo || ''}" ${t.promo ? 'disabled' : ''}>
           ${t.promo ? `<button type="button" class="btn btn-ghost btn-sm" id="rmPromo">Remove</button>` : `<button class="btn btn-dark btn-sm">Apply</button>`}
         </form>
-        <p class="dim" style="font-size:12px;margin-bottom:20px">Try <b>ASTRA10</b>, <b>WELCOME50</b> or <b>FREESHIP</b>.</p>
+        <p class="dim" style="font-size:12px;margin-bottom:20px">Try <b>ASTRA10</b>, <b>WELCOME500</b> or <b>FREESHIP</b>.</p>
         ${totalsHtml(t)}
         <a href="#/checkout" class="btn btn-primary btn-block btn-lg" style="margin-top:22px">Checkout ${icon('lock')}</a>
         <p class="dim center" style="font-size:12px;margin-top:12px">Free returns within 30 days · 2-year warranty</p>

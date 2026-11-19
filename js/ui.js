@@ -157,7 +157,7 @@ export function renderFooter() {
     </div>
     <div class="foot-bottom">
       <span>© 2026 ASTRA Technologies. All rights reserved. <span id="releaseStamp" style="opacity:.5;margin-left:8px"></span></span>
-      <span class="row" style="gap:20px"><a href="#/legal/privacy">Privacy</a><a href="#/legal/terms">Terms of sale</a><a href="#/legal/cookies">Cookies</a><span>United States (USD)</span></span>
+      <span class="row" style="gap:20px"><a href="#/legal/privacy">Privacy</a><a href="#/legal/terms">Terms of sale</a><a href="#/legal/cookies">Cookies</a><span>South Africa (ZAR)</span></span>
     </div>
   </div>`;
   $('#newsletter').onsubmit = e => {
@@ -203,7 +203,7 @@ export function totalsHtml(t, { showShipping = true } = {}) {
     ${t.discount ? `<div class="row discount"><span>Promo (${esc(t.promo)})</span><span>−${store.money2(t.discount)}</span></div>` : ''}
     ${t.tradeIn ? `<div class="row discount"><span>Trade-in credit</span><span>−${store.money2(t.tradeIn)}</span></div>` : ''}
     ${showShipping ? `<div class="row"><span class="muted">Shipping</span><span>${t.shipping ? store.money2(t.shipping) : 'Free'}</span></div>` : ''}
-    <div class="row"><span class="muted">Estimated tax (8%)</span><span>${store.money2(t.tax)}</span></div>
+    <div class="row"><span class="muted">Includes VAT (15%)</span><span>${store.money2(t.tax)}</span></div>
     <div class="row grand"><span>Total</span><span>${store.money2(t.total)}</span></div>
   </div>`;
 }
